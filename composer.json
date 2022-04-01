@@ -1,38 +1,54 @@
 {
-  "name": "arangodb/arangodb",
-  "type": "library",
-  "description": "ArangoDB PHP client",
-  "keywords": ["database","ArangoDB","Arango","document store","NoSQL","multi-model","graph database","distributed"],
-  "homepage": "https://github.com/arangodb/arangodb-php",
-  "license": "Apache-2.0",
-  "authors": [
-    {
-      "name": "Jan Steemann",
-      "homepage": "https://github.com/arangodb/arangodb-php",
-      "role": "Developer"
+    "name": "arangodb/arangodb",
+    "type": "library",
+    "description": "ArangoDB PHP client",
+    "keywords": [
+        "database",
+        "ArangoDB",
+        "Arango",
+        "document store",
+        "NoSQL",
+        "multi-model",
+        "graph database",
+        "distributed"
+    ],
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/arangodb/arangodb-php",
+    "authors": [
+        {
+            "name": "Jan Steemann",
+            "homepage": "https://github.com/arangodb/arangodb-php",
+            "role": "Developer"
+        },
+        {
+            "name": "Frank Mayer",
+            "homepage": "https://github.com/arangodb/arangodb-php",
+            "role": "Developer"
+        },
+        {
+            "name": "Contributors",
+            "homepage": "https://github.com/arangodb/arangodb-php/graphs/contributors"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "allow-plugins": {},
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     },
-   {
-      "name": "Frank Mayer",
-      "homepage": "https://github.com/arangodb/arangodb-php",
-      "role": "Developer"
+    "require": {
+        "php": ">=7.4"
     },
-    {
-      "name": "Contributors",
-      "homepage": "https://github.com/arangodb/arangodb-php/graphs/contributors"
-    }
-  ],
-  "require": {
-    "php": ">=7.4"
-  },
-  "autoload": {
-    "psr-0": {
-      "ArangoDBClient": "lib/"
-    }
-  },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/arangodb/arangodb-php"
-    }
-  ]
+    "require-dev": {},
+    "autoload": {
+        "psr-0": {
+            "ArangoDBClient": "lib/"
+        }
+    },
+    "autoload-dev": {},
+    "extra": {},
+    "scripts": {},
+    "scripts-descriptions": {}
 }
