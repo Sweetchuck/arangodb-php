@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: CollectionBasicTest.php
@@ -86,7 +88,7 @@ class CollectionBasicTest extends
 
         static::assertEquals(Collection::TYPE_EDGE, $collection->getType());
     }
-    
+
     /**
      * Try to create a collection with a long name
      */
@@ -121,8 +123,8 @@ class CollectionBasicTest extends
 
         $collectionHandler->drop($collection);
     }
-    
-    
+
+
     /**
      * Try to create a collection with a too long name
      */
@@ -272,8 +274,8 @@ class CollectionBasicTest extends
 
         static::assertEquals(501, $e->getCode());
     }
-    
-    
+
+
     /**
      * Try to create a collection with distributeShardsLike
      */
@@ -284,7 +286,7 @@ class CollectionBasicTest extends
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
-        
+
         $connection        = $this->connection;
         $collectionHandler = new CollectionHandler($connection);
 
@@ -292,11 +294,11 @@ class CollectionBasicTest extends
         $name1 = 'ArangoDB_PHP_TestSuite_TestCollection_01' . '_' . static::$testsTimestamp;
         $collection1->setName($name1);
         $response = $collectionHandler->create($collection1);
-        
+
         $resultingCollection = $collectionHandler->getProperties($response);
         $properties          = $resultingCollection->getAll();
         static::assertFalse(array_key_exists(Collection::ENTRY_DISTRIBUTE_SHARDS_LIKE, $properties));
-        
+
         $collection2       = new Collection();
         $name2 = 'ArangoDB_PHP_TestSuite_TestCollection_02' . '_' . static::$testsTimestamp;
         $collection2->setName($name2);
@@ -344,7 +346,7 @@ class CollectionBasicTest extends
         static::assertEquals(4, $properties[Collection::ENTRY_NUMBER_OF_SHARDS], 'Number of shards does not match.');
         static::assertEquals(['_key'], $properties[Collection::ENTRY_SHARD_KEYS], 'Shard keys do not match.');
     }
-    
+
     /**
      * Try to create a collection with replication factor 1
      */
@@ -380,8 +382,8 @@ class CollectionBasicTest extends
         static::assertEquals(1, $properties[Collection::ENTRY_REPLICATION_FACTOR]);
         static::assertEquals(1, $properties[Collection::ENTRY_WRITE_CONCERN]);
     }
-    
-    
+
+
     /**
      * Try to create a collection with replication factor 2
      */
@@ -417,7 +419,7 @@ class CollectionBasicTest extends
         static::assertEquals(2, $properties[Collection::ENTRY_REPLICATION_FACTOR]);
         static::assertEquals(2, $properties[Collection::ENTRY_WRITE_CONCERN]);
     }
-    
+
     /**
      * Try to create a collection with replication factor "satellite"
      */
@@ -428,7 +430,7 @@ class CollectionBasicTest extends
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
-        
+
         if (!isEnterprise($this->connection)) {
           // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
@@ -458,8 +460,8 @@ class CollectionBasicTest extends
         static::assertEquals("satellite", $properties[Collection::ENTRY_REPLICATION_FACTOR]);
         static::assertEquals(0, $properties[Collection::ENTRY_WRITE_CONCERN]);
     }
-    
-    
+
+
     /**
      * Try to create a collection with an explicit sharding strategy
      */
@@ -493,8 +495,8 @@ class CollectionBasicTest extends
 
         static::assertEquals('community-compat', $properties[Collection::ENTRY_SHARDING_STRATEGY]);
     }
-    
-    
+
+
     /**
      * Try to create a collection with an explicit sharding strategy
      */
@@ -528,8 +530,8 @@ class CollectionBasicTest extends
 
         static::assertEquals('hash', $properties[Collection::ENTRY_SHARDING_STRATEGY]);
     }
-    
-    
+
+
     /**
      * Try to create a collection without an explicit sharding strategy
      */
@@ -606,18 +608,18 @@ class CollectionBasicTest extends
             'Shard keys do not match.'
         );
     }
-    
+
     /**
      * Try to create a collection with smart join attribute
      */
-    public function testCreateCollectionWithSmartJoinAttribute() 
+    public function testCreateCollectionWithSmartJoinAttribute()
     {
         if (!isCluster($this->connection)) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
-        
+
         if (!isEnterprise($this->connection)) {
           // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
@@ -782,7 +784,7 @@ class CollectionBasicTest extends
         $collectionHandler->drop($name, ['isSystem' => true]);
     }
 
-    
+
     /**
      * Creates an index using createIndex
      */
@@ -797,8 +799,8 @@ class CollectionBasicTest extends
                 'sparse' => true,
                 'inBackground' => true
             ]
-        ); 
-        
+        );
+
         $indices = $this->collectionHandler->getIndexes('ArangoDB_PHP_TestSuite_IndexTestCollection' . '_' . static::$testsTimestamp);
 
         $indicesByIdentifiers = $indices['identifiers'];
@@ -813,8 +815,8 @@ class CollectionBasicTest extends
         static::assertTrue($indexInfo['sparse']);
         static::assertEquals('mr-hash', $indexInfo['name']);
     }
-    
-    
+
+
     /**
      * Gets an index by id
      */
@@ -829,8 +831,8 @@ class CollectionBasicTest extends
                 'sparse' => true,
                 'inBackground' => false
             ]
-        ); 
-        
+        );
+
         $indexInfo = $this->collectionHandler->getIndex('ArangoDB_PHP_TestSuite_IndexTestCollection' . '_' . static::$testsTimestamp, $result['id']);
 
         static::assertEquals('persistent', $indexInfo[CollectionHandler::OPTION_TYPE]);
@@ -840,7 +842,7 @@ class CollectionBasicTest extends
         static::assertEquals('abc', $indexInfo['name']);
     }
 
-    
+
     /**
      * Gets an index by name
      */
@@ -853,8 +855,8 @@ class CollectionBasicTest extends
                 'fields' => ['c'],
                 'minLength' => 4,
             ]
-        ); 
-        
+        );
+
         $indexInfo = $this->collectionHandler->getIndex('ArangoDB_PHP_TestSuite_IndexTestCollection' . '_' . static::$testsTimestamp, $result['id']);
 
         static::assertEquals('fulltext', $indexInfo[CollectionHandler::OPTION_TYPE]);
@@ -864,7 +866,7 @@ class CollectionBasicTest extends
         static::assertEquals(4, $indexInfo['minLength']);
         static::assertEquals('this-is-an-index', $indexInfo['name']);
     }
-    
+
     /**
      * Drops an index by id
      */
@@ -877,8 +879,8 @@ class CollectionBasicTest extends
                 'fields' => ['c'],
                 'minLength' => 4,
             ]
-        ); 
-        
+        );
+
         $result = $this->collectionHandler->dropIndex('ArangoDB_PHP_TestSuite_IndexTestCollection' . '_' . static::$testsTimestamp, $result['id']);
         static::assertTrue($result);
     }
@@ -896,8 +898,8 @@ class CollectionBasicTest extends
                 'fields' => ['c'],
                 'minLength' => 4,
             ]
-        ); 
-        
+        );
+
         $result = $this->collectionHandler->dropIndex('ArangoDB_PHP_TestSuite_IndexTestCollection' . '_' . static::$testsTimestamp, 'this-is-an-index');
         static::assertTrue($result);
     }
@@ -1055,8 +1057,8 @@ class CollectionBasicTest extends
         static::assertEquals('fulltextfield', $indexInfo['fields'][0], "The indexed field is not 'fulltextfield'");
         static::assertEquals(5, $indexInfo[CollectionHandler::OPTION_MIN_LENGTH], 'minLength was not set to 5!');
     }
-    
-    
+
+
     /**
      * Create a zkd index and verify it by getting information about the index from the server
      */
@@ -1086,7 +1088,7 @@ class CollectionBasicTest extends
         static::assertTrue($indexInfo[CollectionHandler::OPTION_UNIQUE]);
         static::assertFalse($indexInfo[CollectionHandler::OPTION_SPARSE]);
     }
-    
+
     /**
      * Create a zkd index and verify it by getting information about the index from the server
      */
@@ -1248,8 +1250,8 @@ class CollectionBasicTest extends
         static::assertFalse($indexInfo[CollectionHandler::OPTION_UNIQUE], 'unique was not set to false!');
         static::assertTrue($indexInfo[CollectionHandler::OPTION_SPARSE], 'sparse flag was not set to true!');
     }
-    
-    
+
+
     /**
      * Create a TTL index and verify it by getting information about the index from the server
      */
@@ -1307,8 +1309,8 @@ class CollectionBasicTest extends
         static::assertEquals('testGetIndexField', $indexInfo['fields'][0], 'Index field does not match!');
         static::assertEquals(100, $indexInfo[CollectionHandler::OPTION_MIN_LENGTH], 'Min length does not match!');
     }
-    
-    
+
+
     /**
      * Create an index in background and verify it by getting information about the index from the server
      */
@@ -1317,8 +1319,8 @@ class CollectionBasicTest extends
         $result = $this->collectionHandler->createHashIndex(
             'ArangoDB_PHP_TestSuite_IndexTestCollection' . '_' . static::$testsTimestamp,
             ['test'],
-            false, 
-            false, 
+            false,
+            false,
             true
         );
 
@@ -1348,8 +1350,8 @@ class CollectionBasicTest extends
     {
         static::assertTrue($this->collectionHandler->has('ArangoDB_PHP_TestSuite_IndexTestCollection' . '_' . static::$testsTimestamp));
     }
-    
-    
+
+
     /**
      * count
      */
@@ -1377,7 +1379,7 @@ class CollectionBasicTest extends
 
         $count = $collectionHandler->count($collection, false);
         static::assertEquals(0, $count);
-        
+
         $count = $collectionHandler->count($collection, true);
         static::assertTrue(is_array($count));
         static::assertEquals(5, count($count));
@@ -1386,15 +1388,15 @@ class CollectionBasicTest extends
             static::assertEquals('s', $shard[0]);
             static::assertEquals(0, $value);
         }
-        
-        // fill with data 
+
+        // fill with data
         $statement = new Statement($connection, []);
         $statement->setQuery('FOR i IN 1..1000 INSERT {} IN ' . $collection->getName());
         $cursor = $statement->execute();
-        
+
         $count = $collectionHandler->count($collection, false);
         static::assertEquals(1000, $count);
-        
+
         $count = $collectionHandler->count($collection, true);
         static::assertTrue(is_array($count));
         static::assertEquals(5, count($count));
@@ -1408,12 +1410,12 @@ class CollectionBasicTest extends
 
         static::assertEquals(1000, $sum);
     }
-    
-    
+
+
     /**
      * get shards
      */
-    public function testGetShards() 
+    public function testGetShards()
     {
         if (!isCluster($this->connection)) {
             // don't execute this test in a non-cluster
@@ -1445,7 +1447,7 @@ class CollectionBasicTest extends
             static::assertTrue(is_string($shardId));
         }
     }
-    
+
     /**
      * find responsible shard
      */
@@ -1474,7 +1476,7 @@ class CollectionBasicTest extends
         $collection->setNumberOfShards(5);
 
         $response = $collectionHandler->create($collection);
-        
+
         $shardIds = $collectionHandler->getShards($collection);
 
         for ($i = 0; $i < 100; ++$i) {
@@ -1482,7 +1484,7 @@ class CollectionBasicTest extends
             $doc->setInternalKey('test' . $i);
 
             $documentHandler->save($collection, $doc);
-            
+
             $responsible = $collectionHandler->getResponsibleShard($collection, $doc);
             static::assertTrue(in_array($responsible, $shardIds));
         }

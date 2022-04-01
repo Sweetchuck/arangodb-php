@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: GraphBasicTest.php
@@ -40,8 +43,8 @@ class GraphBasicTest extends
         $this->connection        = getConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
     }
-    
-    
+
+
     public function testInstantiateSmartGraphWithoutSmartGraphAttribute()
     {
         try {
@@ -49,10 +52,10 @@ class GraphBasicTest extends
             static::assertTrue(false, "should not get here");
         } catch (\Exception $e) {
             static::assertInstanceOf(ClientException::class, $e);
-        } 
+        }
     }
-    
-    
+
+
     public function testInstantiateRegularSmartGraphWithSmartGraphAttribute()
     {
         $graph = new SmartGraph('Graph1' . '_' . static::$testsTimestamp, [ "smartGraphAttribute" => "testi" ]);
@@ -60,8 +63,8 @@ class GraphBasicTest extends
         static::assertTrue($graph->isSmart());
         static::assertFalse($graph->isDisjoint());
     }
-    
-    
+
+
     public function testUnsetSmartnessOfSmartGraph()
     {
         $graph = new SmartGraph('Graph1' . '_' . static::$testsTimestamp, [ "smartGraphAttribute" => "testi" ]);
@@ -70,10 +73,10 @@ class GraphBasicTest extends
             static::assertTrue(false, "should not get here");
         } catch (\Exception $e) {
             static::assertInstanceOf(ClientException::class, $e);
-        } 
+        }
     }
-    
-    
+
+
     public function testInstantiateDisjointSmartGraph()
     {
         $graph = new SmartGraph('Graph1' . '_' . static::$testsTimestamp, [ "smartGraphAttribute" => "testi", "isDisjoint" => true ]);
@@ -81,8 +84,8 @@ class GraphBasicTest extends
         static::assertTrue($graph->isSmart());
         static::assertTrue($graph->isDisjoint());
     }
-    
-    
+
+
     public function testCreateAndDeleteSmartRegularGraph()
     {
         if (!isCluster($this->connection)) {
@@ -90,13 +93,13 @@ class GraphBasicTest extends
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
-        
+
         if (!isEnterprise($this->connection)) {
             // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
         }
-        
+
         $param1      = [];
         $param1[]    = 'lba' . '_' . static::$testsTimestamp;
         $param1[]    = 'blub' . '_' . static::$testsTimestamp;
@@ -120,8 +123,8 @@ class GraphBasicTest extends
         static::assertFalse($properties['isDisjoint']);
         static::assertEquals('testi', $properties['smartGraphAttribute']);
     }
-    
-    
+
+
     public function testCreateAndDeleteDisjointSmartGraph()
     {
         if (!isCluster($this->connection)) {
@@ -129,13 +132,13 @@ class GraphBasicTest extends
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
-        
+
         if (!isEnterprise($this->connection)) {
             // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
         }
-        
+
         $param1      = [];
         $param1[]    = 'lba' . '_' . static::$testsTimestamp;
         $param1[]    = 'blub' . '_' . static::$testsTimestamp;
@@ -168,13 +171,13 @@ class GraphBasicTest extends
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
-        
+
         if (!isEnterprise($this->connection)) {
             // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
         }
-        
+
         $param1      = [];
         $param1[]    = 'lba' . '_' . static::$testsTimestamp;
         $param1[]    = 'blub' . '_' . static::$testsTimestamp;
@@ -199,8 +202,8 @@ class GraphBasicTest extends
         static::assertFalse($properties['isDisjoint']);
         static::assertEquals('testi', $properties['smartGraphAttribute']);
     }
-    
-    
+
+
     public function testCreateAndDeleteSatelliteGraph()
     {
         if (!isCluster($this->connection)) {
@@ -208,13 +211,13 @@ class GraphBasicTest extends
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
-        
+
         if (!isEnterprise($this->connection)) {
             // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
         }
-        
+
         $param1      = [];
         $param1[]    = 'lba' . '_' . static::$testsTimestamp;
         $param1[]    = 'blub' . '_' . static::$testsTimestamp;
@@ -240,8 +243,8 @@ class GraphBasicTest extends
         static::assertEquals("satellite", $properties['replicationFactor']);
         static::assertEquals(1, $properties['numberOfShards']);
     }
-    
-    
+
+
     public function testCreateAndDeleteGraphWithClusterOptions()
     {
         if (!isCluster($this->connection)) {
@@ -249,13 +252,13 @@ class GraphBasicTest extends
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
-        
+
         if (!isEnterprise($this->connection)) {
             // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
         }
-        
+
         $param1      = [];
         $param1[]    = 'lba' . '_' . static::$testsTimestamp;
         $param1[]    = 'blub' . '_' . static::$testsTimestamp;
@@ -280,8 +283,8 @@ class GraphBasicTest extends
         static::assertEquals(2, $properties['replicationFactor']);
         static::assertEquals(4, $properties['numberOfShards']);
     }
-    
-    
+
+
     /**
      * Test creation of graph with definitions
      */

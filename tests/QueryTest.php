@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: QueryTest.php
@@ -137,7 +140,7 @@ class QueryTest extends
             static::assertEquals($exception->getCode(), 408);
             throw $exception;
         }
-        
+
     }
 
     public function tearDown(): void

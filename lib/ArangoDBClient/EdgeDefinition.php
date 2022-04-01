@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: single document
  *
@@ -44,7 +46,7 @@ class EdgeDefinition
      * @var array names of the end vertices collection
      */
     protected $_toCollections = [];
-    
+
     /**
      * An array containing satellite collections in Hybrid SmartGraphs
      *
@@ -117,7 +119,7 @@ class EdgeDefinition
     {
         return $this->_fromCollections;
     }
-    
+
     /**
      * Get the 'satellites' collections of the graph.
      *
@@ -152,7 +154,7 @@ class EdgeDefinition
     {
         $this->_fromCollections[] = $fromCollection;
     }
-    
+
     /**
      * Add a 'satellite' collection of the graph.
      *
@@ -184,7 +186,7 @@ class EdgeDefinition
     {
         return $this->_fromCollections = [];
     }
-    
+
     /**
      * Resets the 'satellites' collections of the graph.
      *

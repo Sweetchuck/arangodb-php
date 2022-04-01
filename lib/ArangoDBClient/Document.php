@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: single document
  *
@@ -129,7 +131,7 @@ class Document implements \JsonSerializable
      * keepNull option index
      */
     const OPTION_KEEPNULL = 'keepNull';
-    
+
     /**
      * regular expression used for key validation
      */

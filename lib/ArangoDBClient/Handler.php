@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: base handler
  *
@@ -176,7 +178,7 @@ abstract class Handler
 
 
     /**
-     * Add a transaction header to the array of headers in case this is a transactional operation 
+     * Add a transaction header to the array of headers in case this is a transactional operation
      *
      * @param array $headers - already existing headers
      * @param mixed $collection - any type of collection (can be StreamingTransactionCollection or other)

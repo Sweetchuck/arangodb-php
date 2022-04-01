@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: AQL query result cache handling
  *
@@ -58,7 +60,7 @@ class QueryCacheHandler extends Handler
         $url = UrlHelper::buildUrl(Urls::URL_QUERY_CACHE, []);
         $this->getConnection()->delete($url);
     }
-    
+
     /**
      * Returns the entries from the query cache in current database
      *
@@ -66,7 +68,7 @@ class QueryCacheHandler extends Handler
      *
      * @return array - entries in query cache
      */
-    
+
     public function getEntries()
     {
         $url = UrlHelper::buildUrl(Urls::URL_QUERY_CACHE, ['entries']);

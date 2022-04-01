@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: endpoint
  *
@@ -130,8 +132,8 @@ class Endpoint
 
         return null;
     }
-    
-    
+
+
     /**
      * Return normalize an endpoint string - will convert http: into tcp:, and https: into ssl:
      *
@@ -176,7 +178,7 @@ class Endpoint
         if (is_string($value)) {
             $value = [ $value ];
         }
-        
+
         if (!is_array($value) || count($value) === 0) {
             return false;
         }
@@ -212,12 +214,12 @@ class Endpoint
 
         return $response->getJson();
     }
-    
+
     /**
      * Replaces "localhost" in hostname with "[::1]" in order to make these values the same
      * for later comparisons
      *
-     * @param string $hostname - hostname 
+     * @param string $hostname - hostname
      *
      * @return string - normalized hostname
      */
@@ -225,7 +227,7 @@ class Endpoint
         // replace "localhost" with [::1] as arangod does
         return preg_replace("/^(tcp|ssl|https?):\/\/(localhost|127\.0\.0\.1):/", "\\1://[::1]:",  $hostname);
     }
-    
+
 }
 
 class_alias(Endpoint::class, '\triagens\ArangoDb\Endpoint');

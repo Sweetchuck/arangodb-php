@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace ArangoDBClient;
 
 require __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'autoload.php';
@@ -16,11 +18,11 @@ $connectionOptions = [
 
     // normal unencrypted connection via TCP/IP
     ConnectionOptions::OPTION_ENDPOINT => 'tcp://localhost:8529',  // endpoint to connect to
-    
+
     // // to use failover (requires ArangoDB 3.3 and the database running in active/passive failover mode)
     // // it is possible to specify an array of endpoints as follows:
     // ConnectionOptions::OPTION_ENDPOINT    => [ 'tcp://localhost:8531', 'tcp://localhost:8532' ]
-    
+
     // // to use memcached for caching the currently active leader (to spare a few connection attempts
     // // to followers), it is possible to install the Memcached module for PHP and set the following options:
     // // memcached persistent id (will be passed to Memcached::__construct)

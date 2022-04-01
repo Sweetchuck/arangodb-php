@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: CollectionExtendedTest.php
@@ -49,8 +52,8 @@ class CollectionExtendedTest extends
 
         $adminHandler = new AdminHandler($this->connection);
     }
-    
-    
+
+
     /**
      * test for creation with a schema
      */
@@ -71,10 +74,10 @@ class CollectionExtendedTest extends
         static::assertTrue(is_numeric($response), 'Adding collection did not return an id!');
 
         $properties = $collectionHandler->get($name);
-        static::assertNull($properties->getSchema()); 
+        static::assertNull($properties->getSchema());
     }
-    
-    
+
+
     /**
      * test for creation with schema
      */
@@ -120,14 +123,14 @@ class CollectionExtendedTest extends
         ];
 
         $collection->setSchema($schema);
-        static::assertEquals($schema, $collection->getSchema()); 
+        static::assertEquals($schema, $collection->getSchema());
 
         $response = $collectionHandler->create($collection);
 
         static::assertTrue(is_numeric($response), 'Adding collection did not return an id!');
 
         $collectionWithSchema = $collectionHandler->getProperties($name);
-        static::assertEquals($schema, $collectionWithSchema->getSchema()); 
+        static::assertEquals($schema, $collectionWithSchema->getSchema());
     }
 
 
@@ -2035,7 +2038,7 @@ class CollectionExtendedTest extends
         static::assertTrue($result['waitForSync'], 'waitForSync should return true!');
     }
 
-    
+
     /**
      * test for creation of a hash index
      */
@@ -2065,8 +2068,8 @@ class CollectionExtendedTest extends
         $response = $collectionHandler->drop($collection);
         static::assertTrue($response, 'Delete should return true!');
     }
-    
-    
+
+
     /**
      * test for creation of a hash index, uniqueness violation
      */
@@ -2537,8 +2540,8 @@ class CollectionExtendedTest extends
         $response = $collectionHandler->drop($collection);
         static::assertTrue($response, 'Delete should return true!');
     }
-    
-    
+
+
     /**
      * Test if we can create an array index
      */
@@ -2573,8 +2576,8 @@ class CollectionExtendedTest extends
         $response = $collectionHandler->drop($collection);
         static::assertTrue($response, 'Delete should return true!');
     }
-    
-    
+
+
     /**
      * Test if we can create an array index with deduplicate option
      */
@@ -2599,7 +2602,7 @@ class CollectionExtendedTest extends
             $indexRes,
             'index creation result should have the isNewlyCreated key !'
         );
-        
+
         static::assertTrue($indexRes['deduplicate']);
 
         // Check if the index is returned in the indexes of the collection
@@ -2614,8 +2617,8 @@ class CollectionExtendedTest extends
         $response = $collectionHandler->drop($collection);
         static::assertTrue($response, 'Delete should return true!');
     }
-    
-    
+
+
     /**
      * Test if we can create an array index with deduplicate option
      */
@@ -2640,7 +2643,7 @@ class CollectionExtendedTest extends
             $indexRes,
             'index creation result should have the isNewlyCreated key !'
         );
-        
+
         static::assertFalse($indexRes['estimates']);
 
         // Check if the index is returned in the indexes of the collection
@@ -2655,9 +2658,9 @@ class CollectionExtendedTest extends
         $response = $collectionHandler->drop($collection);
         static::assertTrue($response, 'Delete should return true!');
     }
-    
+
     /**
-     * Test if we can create a ttl index 
+     * Test if we can create a ttl index
      */
     public function testCreateTtlIndex()
     {

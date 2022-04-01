@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace ArangoDBClient;
 
 require __DIR__ . '/init.php';
@@ -30,13 +32,13 @@ try {
 
     // starts the transaction
     $trx = $transactionHandler->create($trx);
-       
+
     // get a StreamingTransactionCollection object. this is used to execute operations
     // in a transaction context
     $trxCollection = $trx->getCollection('users');
 
     // calling query() directly on the transaction makes the AQL query execute in the
-    // context of the running transaction    
+    // context of the running transaction
     $result = $trx->query([
         'query' => 'FOR i IN 1..10 INSERT { _key: CONCAT("test", i), value: i } INTO @@collection',
         'bindVars' => [ '@collection' => $trxCollection->getName() ]

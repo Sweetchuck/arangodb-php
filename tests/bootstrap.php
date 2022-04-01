@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: bootstrap-connection-close.php
@@ -44,7 +47,7 @@ function isCluster(Connection $connection)
 
 function useAuthentication() {
     $authentication = getenv("ARANGO_USE_AUTHENTICATION");
-    
+
     if ($authentication === false) {
         // use ArangoDB default value
         return true;
@@ -52,7 +55,7 @@ function useAuthentication() {
 
     $authentication = strtolower($authentication);
 
-    if ($authentication === '0' || $authentication === 'false' || 
+    if ($authentication === '0' || $authentication === 'false' ||
         $authentication === 'off' || $authentication === '') {
         return false;
     }
@@ -70,17 +73,17 @@ function getConnectionOptionsGlobal()
     if ($host === false) {
       $host = "localhost"; // default host
     }
-    
+
     $port = getenv("ARANGO_PORT");
     if ($port === false) {
         $port = "8529"; // default port
     }
-    
+
     $passwd = getenv("ARANGO_ROOT_PASSWORD");
     if ($passwd === false) {
         $passwd = ""; // default root password
     }
-    
+
     return [
         ConnectionOptions::OPTION_ENDPOINT           => 'tcp://' . $host . ':' . $port,
         // endpoint to connect to

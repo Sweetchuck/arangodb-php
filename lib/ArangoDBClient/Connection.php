@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: connection
  *
@@ -39,7 +41,7 @@ class Connection
      * @var string
      */
     private $_httpHeader = '';
-    
+
     /**
      * Pre-assembled base URL for the current database
      * This is pre-calculated when connection options are set/changed, to avoid
@@ -285,7 +287,7 @@ class Connection
      * @return HttpResponse
      */
     public function patch($url, $data, array $customHeaders = [])
-    { 
+    {
         return $this->handleFailover(function() use ($url, $data, $customHeaders) {
             $response = $this->executeRequest(HttpHelper::METHOD_PATCH, $url, $data, $customHeaders);
 
@@ -326,7 +328,7 @@ class Connection
      *
      * @return HttpResponse
      */
-    private function handleFailover($cb) 
+    private function handleFailover($cb)
     {
         $start = microtime(true);
         if (!$this->_options->haveMultipleEndpoints()) {
@@ -357,7 +359,7 @@ class Connection
                 $this->notify('no more servers available to try connecting to');
                 throw new ConnectException('no more servers available to try connecting to');
             }
-                
+
             try {
                 // mark the endpoint as being tried
                 $tried[$normalized] = true;
@@ -375,7 +377,7 @@ class Connection
                 // move on to next endpoint
                 $ep = $this->_options->nextEndpoint();
                 $normalized = Endpoint::normalizeHostname($ep);
-               
+
                 if (isset($tried[$normalized])) {
                     if (microtime(true) - $start >= $this->_options[ConnectionOptions::OPTION_FAILOVER_TIMEOUT]) {
                         // timeout reached, we will abort now
@@ -388,7 +390,7 @@ class Connection
             } catch (FailoverException $e) {
                 // got a failover. now try again with a different server if possible
                 // endpoint should have changed by failover procedure
-                $ep = $this->_options->getCurrentEndpoint(); 
+                $ep = $this->_options->getCurrentEndpoint();
                 $normalized = Endpoint::normalizeHostname($ep);
 
                 if ($this->_options[ConnectionOptions::OPTION_FAILOVER_TRIES] > 0 &&
@@ -405,7 +407,7 @@ class Connection
                     // continue because we have not yet reached the timeout
                     usleep(20 * 1000);
                 }
-            
+
                 // we need to try the recommended leader again
                 unset($notReachable[$normalized]);
             }
@@ -426,14 +428,14 @@ class Connection
         }
 
         if (isset($this->_options[ConnectionOptions::OPTION_AUTH_JWT])) {
-            // JWT, used as is 
+            // JWT, used as is
             $this->_httpHeader .= sprintf(
                 'Authorization: Bearer %s%s',
                 $this->_options[ConnectionOptions::OPTION_AUTH_JWT],
                 HttpHelper::EOL
             );
         } else if (isset($this->_options[ConnectionOptions::OPTION_AUTH_TYPE], $this->_options[ConnectionOptions::OPTION_AUTH_USER])) {
-            // create a JWT for a given user and server's JWT secret 
+            // create a JWT for a given user and server's JWT secret
             if ($this->_options[ConnectionOptions::OPTION_AUTH_TYPE] == 'Bearer') {
                 // JWT secret
                 $base = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
@@ -515,14 +517,14 @@ class Connection
 
         return $handle;
     }
-    
+
     /**
      * Close an existing connection handle
      *
-     * @return void 
+     * @return void
      */
-     
-     private function closeHandle() 
+
+     private function closeHandle()
      {
           if ($this->_handle && is_resource($this->_handle)) {
               @fclose($this->_handle);
@@ -617,7 +619,7 @@ class Connection
 
             $status = socket_get_status($handle);
             if ($status['timed_out']) {
-                // can't connect to server because of timeout. 
+                // can't connect to server because of timeout.
                 // now check if we have additional servers to connect to
                 if ($this->_options->haveMultipleEndpoints()) {
                     // connect to next server in list
@@ -644,7 +646,7 @@ class Connection
             }
 
             $response = new HttpResponse($result, $url, $method, $wasAsync);
-            
+
             if ($traceFunc) {
                 // call tracer func
                 if ($this->_options[ConnectionOptions::OPTION_ENHANCED_TRACE]) {
@@ -687,13 +689,13 @@ class Connection
 
                 // handle failover
                 if (is_array($details) && isset($details['errorNum'])) {
-                    if ($details['errorNum'] === 1495) { 
+                    if ($details['errorNum'] === 1495) {
                         // 1495 = leadership challenge is ongoing
                         $exception = new FailoverException(@$details['errorMessage'], @$details['code']);
                         throw $exception;
                     }
 
-                    if ($details['errorNum'] === 1496) { 
+                    if ($details['errorNum'] === 1496) {
                         // 1496 = not a leader
                         // not a leader. now try to find new leader
                         $leader = $response->getLeaderEndpointHeader();
@@ -701,11 +703,11 @@ class Connection
                             // have a different leader
                             $leader = Endpoint::normalize($leader);
                             $this->_options->addEndpoint($leader);
-                            
+
                         } else {
                             $leader = $this->_options->nextEndpoint();
                         }
-                            
+
                         // close existing connection
                         $this->closeHandle();
                         $this->updateHttpHeader();
@@ -723,7 +725,7 @@ class Connection
                     throw $exception;
                 }
             }
-            
+
             // check if server has responded with any other 503 response not handled above
             if ($httpCode === 503) {
                 // generic service unavailable response
@@ -954,14 +956,14 @@ class Connection
     {
         return $this->_database;
     }
-        
+
     /**
      * Test if a connection can be made using the specified connection options,
      * i.e. endpoint (host/port), username, password
      *
      * @return bool - true if the connection succeeds, false if not
      */
-    public function test() 
+    public function test()
     {
         try {
             $this->get(Urls::URL_ADMIN_VERSION);
@@ -974,7 +976,7 @@ class Connection
         }
         return true;
     }
-                
+
     /**
      * Returns the current endpoint we are currently connected to
      * (or, if no connection has been established yet, the next endpoint
@@ -982,11 +984,11 @@ class Connection
      *
      * @return string - the current endpoint that we are connected to
      */
-    public function getCurrentEndpoint() 
+    public function getCurrentEndpoint()
     {
         return $this->_options->getCurrentEndpoint();
     }
-                            
+
     /**
      * Calls the notification callback function to inform to make the
      * client application aware of some failure so it can do something

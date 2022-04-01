@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: TransactionTest.php
@@ -58,7 +61,7 @@ class TransactionTest extends
         $this->collection2 = new Collection();
         $this->collection2->setName('ArangoDB_PHP_TestSuite_TestCollection_02' . '_' . static::$testsTimestamp);
         $this->collectionHandler->create($this->collection2);
-        
+
         $adminHandler = new AdminHandler($this->connection);
     }
 
@@ -90,10 +93,10 @@ class TransactionTest extends
 
         // check if object was initialized correctly with the array
         static::assertEquals(
-            $writeCollections, $transaction->getWriteCollections(), 'Did not return writeCollections, instead returned: ' . print_r($transaction->getWriteCollections(), 1)
+            $writeCollections, $transaction->getWriteCollections(), 'Did not return writeCollections, instead returned: ' . print_r($transaction->getWriteCollections(), true)
         );
         static::assertEquals(
-            $readCollections, $transaction->getReadCollections(), 'Did not return readCollections, instead returned: ' . print_r($transaction->getReadCollections(), 1)
+            $readCollections, $transaction->getReadCollections(), 'Did not return readCollections, instead returned: ' . print_r($transaction->getReadCollections(), true)
         );
         static::assertEquals(
             $action, $transaction->getAction(), 'Did not return action, instead returned: ' . $transaction->getAction()
@@ -137,10 +140,10 @@ class TransactionTest extends
         // check if getters work fine
 
         static::assertEquals(
-            $writeCollections, $transaction->writeCollections, 'Did not return writeCollections, instead returned: ' . print_r($transaction->writeCollections, 1)
+            $writeCollections, $transaction->writeCollections, 'Did not return writeCollections, instead returned: ' . print_r($transaction->writeCollections, true)
         );
         static::assertEquals(
-            $readCollections, $transaction->readCollections, 'Did not return readCollections, instead returned: ' . print_r($transaction->readCollections, 1)
+            $readCollections, $transaction->readCollections, 'Did not return readCollections, instead returned: ' . print_r($transaction->readCollections, true)
         );
         static::assertEquals(
             $action, $transaction->action, 'Did not return action, instead returned: ' . $transaction->action
@@ -183,10 +186,10 @@ class TransactionTest extends
         // check if getters work fine
 
         static::assertEquals(
-            [$writeCollections], $transaction->writeCollections, 'Did not return writeCollections, instead returned: ' . print_r($transaction->writeCollections, 1)
+            [$writeCollections], $transaction->writeCollections, 'Did not return writeCollections, instead returned: ' . print_r($transaction->writeCollections, true)
         );
         static::assertEquals(
-            [$readCollections], $transaction->readCollections, 'Did not return readCollections, instead returned: ' . print_r($transaction->readCollections, 1)
+            [$readCollections], $transaction->readCollections, 'Did not return readCollections, instead returned: ' . print_r($transaction->readCollections, true)
         );
         static::assertEquals(
             $action, $transaction->action, 'Did not return action, instead returned: ' . $transaction->action
@@ -231,10 +234,10 @@ class TransactionTest extends
         // check if getters work fine
 
         static::assertEquals(
-            $writeCollections, $transaction->getWriteCollections(), 'Did not return writeCollections, instead returned: ' . print_r($transaction->getWriteCollections(), 1)
+            $writeCollections, $transaction->getWriteCollections(), 'Did not return writeCollections, instead returned: ' . print_r($transaction->getWriteCollections(), true)
         );
         static::assertEquals(
-            $readCollections, $transaction->getReadCollections(), 'Did not return readCollections, instead returned: ' . print_r($transaction->getReadCollections(), 1)
+            $readCollections, $transaction->getReadCollections(), 'Did not return readCollections, instead returned: ' . print_r($transaction->getReadCollections(), true)
         );
         static::assertEquals(
             $action, $transaction->getAction(), 'Did not return action, instead returned: ' . $transaction->getAction()
@@ -250,8 +253,8 @@ class TransactionTest extends
         $result = $transaction->execute();
         static::assertTrue($result, 'Did not return true, instead returned: ' . $result);
     }
-    
-    
+
+
     /**
      * Test if we can create and execute a transaction by using getters/setters
      */

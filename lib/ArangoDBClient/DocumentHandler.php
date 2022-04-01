@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: document handler
  *
@@ -40,29 +42,29 @@ class DocumentHandler extends Handler
      * example parameter
      */
     const OPTION_EXAMPLE = 'example';
-    
+
     /**
      * overwrite option (deprecated)
      */
     const OPTION_OVERWRITE = 'overwrite';
-    
+
     /**
      * overwriteMode option
      */
     const OPTION_OVERWRITE_MODE = 'overwriteMode';
-    
+
     /**
      * option for returning the old document
      */
     const OPTION_RETURN_OLD = 'returnOld';
-    
+
     /**
      * option for returning the new document
      */
     const OPTION_RETURN_NEW = 'returnNew';
-    
+
     /**
-     * silent option 
+     * silent option
      */
     const OPTION_SILENT = 'silent';
 
@@ -257,7 +259,7 @@ class DocumentHandler extends Handler
                 $headers['If-None-Match'] = '"' . $revision . '"';
             }
         }
-        
+
         $response            = $this->getConnection()->head($url, $headers);
         $headers             = $response->getHeaders();
         $headers['httpCode'] = $response->getHttpCode();
@@ -361,7 +363,7 @@ class DocumentHandler extends Handler
         } else {
             $data = $document->getAllForInsertUpdate();
         }
-        
+
         $response = $this->post($collection, $data, $options);
 
         // This makes sure that if we're in batch mode, it will not go further and choke on the checks below.
@@ -371,14 +373,14 @@ class DocumentHandler extends Handler
         if ($batchPart = $response->getBatchPart()) {
             return $batchPart;
         }
-        
+
         if (@$options[self::OPTION_SILENT]) {
           // nothing will be returned here
           return null;
         }
-        
+
         $json = $response->getJson();
-                
+
         if (@$options[self::OPTION_RETURN_OLD] || @$options[self::OPTION_RETURN_NEW]) {
             return $json;
         }
@@ -406,8 +408,8 @@ class DocumentHandler extends Handler
 
         return $document->getId();
     }
-    
-    
+
+
     /**
      * insert multiple document into a collection
      *
@@ -458,8 +460,8 @@ class DocumentHandler extends Handler
 
         return $response->getJson();
     }
-    
-    
+
+
     /**
      * Insert documents into a collection (internal method)
      *
@@ -479,7 +481,7 @@ class DocumentHandler extends Handler
         $this->addTransactionHeader($headers, $collection);
 
         $collection     = $this->makeCollection($collection);
-        
+
         if (!isset($options[self::OPTION_OVERWRITE_MODE]) &&
             isset($options[self::OPTION_OVERWRITE])) {
             // map "overwrite" to "overwriteMode"
@@ -505,15 +507,15 @@ class DocumentHandler extends Handler
         return $this->getConnection()->post($url, $this->json_encode_wrapper($data, false), $headers);
     }
 
-    
+
     /**
      * Insert a document into a collection
-     * 
+     *
      * This is an alias for insert().
      *
      * * @deprecated use insert instead
      */
-    public function save($collection, $document, array $options = []) 
+    public function save($collection, $document, array $options = [])
     {
         return $this->insert($collection, $document, $options);
     }
@@ -631,12 +633,12 @@ class DocumentHandler extends Handler
                 $headers['if-match']  = '"' . $revision . '"';
             }
         }
-        
+
         $url = UrlHelper::buildUrl($url, [$collection, $documentId]);
         $url = UrlHelper::appendParamsUrl($url, $params);
-        
+
         $result = $this->getConnection()->patch($url, $this->json_encode_wrapper($document->getAllForInsertUpdate()), $headers);
-        
+
         if (@$params[self::OPTION_SILENT]) {
           // nothing will be returned here
           return null;
@@ -645,7 +647,7 @@ class DocumentHandler extends Handler
         $json = $result->getJson();
         $_documentClass = $this->_documentClass;
         $document->setRevision($json[$_documentClass::ENTRY_REV]);
-        
+
         if (@$options[self::OPTION_RETURN_OLD] || @$options[self::OPTION_RETURN_NEW]) {
             return $json;
         }
@@ -763,7 +765,7 @@ class DocumentHandler extends Handler
                 $headers['if-match']  = '"' . $revision . '"';
             }
         }
-        
+
         $data = $document->getAllForInsertUpdate();
 
         $url    = UrlHelper::buildUrl($url, [$collection, $documentId]);
@@ -778,7 +780,7 @@ class DocumentHandler extends Handler
         $json = $result->getJson();
         $_documentClass = $this->_documentClass;
         $document->setRevision($json[$_documentClass::ENTRY_REV]);
-        
+
         if (@$options[self::OPTION_RETURN_OLD] || @$options[self::OPTION_RETURN_NEW]) {
             return $json;
         }
@@ -859,7 +861,7 @@ class DocumentHandler extends Handler
 
         $url = UrlHelper::buildUrl(Urls::URL_DOCUMENT, [$collection, $documentId]);
         $url = UrlHelper::appendParamsUrl($url, $params);
-        
+
         if (@$options[self::OPTION_RETURN_OLD]) {
             $result = $this->getConnection()->delete($url, $headers);
             $json = $result->getJson();

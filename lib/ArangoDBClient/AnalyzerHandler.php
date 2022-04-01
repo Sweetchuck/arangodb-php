@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: analyzer handler
  *
@@ -39,12 +41,12 @@ class AnalyzerHandler extends Handler
             Analyzer::ENTRY_TYPE       => $analyzer->getType(),
             Analyzer::ENTRY_FEATURES   => $analyzer->getFeatures(),
         ];
-        
+
         $properties = $analyzer->getProperties();
         if (count($properties) > 0) {
             $params[Analyzer::ENTRY_PROPERTIES] = $properties;
         }
-        
+
         $url      = Urls::URL_ANALYZER;
         $response = $this->getConnection()->post($url, $this->json_encode_wrapper($params));
         $json     = $response->getJson();
@@ -71,15 +73,15 @@ class AnalyzerHandler extends Handler
         $data = $response->getJson();
 
         $result = new Analyzer(
-            $data[Analyzer::ENTRY_NAME], 
-            $data[Analyzer::ENTRY_TYPE], 
-            $data[Analyzer::ENTRY_PROPERTIES], 
+            $data[Analyzer::ENTRY_NAME],
+            $data[Analyzer::ENTRY_TYPE],
+            $data[Analyzer::ENTRY_PROPERTIES],
             $data[Analyzer::ENTRY_FEATURES]
         );
 
         return $result;
     }
-    
+
     /**
      * Get all analyzers<br><br>
      *
@@ -117,7 +119,7 @@ class AnalyzerHandler extends Handler
 
         return $result->getJson();
     }
-    
+
     /**
      * Drop an analyzer<br><br>
      *
@@ -128,7 +130,7 @@ class AnalyzerHandler extends Handler
      * @return bool - always true, will throw if there is an error
      * @since 3.6
      */
-    public function drop($analyzer) 
+    public function drop($analyzer)
     {
         if ($analyzer instanceof Analyzer) {
             $analyzer = $analyzer->getName();
@@ -139,7 +141,7 @@ class AnalyzerHandler extends Handler
 
         return true;
     }
-    
+
 }
 
 class_alias(AnalyzerHandler::class, '\triagens\ArangoDb\AnalyzerHandler');

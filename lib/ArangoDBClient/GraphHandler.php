@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: graph handler
  *
@@ -191,7 +193,7 @@ class GraphHandler extends Handler
         $data = $response->getJson();
 
         $options['_isNew'] = false;
-        
+
         $result = Graph::createFromArray($data['graph'], $options);
         $result->set(Graph::ENTRY_KEY, $data['graph'][self::OPTION_NAME]);
 

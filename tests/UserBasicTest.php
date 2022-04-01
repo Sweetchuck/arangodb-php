@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: UserBasicTest.php
@@ -110,7 +113,7 @@ class UserBasicTest extends
         static::assertTrue($result);
 
         $result = $userHandler->getDatabases('testUser42');
-        // never versions of ArangoDB do not return "none" for 
+        // never versions of ArangoDB do not return "none" for
         // databases for which there are no permissions
         if (!empty($result)) {
             static::assertEquals(['_system' => 'none'], $result);

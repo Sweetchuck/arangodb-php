@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: default values
  *
@@ -30,28 +32,28 @@ abstract class DefaultValues
      * @deprecated superseded by DEFAULT_CONNECT_TIMEOUT and DEFAULT_REQUEST_TIMEOUT
      */
     const DEFAULT_TIMEOUT = 30;
-    
+
     /**
      * Default connect timeout value (used if no timeout value specified)
      */
     const DEFAULT_CONNECT_TIMEOUT = 30;
-    
+
     /**
      * Default request timeout value (used if no timeout value specified)
      */
     const DEFAULT_REQUEST_TIMEOUT = 30;
-    
+
     /**
      * Default number of failover servers to try (used in case there is an automatic failover)
      * if set to 0, then an unlimited amount of servers will be tried
      */
     const DEFAULT_FAILOVER_TRIES = 3;
-    
+
     /**
      * Default max amount of time (in seconds) that is spent waiting on failover
      */
     const DEFAULT_FAILOVER_TIMEOUT = 30;
-    
+
     /**
      * Default Authorization type (use HTTP basic authentication)
      */
@@ -76,7 +78,7 @@ abstract class DefaultValues
      * Default value for SSL certificate verification
      */
     const DEFAULT_VERIFY_CERT = false;
-    
+
     /**
      * Default value for SSL certificate host name verification
      */

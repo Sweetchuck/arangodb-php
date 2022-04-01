@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: single database
  *
@@ -31,7 +33,7 @@ class Database
      * Users index
      */
     const ENTRY_DATABASE_USERS = 'users';
-    
+
     /**
      * Options index
      */
@@ -185,8 +187,8 @@ class Database
 
         return $response->getJson();
     }
-    
-    
+
+
     /**
      * normalizes a database name
      *
@@ -206,7 +208,7 @@ class Database
         // first check if the database name follows the traditional
         // naming scheme. if so, there is no need to normalize it.
         if (!preg_match("/^[a-zA-Z0-9_\-]+$/", $name)) {
-            // extended database naming scheme. now NFC-normalize 
+            // extended database naming scheme. now NFC-normalize
             // the database name, as this is required by the server
             $name =  \Normalizer::normalize($name, \Normalizer::FORM_C);
         }

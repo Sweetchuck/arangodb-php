@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace ArangoDBClient;
 
 // get connection options from a helper file

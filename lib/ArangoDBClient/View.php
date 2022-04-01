@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: View class
  *
@@ -35,7 +37,7 @@ class View
      * @var string - view name
      */
     protected $_name;
-    
+
     /**
      * View id index
      */
@@ -45,12 +47,12 @@ class View
      * View name index
      */
     const ENTRY_NAME = 'name';
-    
+
     /**
      * View type index
      */
     const ENTRY_TYPE = 'type';
-    
+
     /**
      * Constructs an empty view
      *
@@ -72,11 +74,11 @@ class View
      *
      * @return string - view id
      */
-    public function getId() 
+    public function getId()
     {
         return $this->_id;
     }
-    
+
     /**
      * Set the view's id
      *
@@ -84,37 +86,37 @@ class View
      *
      * @return void
      */
-    public function setId($id) 
+    public function setId($id)
     {
         $this->_id = $id;
     }
-    
+
     /**
      * Return the view name
      *
      * @return string - view name
      */
-    public function getName() 
+    public function getName()
     {
         return $this->_name;
     }
-    
+
     /**
      * Return the view type
      *
      * @return string - view type
      */
-    public function getType() 
+    public function getType()
     {
         return $this->_type;
     }
-    
+
     /**
      * Return the view as an array
      *
      * @return array - view data as an array
      */
-    public function getAll() 
+    public function getAll()
     {
         return [
             self::ENTRY_ID         => $this->getId(),

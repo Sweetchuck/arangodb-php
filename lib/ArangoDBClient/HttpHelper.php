@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: http helper methods
  *
@@ -89,7 +91,7 @@ class HttpHelper
             stream_context_set_option($context, 'ssl', 'verify_peer', $options[ConnectionOptions::OPTION_VERIFY_CERT]);
             @stream_context_set_option($context, 'ssl', 'verify_peer_name', $options[ConnectionOptions::OPTION_VERIFY_CERT_NAME]);
             stream_context_set_option($context, 'ssl', 'allow_self_signed', $options[ConnectionOptions::OPTION_ALLOW_SELF_SIGNED]);
-            
+
             if (is_string(@$options[ConnectionOptions::OPTION_CA_FILE])) {
                 stream_context_set_option($context, 'ssl', 'cafile', $options[ConnectionOptions::OPTION_CA_FILE]);
             }
@@ -116,7 +118,7 @@ class HttpHelper
             );
         }
 
-        stream_set_timeout($fp, $options[ConnectionOptions::OPTION_REQUEST_TIMEOUT]);
+        stream_set_timeout($fp, (int) $options[ConnectionOptions::OPTION_REQUEST_TIMEOUT]);
 
         return $fp;
     }
@@ -327,7 +329,7 @@ class HttpHelper
             } else {
                 // other lines contain key:value-like headers
                 // the following is a performance optimization to get rid of
-                // the two trims (which are expensive as they are executed over and over) 
+                // the two trims (which are expensive as they are executed over and over)
                 if (strpos($line, ': ') !== false) {
                     list($key, $value) = explode(': ', $line, 2);
                 } else {

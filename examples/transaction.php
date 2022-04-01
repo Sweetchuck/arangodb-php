@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace ArangoDBClient;
 
 require __DIR__ . '/init.php';
@@ -30,16 +32,16 @@ try {
 
     // starts the transaction
     $trx = $transactionHandler->create($trx);
-       
+
     // get a StreamingTransactionCollection object. this is used to execute operations
     // in a transaction context
     $trxCollection = $trx->getCollection('users');
-        
+
     // pass the StreamingTransactionCollection into the document operations instead of
     // a regular Collection object - this will make the operations execute in the context
     // of the currently running transaction
     $documentHandler->insert($trxCollection, [ '_key' => 'test1', 'value' => 'test1' ]);
-    
+
     $documentHandler->insert($trxCollection, [ '_key' => 'test2', 'value' => 'test2' ]);
 
     echo "BEFORE COMMIT" . PHP_EOL;

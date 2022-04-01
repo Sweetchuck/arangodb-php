@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: DocumentBasicTest.php
@@ -61,10 +64,10 @@ class DocumentBasicTest extends
         static::assertInstanceOf(Document::class, $document);
         unset ($document);
     }
-    
-    
+
+
     /**
-     * Try to create a document silently 
+     * Try to create a document silently
      */
     public function testInsertSilent()
     {
@@ -76,8 +79,8 @@ class DocumentBasicTest extends
         $document = $documentHandler->insert($collection->getName(), $document, ['silent' => true]);
         static::assertNull($document);
     }
-    
-    
+
+
     /**
      * Try to create a document silently - with an error
      */
@@ -88,7 +91,7 @@ class DocumentBasicTest extends
         $document        = Document::createFromArray(['_key' => 'me', 'value' => 1]);
         $documentHandler = new DocumentHandler($connection);
 
-        // insert the document once 
+        // insert the document once
         $result = $documentHandler->insert($collection->getName(), $document, ['silent' => true]);
         static::assertNull($result);
 
@@ -99,8 +102,8 @@ class DocumentBasicTest extends
         }
         static::assertEquals(409, $exception409->getCode());
     }
-    
-    
+
+
     /**
      * Try to create a document and return it
      */
@@ -117,8 +120,8 @@ class DocumentBasicTest extends
         static::assertEquals('me', $document['new']['_key']);
         static::assertEquals(1, $document['new']['value']);
     }
-    
-    
+
+
     /**
      * Try to insert many documents
      */
@@ -135,7 +138,7 @@ class DocumentBasicTest extends
 
         $documentHandler = new DocumentHandler($connection);
 
-        $result = $documentHandler->insertMany($collection->getName(), $documents); 
+        $result = $documentHandler->insertMany($collection->getName(), $documents);
         static::assertTrue(is_array($result));
         static::assertEquals(4, count($result));
 
@@ -146,8 +149,8 @@ class DocumentBasicTest extends
             static::assertEquals('test' . ($i + 1) , $doc['_key']);
         }
     }
-    
-    
+
+
     /**
      * Try to insert many documents, return new
      */
@@ -178,8 +181,8 @@ class DocumentBasicTest extends
             static::assertEquals($i + 1 , $doc['new']['value']);
         }
     }
-    
-    
+
+
     /**
      * Try to insert many documents, silent
      */
@@ -198,15 +201,15 @@ class DocumentBasicTest extends
 
         $result = $documentHandler->insertMany($collection->getName(), $documents, ['silent' => true]);
         static::assertTrue(is_array($result));
-        
+
         if (isCluster($this->connection)) {
             static::assertEquals(4, count($result));
         } else {
             static::assertEquals(0, count($result));
         }
     }
-    
-    
+
+
     /**
      * Try to insert many documents, with errors
      */
@@ -242,8 +245,8 @@ class DocumentBasicTest extends
             }
         }
     }
-    
-    
+
+
     /**
      * Try to insert many documents, with errors, silent
      */
@@ -262,7 +265,7 @@ class DocumentBasicTest extends
 
         $result = $documentHandler->insertMany($collection->getName(), $documents, ['silent' => true]);
         static::assertTrue(is_array($result));
-        
+
         if (isCluster($this->connection)) {
             static::assertEquals(4, count($result));
 
@@ -292,8 +295,8 @@ class DocumentBasicTest extends
             }
         }
     }
-    
-    
+
+
     /**
      * Try to insert many documents, large request
      */
@@ -332,7 +335,7 @@ class DocumentBasicTest extends
             }
         }
     }
-    
+
     /**
      * Try to call insertMany with 0 documents
      */
@@ -347,8 +350,8 @@ class DocumentBasicTest extends
         static::assertTrue(is_array($result));
         static::assertEquals(0, count($result));
     }
-    
-    
+
+
     /**
      * Try to create a document and overwrite it, using deprecated overwrite option
      */
@@ -364,13 +367,13 @@ class DocumentBasicTest extends
         static::assertEquals('me', $document['_key']);
         static::assertEquals('me', $document['new']['_key']);
         static::assertEquals(1, $document['new']['value']);
-        
+
         try {
             $documentHandler->insert($collection->getName(), $document, ['overwrite' => false]);
         } catch (\Exception $exception409) {
         }
         static::assertEquals(409, $exception409->getCode());
-        
+
         $document        = Document::createFromArray(['_key' => 'me', 'value' => 2]);
         $document = $documentHandler->insert($collection->getName(), $document, ['overwrite' => true, 'returnOld' => true, 'returnNew' => true]);
         static::assertEquals('me', $document['_key']);
@@ -379,14 +382,14 @@ class DocumentBasicTest extends
         static::assertEquals(1, $document['old']['value']);
         static::assertEquals(2, $document['new']['value']);
 
-        
+
         $document        = Document::createFromArray(['_key' => 'other', 'value' => 2]);
         $document = $documentHandler->insert($collection->getName(), $document, ['overwrite' => false, 'returnOld' => true, 'returnNew' => true]);
 
         static::assertEquals('other', $document['_key']);
         static::assertEquals('other', $document['new']['_key']);
         static::assertEquals(2, $document['new']['value']);
-        
+
         $document        = Document::createFromArray(['_key' => 'other', 'value' => 3]);
         $document = $documentHandler->insert($collection->getName(), $document, ['overwrite' => true, 'returnOld' => true, 'returnNew' => true]);
 
@@ -395,7 +398,7 @@ class DocumentBasicTest extends
         static::assertEquals(2, $document['old']['value']);
         static::assertEquals('other', $document['new']['_key']);
         static::assertEquals(3, $document['new']['value']);
-        
+
         $document        = Document::createFromArray(['_key' => 'foo', 'value' => 4]);
         $document = $documentHandler->insert($collection->getName(), $document, ['overwrite' => true, 'returnOld' => true, 'returnNew' => true]);
 
@@ -403,7 +406,7 @@ class DocumentBasicTest extends
         static::assertEquals('foo', $document['new']['_key']);
         static::assertEquals(4, $document['new']['value']);
     }
-    
+
     /**
      * Try to create a document and overwrite it, using overwriteMode option
      */
@@ -426,22 +429,22 @@ class DocumentBasicTest extends
         } catch (\Exception $exception409) {
         }
         static::assertEquals(409, $exception409->getCode());
-        
+
         $document        = Document::createFromArray(['_key' => 'other-no-conflict', 'value' => 1]);
         $document = $documentHandler->insert($collection->getName(), $document, ['overwriteMode' => 'conflict']);
 
         static::assertEquals($collection->getName() . '/other-no-conflict', $document);
 
 
-        // ignore mode        
+        // ignore mode
         $document        = Document::createFromArray(['_key' => 'me', 'value' => 2]);
         $document = $documentHandler->insert($collection->getName(), $document, ['overwriteMode' => 'ignore', 'returnOld' => true, 'returnNew' => true]);
 
         static::assertEquals('me', $document['_key']);
         static::assertFalse(isset($document['_new']));
         static::assertFalse(isset($document['_old']));
-        
-        
+
+
         $document        = Document::createFromArray(['_key' => 'yet-another', 'value' => 3]);
         $document = $documentHandler->insert($collection->getName(), $document, ['overwriteMode' => 'ignore', 'returnOld' => true, 'returnNew' => true]);
 
@@ -449,8 +452,8 @@ class DocumentBasicTest extends
         static::assertEquals('yet-another', $document['new']['_key']);
         static::assertEquals(3, $document['new']['value']);
         static::assertFalse(isset($document['_old']));
-        
-        
+
+
         $document        = Document::createFromArray(['_key' => 'yet-another', 'value' => 4]);
         $document = $documentHandler->insert($collection->getName(), $document, ['overwriteMode' => 'ignore']);
 
@@ -528,8 +531,8 @@ class DocumentBasicTest extends
 
         static::assertTrue($documentHandler->remove($document));
     }
-    
-    
+
+
     /**
      * Try to create and silently delete a document
      */
@@ -551,8 +554,8 @@ class DocumentBasicTest extends
 
         static::assertTrue($documentHandler->remove($document, ['silent' => true]));
     }
-    
-    
+
+
     /**
      * Try to create and silently delete a document
      */
@@ -560,12 +563,11 @@ class DocumentBasicTest extends
     {
         $connection      = $this->connection;
         $collection      = $this->collection;
-        $document        = new Document();
         $documentHandler = new DocumentHandler($connection);
 
-        $document = Document::createFromArray(['_key' => 'does-not-exist']);
+        //@todo Use static::expectException().
         try {
-            $documentHandler->removeById($collection, $document, ['silent' => true]);
+            $documentHandler->removeById($collection, 'does-not-exist', ['silent' => true]);
         } catch (\Exception $exception404) {
         }
         static::assertEquals(404, $exception404->getCode());

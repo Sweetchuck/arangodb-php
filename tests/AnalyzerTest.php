@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: AnalyzerTest.php
@@ -34,7 +37,7 @@ class AnalyzerTest extends
         $this->connection  = getConnection();
         $this->analyzerHandler = new AnalyzerHandler($this->connection);
     }
-    
+
     /**
      * Test creation of analyzer
      */
@@ -59,7 +62,7 @@ class AnalyzerTest extends
         static::assertEquals([],$analyzer->getProperties());
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
+
     /**
      * Test creation of text analyzer
      */
@@ -72,7 +75,7 @@ class AnalyzerTest extends
         static::assertEquals([ "locale" => "en.UTF-8", "stopwords" => [] ], $analyzer->getProperties());
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
+
     /**
      * Test creation of text analyzer
      */
@@ -85,8 +88,8 @@ class AnalyzerTest extends
         }
         static::assertEquals(400, $exception->getCode());
     }
-    
-    
+
+
     /**
      * Test creation of segmentation analyzer
      */
@@ -99,8 +102,8 @@ class AnalyzerTest extends
         static::assertEquals('alpha', $result['properties']['break']);
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
-    
+
+
     /**
      * Test creation of collation analyzer
      */
@@ -113,8 +116,8 @@ class AnalyzerTest extends
         static::assertEquals('en.utf-8', $result['properties']['locale']);
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
-    
+
+
     /**
      * Test creation of geopoint analyzer
      */
@@ -129,7 +132,7 @@ class AnalyzerTest extends
         static::assertEquals(['lng'], $result['properties']['longitude']);
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
+
     /**
      * Test creation of geojson analyzer
      */
@@ -155,7 +158,7 @@ class AnalyzerTest extends
         static::assertEquals([ "stopwords" => ["foo", "bar", "baz", "dead"] ], $analyzer->getProperties());
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
+
     /**
      * Test creation of delimiter analyzer
      */
@@ -168,7 +171,7 @@ class AnalyzerTest extends
         static::assertEquals([ "delimiter" => " " ], $analyzer->getProperties());
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
+
     /**
      * Test creation of norm analyzer
      */
@@ -181,7 +184,7 @@ class AnalyzerTest extends
         static::assertEquals([ "locale" => "en.UTF-8", "accent" => false, "case" => "lower" ], $analyzer->getProperties());
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
+
     /**
      * Test creation of pipeline analyzer
      */
@@ -201,7 +204,7 @@ class AnalyzerTest extends
         static::assertEquals($data, $analyzer->getProperties());
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
+
     /**
      * Test getting an analyzer
      */
@@ -216,7 +219,7 @@ class AnalyzerTest extends
         static::assertEquals([ "locale" => "en.UTF-8", "stopwords" => [] ], $analyzer->getProperties());
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
+
     /**
      * Test getting default analyzers
      */
@@ -243,7 +246,7 @@ class AnalyzerTest extends
         static::assertTrue(in_array('text_fr', $found));
         static::assertTrue(in_array('text_zh', $found));
     }
-    
+
     /**
      * Test getting all analyzers
      */
@@ -251,7 +254,7 @@ class AnalyzerTest extends
     {
         $analyzer = new Analyzer('Analyzer1' . '_' . static::$testsTimestamp, 'identity');
         $this->analyzerHandler->create($analyzer);
-        
+
         $analyzer = new Analyzer('Analyzer2' . '_' . static::$testsTimestamp, 'text', [ "locale" => "en.UTF-8", "stopwords" => [] ]);
         $this->analyzerHandler->create($analyzer);
 
@@ -270,7 +273,7 @@ class AnalyzerTest extends
         static::assertTrue(in_array('_system::Analyzer1' . '_' . static::$testsTimestamp, $found));
         static::assertTrue(in_array('_system::Analyzer2' . '_' . static::$testsTimestamp, $found));
     }
-    
+
     /**
      * Test getting a non-existing analyzer
      */
@@ -282,7 +285,7 @@ class AnalyzerTest extends
         }
         static::assertEquals(404, $exception->getCode());
     }
-    
+
     /**
      * Test analyzer properties
      */
@@ -300,21 +303,21 @@ class AnalyzerTest extends
         static::assertEquals('identity', $result['type']);
         static::assertEquals([], $analyzer->getProperties());
         static::assertEquals([], $analyzer->getFeatures());
-        
+
         $analyzer = new Analyzer('Analyzer2' . '_' . static::$testsTimestamp, 'text', [ "locale" => "en.UTF-8", "stopwords" => [] ]);
         $result = $this->analyzerHandler->create($analyzer);
         static::assertEquals('Analyzer2' . '_' . static::$testsTimestamp, $result['name']);
         static::assertEquals('text', $result['type']);
         static::assertEquals([ "locale" => "en.UTF-8", "stopwords" => [] ], $analyzer->getProperties());
         static::assertEquals([], $analyzer->getFeatures());
-        
+
         $result = $this->analyzerHandler->properties($analyzer);
         static::assertEquals('_system::Analyzer2' . '_' . static::$testsTimestamp, $result['name']);
         static::assertEquals('text', $result['type']);
         static::assertEquals([ "locale" => "en.UTF-8", "stopwords" => [] ], $analyzer->getProperties());
         static::assertEquals([], $analyzer->getFeatures());
     }
-    
+
     /**
      * Test drop analyzer
      */
@@ -325,7 +328,7 @@ class AnalyzerTest extends
         $result = $this->analyzerHandler->drop('Analyzer1' . '_' . static::$testsTimestamp);
         static::assertTrue($result);
     }
-    
+
     /**
      * Test drop non-existing analyzer
      */
@@ -337,7 +340,7 @@ class AnalyzerTest extends
         }
         static::assertEquals(404, $exception->getCode());
     }
-    
+
     public function tearDown(): void
     {
         $this->analyzerHandler = new AnalyzerHandler($this->connection);

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: ViewTest.php
@@ -56,7 +59,7 @@ class ViewTest extends
         static::assertEquals('View1' . '_' . static::$testsTimestamp, $result['name']);
         static::assertEquals('arangosearch', $result['type']);
     }
-    
+
     /**
      * Test getting a view
      */
@@ -69,7 +72,7 @@ class ViewTest extends
         static::assertEquals('View1' . '_' . static::$testsTimestamp, $result->getName());
         static::assertEquals('arangosearch', $result->getType());
     }
-    
+
     /**
      * Test getting a non-existing view
      */
@@ -81,7 +84,7 @@ class ViewTest extends
         }
         static::assertEquals(404, $exception->getCode());
     }
-    
+
     /**
      * Test view properties
      */
@@ -95,8 +98,8 @@ class ViewTest extends
         $result = $this->viewHandler->properties($view);
         static::assertEquals([], $result['links']);
     }
-    
-    
+
+
     /**
      * Test set view properties
      */
@@ -117,7 +120,7 @@ class ViewTest extends
         static::assertTrue($result['links']['_graphs']['includeAllFields']);
         static::assertEquals([], $result['links']['_graphs']['fields']);
     }
-    
+
     /**
      * Test drop view
      */
@@ -128,7 +131,7 @@ class ViewTest extends
         $result = $this->viewHandler->drop('View1' . '_' . static::$testsTimestamp);
         static::assertTrue($result);
     }
-    
+
     /**
      * Test drop non-existing view
      */
@@ -140,7 +143,7 @@ class ViewTest extends
         }
         static::assertEquals(404, $exception->getCode());
     }
-    
+
     /**
      * Test rename view
      */
@@ -156,7 +159,7 @@ class ViewTest extends
         $result = $this->viewHandler->rename('View1' . '_' . static::$testsTimestamp, 'View2' . '_' . static::$testsTimestamp);
         static::assertTrue($result);
     }
-    
+
     /**
      * Test rename a non-existing view
      */

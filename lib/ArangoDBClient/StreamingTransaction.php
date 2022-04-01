@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: streaming transaction
  *
@@ -88,7 +90,7 @@ class StreamingTransaction extends TransactionBase
         }
         return $this->_collections[$name];
     }
-    
+
     /**
      * Get the transaction's id
      *
@@ -114,11 +116,11 @@ class StreamingTransaction extends TransactionBase
 
         if (is_numeric($id)) {
           $id = (string) $id;
-        } 
+        }
         $this->_id = $id;
     }
-    
-    
+
+
     /**
      * Executes an AQL query inside the transaction
      *

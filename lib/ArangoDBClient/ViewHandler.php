@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: view handler
  *
@@ -96,7 +98,7 @@ class ViewHandler extends Handler
 
         return $result->getJson();
     }
-    
+
     /**
      * Set a view's properties<br><br>
      *
@@ -132,7 +134,7 @@ class ViewHandler extends Handler
      * @return bool - always true, will throw if there is an error
      * @since 3.4
      */
-    public function drop($view) 
+    public function drop($view)
     {
         if ($view instanceof View) {
             $view = $view->getName();
@@ -143,7 +145,7 @@ class ViewHandler extends Handler
 
         return true;
     }
-    
+
     /**
      * Rename a view
      *

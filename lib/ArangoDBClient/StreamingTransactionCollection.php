@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: streaming transaction collection
  *
@@ -16,7 +18,7 @@ namespace ArangoDBClient;
  * @package ArangoDBClient
  * @since   3.5
  */
-class StreamingTransactionCollection extends Collection 
+class StreamingTransactionCollection extends Collection
 {
     /**
      * The transaction - assigned on construction
@@ -55,7 +57,7 @@ class StreamingTransactionCollection extends Collection
       $this->_name       = $name;
       $this->_mode       = $mode;
     }
-    
+
     /**
      * Return the name of the collection
      *
@@ -67,7 +69,7 @@ class StreamingTransactionCollection extends Collection
     {
         return $this->_name;
     }
-    
+
     /**
      * Return the name of the collection
      *
@@ -77,7 +79,7 @@ class StreamingTransactionCollection extends Collection
     {
         return $this->_name;
     }
-    
+
     /**
      * Return the lock mode of the collection
      *
@@ -96,7 +98,7 @@ class StreamingTransactionCollection extends Collection
     public function getTrxId()
     {
        return $this->_trx->getId();
-    } 
+    }
 }
 
 class_alias(Transaction::class, '\triagens\ArangoDb\StreamingTransactionCollection');

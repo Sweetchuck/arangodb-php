@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: HTTP response
  *
@@ -73,7 +75,7 @@ class HttpResponse
      * HTTP location header
      */
     const HEADER_LOCATION = 'location';
-    
+
     /**
      * HTTP leader endpoint header, used in failover
      */
@@ -169,7 +171,7 @@ class HttpResponse
     {
         return $this->getHeader(self::HEADER_LOCATION);
     }
-    
+
     /**
      * Return the leader location HTTP header of the response
      *

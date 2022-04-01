@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: graphs
  *
@@ -47,37 +49,37 @@ class Graph extends Document
      * Graph orphan collections
      */
     const ENTRY_ORPHAN_COLLECTIONS = 'orphanCollections';
-    
+
     /**
      * Smart graph flag
      */
     const ENTRY_IS_SMART = 'isSmart';
-    
+
     /**
      * Disjoint Smart graph flag
      */
     const ENTRY_IS_DISJOINT = 'isDisjoint';
-    
+
     /**
      * SmartGraph attribute name
      */
     const ENTRY_SMART_GRAPH_ATTRIBUTE = 'smartGraphAttribute';
-    
+
     /**
      * SmartGraph satellites entry
      */
     const ENTRY_SATELLITES = 'satellites';
-    
+
     /**
      * Entry for number of shards (cluster-only)
      */
     const ENTRY_NUMBER_OF_SHARDS = 'numberOfShards';
-    
+
     /**
      * Entry for replication factor (cluster-only)
      */
     const ENTRY_REPLICATION_FACTOR = 'replicationFactor';
-    
+
 
     /**
      * The list of edge definitions defining the graph.
@@ -93,7 +95,7 @@ class Graph extends Document
      * @var array list of orphan collections.
      */
     protected $_orphanCollections = [];
-    
+
     /**
       * The list of satellite collections (SmartGraph only)
      *
@@ -107,7 +109,7 @@ class Graph extends Document
      * @var bool whether or not the graph is a SmartGraph
      */
     protected $_isSmart = false;
-    
+
     /**
      * Disjoint SmartGraph flag
      *
@@ -121,14 +123,14 @@ class Graph extends Document
      * @var string smart graph attribute name
      */
     protected $_smartGraphAttribute = null;
-    
+
     /**
      * Cluster-graph number of shards
      *
      * @var mixed number of shards (either null or a number)
      */
     protected $_numberOfShards = 1;
-    
+
     /**
      * Cluster-graph replication factor
      *
@@ -211,8 +213,8 @@ class Graph extends Document
     {
         return $this->_orphanCollections;
     }
-    
-    
+
+
     /**
      * Adds a satellite collection to the graph.
      *
@@ -235,7 +237,7 @@ class Graph extends Document
     {
       return $this->_satellites;
     }
-    
+
     /**
      * Set the smart graph attribute
      *
@@ -260,7 +262,7 @@ class Graph extends Document
     {
         return $this->_smartGraphAttribute;
     }
-    
+
     /**
      * Set the smartness of the graph.
      *
@@ -285,7 +287,7 @@ class Graph extends Document
     {
         return $this->_isSmart;
     }
-    
+
     /**
      * Set the disjointness of the graph.
      *
@@ -310,7 +312,7 @@ class Graph extends Document
     {
         return $this->_isDisjoint;
     }
-    
+
     /**
      * Set the number of shards
      *
@@ -335,8 +337,8 @@ class Graph extends Document
     {
         return $this->_numberOfShards;
     }
-    
-    
+
+
     /**
      * Set the replication factor
      *

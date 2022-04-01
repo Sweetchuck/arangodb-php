@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: single collection
  *
@@ -68,21 +70,21 @@ class Collection
      * @var mixed - numberOfShards value
      */
     private $_numberOfShards;
-    
+
     /**
      * The replicationFactor value (might be NULL for new collections)
      *
      * @var mixed - replicationFactor value
      */
     private $_replicationFactor;
-    
+
     /**
      * The write concern for writes to be considered successful
      *
      * @var mixed - write concern value
      */
     private $_writeConcern;
-    
+
     /**
      * The shardingStrategy value (might be NULL for new collections)
      *
@@ -96,7 +98,7 @@ class Collection
      * @var array - shardKeys value
      */
     private $_shardKeys;
-    
+
     /**
      * The smartJoinAttribute value (might be NULL for new collections)
      *
@@ -117,7 +119,7 @@ class Collection
      * @var array - keyOptions value
      */
     private $_keyOptions;
-    
+
     /**
      * The collection schema value
      *
@@ -154,7 +156,7 @@ class Collection
      * Collection 'keyOptions' index
      */
     const ENTRY_KEY_OPTIONS = 'keyOptions';
-    
+
     /**
      * Collection 'schema' index
      */
@@ -174,32 +176,32 @@ class Collection
      * Collection 'numberOfShards' index
      */
     const ENTRY_NUMBER_OF_SHARDS = 'numberOfShards';
-    
+
     /**
      * Collection 'replicationFactor' index
      */
     const ENTRY_REPLICATION_FACTOR = 'replicationFactor';
-    
+
     /**
      * Collection 'writeConcern' index
      */
     const ENTRY_WRITE_CONCERN = 'writeConcern';
-    
+
     /**
      * Collection 'sharding' index
      */
     const ENTRY_SHARDING = 'sharding';
-    
+
     /**
      * Collection 'shardingStrategy' index
      */
     const ENTRY_SHARDING_STRATEGY = 'shardingStrategy';
-    
+
     /**
      * Collection 'shardKeys' index
      */
     const ENTRY_SHARD_KEYS = 'shardKeys';
-    
+
     /**
      * Collection 'smartJoinAttribute' index
      */
@@ -365,7 +367,7 @@ class Collection
             self::ENTRY_KEY_OPTIONS  => $this->_keyOptions,
             self::ENTRY_SCHEMA       => $this->_schema
         ];
-        
+
         if (null !== $this->_distributeShardsLike) {
             $result[self::ENTRY_DISTRIBUTE_SHARDS_LIKE] = $this->_distributeShardsLike;
         }
@@ -373,27 +375,27 @@ class Collection
         if (null !== $this->_numberOfShards) {
             $result[self::ENTRY_NUMBER_OF_SHARDS] = $this->_numberOfShards;
         }
-        
+
         if (null !== $this->_replicationFactor) {
             $result[self::ENTRY_REPLICATION_FACTOR] = $this->_replicationFactor;
         }
-        
+
         if (null !== $this->_writeConcern) {
           $result[self::ENTRY_WRITE_CONCERN] = $this->_writeConcern;
         }
-        
+
         if (null !== $this->_shardingStrategy) {
             $result[self::ENTRY_SHARDING_STRATEGY] = $this->_shardingStrategy;
         }
-        
+
         if (is_array($this->_shardKeys)) {
             $result[self::ENTRY_SHARD_KEYS] = $this->_shardKeys;
         }
-        
+
         if (null !== $this->_smartJoinAttribute) {
             $result[self::ENTRY_SMART_JOIN_ATTRIBUTE] = $this->_smartJoinAttribute;
         }
-        
+
         $result[self::ENTRY_SCHEMA] = $this->_schema;
 
         return $result;
@@ -454,12 +456,12 @@ class Collection
             $this->setKeyOptions($value);
             return;
         }
-        
+
         if ($key === self::ENTRY_SCHEMA) {
             $this->setSchema($value);
             return;
         }
-        
+
         if ($key === self::ENTRY_DISTRIBUTE_SHARDS_LIKE) {
             $this->setDistributeShardsLike($value);
             return;
@@ -469,27 +471,27 @@ class Collection
             $this->setNumberOfShards($value);
             return;
         }
-        
+
         if ($key === self::ENTRY_REPLICATION_FACTOR) {
             $this->setReplicationFactor($value);
             return;
         }
-        
+
         if ($key === self::ENTRY_WRITE_CONCERN) {
             $this->setWriteConcern($value);
             return;
         }
-        
+
         if ($key === self::ENTRY_SHARDING_STRATEGY) {
             $this->setShardingStrategy($value);
             return;
         }
-        
+
         if ($key === self::ENTRY_SHARD_KEYS) {
             $this->setShardKeys($value);
             return;
         }
-        
+
         if ($key === self::ENTRY_SMART_JOIN_ATTRIBUTE) {
             $this->setSmartJoinAttribute($value);
             return;
@@ -562,7 +564,7 @@ class Collection
         return $this->_name;
     }
 
-    
+
     /**
       * Set the collection schema
      *
@@ -791,8 +793,8 @@ class Collection
     {
         return $this->_numberOfShards;
     }
-    
-    
+
+
     /**
      * Set the replicationFactor value
      *
@@ -815,7 +817,7 @@ class Collection
     {
         return $this->_replicationFactor;
     }
-    
+
     /**
      * Set the write concern value
      *
@@ -828,7 +830,7 @@ class Collection
         assert(null === $value || is_numeric($value));
         $this->_writeConcern = $value;
     }
-    
+
     /**
      * Set the write concern value
      *
@@ -851,18 +853,18 @@ class Collection
     {
         return $this->_writeConcern;
     }
-    
+
     /**
      * Get the write concern value (if already known). this is an alias only
      *
      * @deprecated use getWriteConcern() instead
      * @return mixed - write concern value
      */
-    public function getMinReplicationFactor() 
+    public function getMinReplicationFactor()
     {
         return $this->getWriteConcern();
     }
-    
+
     /**
      * Set the shardingStrategy value
      *
@@ -884,7 +886,7 @@ class Collection
     {
         return $this->_shardingStrategy;
     }
-    
+
     /**
      * Set the shardKeys value
      *
@@ -907,7 +909,7 @@ class Collection
     {
         return $this->_shardKeys;
     }
-    
+
     /**
      * Set the smart join attribute value
      *

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: ConnectionTest.php
@@ -44,7 +47,7 @@ class ConnectionTest extends
             //Silence the exception
         }
     }
-    
+
     /**
      * Test if Connection instance can be initialized
      */
@@ -65,7 +68,7 @@ class ConnectionTest extends
         ]);
         static::assertEquals('tcp://1.1.1.1:9999', $connection->getCurrentEndpoint());
         static::assertFalse($connection->test());
-        
+
         $connection = new Connection([
             ConnectionOptions::OPTION_ENDPOINT => 'ssl://1.1.1.1:9999',
             ConnectionOptions::OPTION_TIMEOUT => 1
@@ -73,8 +76,8 @@ class ConnectionTest extends
         static::assertEquals('ssl://1.1.1.1:9999', $connection->getCurrentEndpoint());
         static::assertFalse($connection->test());
     }
-    
-    
+
+
     /**
      * Test if Connection works
      */
@@ -83,14 +86,14 @@ class ConnectionTest extends
         $connection = getConnection();
         $ep = $connection->getOption(ConnectionOptions::OPTION_ENDPOINT)[0];
         static::assertEquals($ep, $connection->getCurrentEndpoint());
-        
+
         // test the connection
         static::assertTrue($connection->test());
         // endpoint should not change
         static::assertEquals($ep, $connection->getCurrentEndpoint());
     }
 
-    
+
     /**
      * Test endpoint and port
      */
@@ -100,37 +103,37 @@ class ConnectionTest extends
         $co   = new ConnectionOptions($options);
         static::assertEquals([ 'tcp://127.0.0.10:9242' ], $co[ConnectionOptions::OPTION_ENDPOINT]);
         static::assertEquals(9242, $co[ConnectionOptions::OPTION_PORT]);
-        
+
         $options = [ ConnectionOptions::OPTION_ENDPOINT => 'tcp://192.168.9.9:433' ];
         $co   = new ConnectionOptions($options);
         static::assertEquals([ 'tcp://192.168.9.9:433' ], $co[ConnectionOptions::OPTION_ENDPOINT]);
         static::assertEquals(433, $co[ConnectionOptions::OPTION_PORT]);
-        
+
         $options = [ ConnectionOptions::OPTION_ENDPOINT => 'tcp://myserver.example.com:432' ];
         $co   = new ConnectionOptions($options);
         static::assertEquals([ 'tcp://myserver.example.com:432' ], $co[ConnectionOptions::OPTION_ENDPOINT]);
         static::assertEquals(432, $co[ConnectionOptions::OPTION_PORT]);
-        
+
         $options = [ ConnectionOptions::OPTION_ENDPOINT => [ 'tcp://master:8529' ] ];
         $co   = new ConnectionOptions($options);
         static::assertEquals([ 'tcp://master:8529' ], $co[ConnectionOptions::OPTION_ENDPOINT]);
         static::assertEquals(8529, $co[ConnectionOptions::OPTION_PORT]);
-        
+
         $options = [ ConnectionOptions::OPTION_ENDPOINT => [ 'tcp://master:1234' ] ];
         $co   = new ConnectionOptions($options);
         static::assertEquals([ 'tcp://master:1234' ], $co[ConnectionOptions::OPTION_ENDPOINT]);
         static::assertEquals(1234, $co[ConnectionOptions::OPTION_PORT]);
-        
+
         $options = [ ConnectionOptions::OPTION_ENDPOINT => [ 'tcp://master:8529', 'tcp://slave:1235' ] ];
         $co   = new ConnectionOptions($options);
         static::assertEquals([ 'tcp://master:8529', 'tcp://slave:1235' ], $co[ConnectionOptions::OPTION_ENDPOINT]);
         static::assertEquals(8529, $co[ConnectionOptions::OPTION_PORT]);
-        
+
         $options = [ ConnectionOptions::OPTION_ENDPOINT => [ 'tcp://master:8529', 'tcp://slave:8529', 'tcp://blackhole:8529' ] ];
         $co   = new ConnectionOptions($options);
         static::assertEquals([ 'tcp://master:8529', 'tcp://slave:8529', 'tcp://blackhole:8529' ], $co[ConnectionOptions::OPTION_ENDPOINT]);
         static::assertEquals(8529, $co[ConnectionOptions::OPTION_PORT]);
-       
+
         $excepted = false;
         try {
             $options = [ ConnectionOptions::OPTION_ENDPOINT => 'tcp://server.com' ];
@@ -152,14 +155,14 @@ class ConnectionTest extends
         $response   = $connection->get('/_admin/statistics');
         static::assertEquals(200, $response->getHttpCode(), 'Did not return http code 200');
     }
-    
+
     /**
      * Test get options
      */
     public function testGetOptions()
     {
         $connection = getConnection();
-        
+
         $old = $connection->getOption(ConnectionOptions::OPTION_TIMEOUT);
         $connection->setOption(ConnectionOptions::OPTION_TIMEOUT, 12);
         $value = $connection->getOption(ConnectionOptions::OPTION_TIMEOUT);
@@ -199,7 +202,7 @@ class ConnectionTest extends
         $value = $connection->getOption(ConnectionOptions::OPTION_CONNECTION);
         static::assertEquals('Keep-Alive', $value);
 
-        // reconnect 
+        // reconnect
         $connection->setOption(ConnectionOptions::OPTION_RECONNECT, true);
         $value = $connection->getOption(ConnectionOptions::OPTION_RECONNECT);
         static::assertTrue($value);
@@ -208,14 +211,14 @@ class ConnectionTest extends
         $value = $connection->getOption(ConnectionOptions::OPTION_RECONNECT);
         static::assertFalse($value);
     }
-    
+
     /**
      * Test timeout options handling
      */
     public function testTimeoutOptions()
     {
         $connection = getConnection();
-        
+
         $oldTimeout = $connection->getOption(ConnectionOptions::OPTION_TIMEOUT);
         $oldConnectTimeout = $connection->getOption(ConnectionOptions::OPTION_CONNECT_TIMEOUT);
         $oldRequestTimeout = $connection->getOption(ConnectionOptions::OPTION_REQUEST_TIMEOUT);
@@ -227,16 +230,16 @@ class ConnectionTest extends
         $newTimeout = $connection->getOption(ConnectionOptions::OPTION_TIMEOUT);
         $newConnectTimeout = $connection->getOption(ConnectionOptions::OPTION_CONNECT_TIMEOUT);
         $newRequestTimeout = $connection->getOption(ConnectionOptions::OPTION_REQUEST_TIMEOUT);
-        
+
         static::assertEquals(12, $newTimeout);
         static::assertEquals(12, $newConnectTimeout);
         static::assertEquals(12, $newRequestTimeout);
-        
+
         $connection->setOption(ConnectionOptions::OPTION_TIMEOUT, 42);
         $newTimeout = $connection->getOption(ConnectionOptions::OPTION_TIMEOUT);
         $newConnectTimeout = $connection->getOption(ConnectionOptions::OPTION_CONNECT_TIMEOUT);
         $newRequestTimeout = $connection->getOption(ConnectionOptions::OPTION_REQUEST_TIMEOUT);
-        
+
         static::assertEquals(42, $newTimeout);
         static::assertEquals(42, $newConnectTimeout);
         static::assertEquals(42, $newRequestTimeout);
@@ -251,30 +254,30 @@ class ConnectionTest extends
 
         $newConnectTimeout = $connection->getOption(ConnectionOptions::OPTION_CONNECT_TIMEOUT);
         $newRequestTimeout = $connection->getOption(ConnectionOptions::OPTION_REQUEST_TIMEOUT);
-        
+
         static::assertEquals(1.5, $newConnectTimeout);
         static::assertEquals(42, $newRequestTimeout);
-        
+
         $connection->setOption(ConnectionOptions::OPTION_REQUEST_TIMEOUT, 24.5);
         $newConnectTimeout = $connection->getOption(ConnectionOptions::OPTION_CONNECT_TIMEOUT);
         $newRequestTimeout = $connection->getOption(ConnectionOptions::OPTION_REQUEST_TIMEOUT);
-        
+
         try {
             $connection->getOption(ConnectionOptions::OPTION_TIMEOUT);
             static::assertFalse(true);
         } catch (\Exception $e) {
             // OPTION_TIMEOUT is gone once OPTION_REQUEST_TIMEOUT is used
         }
-        
+
         static::assertEquals(1.5, $newConnectTimeout);
         static::assertEquals(24.5, $newRequestTimeout);
-        
-        
+
+
         $connection->setOption(ConnectionOptions::OPTION_TIMEOUT, 8);
         $newTimeout = $connection->getOption(ConnectionOptions::OPTION_TIMEOUT);
         $newConnectTimeout = $connection->getOption(ConnectionOptions::OPTION_CONNECT_TIMEOUT);
         $newRequestTimeout = $connection->getOption(ConnectionOptions::OPTION_REQUEST_TIMEOUT);
-        
+
         static::assertEquals(8, $newTimeout);
         static::assertEquals(8, $newConnectTimeout);
         static::assertEquals(8, $newRequestTimeout);
@@ -405,7 +408,7 @@ class ConnectionTest extends
             throw $exception;
         }
     }
-    
+
     /**
      * Test timeout, no exception
      */
@@ -421,7 +424,7 @@ class ConnectionTest extends
         $cursor = $statement->execute();
         static::assertCount(1, $cursor->getAll());
     }
-    
+
     /**
      * Test connect timeout, no exception
      */
@@ -437,7 +440,7 @@ class ConnectionTest extends
         $cursor = $statement->execute();
         static::assertCount(1, $cursor->getAll());
     }
-    
+
     /**
      * Test request timeout exception
      */
@@ -459,7 +462,7 @@ class ConnectionTest extends
             throw $exception;
         }
     }
-    
+
     /**
      * Test request timeout, no exception
      */
@@ -525,8 +528,8 @@ class ConnectionTest extends
         $adminHandler->getServerVersion();
         static::assertTrue($done);
     }
-    
-    
+
+
     /**
      * Test the authentication
      */

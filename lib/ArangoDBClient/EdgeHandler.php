@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: document handler
  *
@@ -212,7 +214,7 @@ class EdgeHandler extends DocumentHandler
         ];
         $url      = UrlHelper::appendParamsUrl(Urls::URL_EDGES . '/' . urlencode($collection), $params);
         $response = $this->getConnection()->get($url);
-        
+
         if ($batchPart = $response->getBatchPart()) {
             return $batchPart;
         }

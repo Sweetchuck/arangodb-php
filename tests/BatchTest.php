@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: BatchTest.php
@@ -462,7 +465,7 @@ class BatchTest extends
         $part = $this->collectionHandler->removeByKeys($collection->getName(), [ $id1, $id2 ]);
 
         static::assertInstanceOf(BatchPart::class, $part);
-        
+
         $batch->process();
 
         $result = $batch->getPart(0)->getProcessedResponse();
@@ -475,10 +478,10 @@ class BatchTest extends
             $existing++;
         } catch(Exception $e) {}
         try {
-            $resultingDocument2 = $documentHandler->get($collection->getName(), $documentId2);        
+            $resultingDocument2 = $documentHandler->get($collection->getName(), $documentId2);
             $existing++;
         } catch(Exception $e) {}
-        
+
         static::assertSame(0, $existing, 'Batch removeByKeys did not remove all documents!');
     }
 
@@ -498,22 +501,22 @@ class BatchTest extends
         foreach($cursor->getAll() as $doc) {
             $documentIds[$doc->getId()] = $doc;
         }
-        
+
         $batch = new Batch($this->connection);
         $batch->startCapture();
 
         $part = $this->collectionHandler->all($collection->getName());
 
         static::assertInstanceOf(BatchPart::class, $part);
-        
+
         $batch->process();
 
         $cursor = $batch->getPart(0)->getProcessedResponse();
         $results = $cursor->getAll();
-        
+
         static::assertInstanceOf(Cursor::class, $cursor);
         static::assertSame(count($documentIds), count($results));
-        
+
         foreach($results as $result) {
             static::assertTrue(isset($documentIds[$result->getId()]));
             static::assertEquals($documentIds[$result->getId()], $result);
@@ -532,7 +535,7 @@ class BatchTest extends
         $documentHandler->save($collection->getName(), $document2);
 
         // first verify the standard behaviour of firstExample ...
-        
+
         $document = $this->collectionHandler->firstExample($collection->getName(), ['foo'=>'bar']);
 
         static::assertSame($document1->getHandle(), $document->getHandle());
@@ -554,7 +557,7 @@ class BatchTest extends
 
         static::assertInstanceOf(BatchPart::class, $part1);
         static::assertInstanceOf(BatchPart::class, $part2);
-        
+
         $batch->process();
 
         $document = $part1->getProcessedResponse();
@@ -579,7 +582,7 @@ class BatchTest extends
         $documentHandler->save($collection->getName(), $document3);
 
         // first verify the standard behaviour of byExample ...
-        
+
         $all1 = $this->collectionHandler->byExample($collection->getName(), ['foo'=>'baz'])->getAll();
         $all2 = $this->collectionHandler->byExample($collection->getName(), ['you'=>'me'])->getAll();
         $all3 = $this->collectionHandler->byExample($collection->getName(), ['foo'=>'none'])->getAll();
@@ -601,7 +604,7 @@ class BatchTest extends
         static::assertInstanceOf(BatchPart::class, $part1);
         static::assertInstanceOf(BatchPart::class, $part2);
         static::assertInstanceOf(BatchPart::class, $part3);
-        
+
         $batch->process();
 
         $all1 = $part1->getProcessedResponse()->getAll();

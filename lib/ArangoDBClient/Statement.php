@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: statement
  *
@@ -119,13 +121,13 @@ class Statement
 
     /**
      * Whether or not the query results should be build up dynamically and streamed to the
-     * client application whenever available, or build up entirely on the server first and 
+     * client application whenever available, or build up entirely on the server first and
      * then streamed incrementally (false)
      *
      * @var bool
      */
     private $_stream;
-    
+
     /**
      * Number of seconds the cursor will be kept on the server if the statement result
      * is bigger than the initial batch size. The default value is a server-defined
@@ -134,22 +136,22 @@ class Statement
      * @var double
      */
     private $_ttl;
-    
+
     /**
-     * Number of seconds after which the query will automatically be terminated on the 
+     * Number of seconds after which the query will automatically be terminated on the
      * server
      *
      * @var double
      */
     private $_maxRuntime;
-    
+
     /**
      * Whether or not the cache should abort when it encounters a warning
      *
      * @var bool
      */
     private $_failOnWarning = false;
-    
+
     /**
      * Whether or not the query should return profiling information
      *
@@ -164,14 +166,14 @@ class Statement
      * @var int
      */
     private $_memoryLimit = 0;
-    
+
     /**
       * Whether or not the query should populate the RocksDB block cache while reading data
      *
      * @var bool
      */
     private $_fillBlockCache = null;
-    
+
     /**
      * transaction id (used internally)
      *
@@ -210,22 +212,22 @@ class Statement
      * Bind variables index
      */
     const ENTRY_BINDVARS = 'bindVars';
-    
+
     /**
      * Fail on warning flag
      */
     const ENTRY_FAIL_ON_WARNING = 'failOnWarning';
-    
+
     /**
      * Profile flag
      */
     const ENTRY_PROFILE = 'profile';
-    
+
     /**
      * Memory limit threshold for query
      */
     const ENTRY_MEMORY_LIMIT = 'memoryLimit';
-    
+
     /**
      * Whether or not the query should fill the block cache while reading
      */
@@ -235,23 +237,23 @@ class Statement
      * Full count option index
      */
     const FULL_COUNT = 'fullCount';
-    
+
     /**
      * Stream attribute
      */
     const ENTRY_STREAM = 'stream';
-    
+
     /**
      * TTL attribute
      */
     const ENTRY_TTL = 'ttl';
-    
+
     /**
      * maxRuntime attribute
      */
     const ENTRY_MAX_RUNTIME = 'maxRuntime';
 
-    /** 
+    /**
      * transaction attribute (used internally)
      */
     const ENTRY_TRANSACTION = 'transaction';
@@ -284,7 +286,7 @@ class Statement
         if (isset($data[self::ENTRY_QUERY])) {
             $this->setQuery($data[self::ENTRY_QUERY]);
         }
-        
+
         if (isset($data[self::ENTRY_STREAM])) {
             $this->setStream($data[self::ENTRY_STREAM]);
         }
@@ -296,11 +298,11 @@ class Statement
         if (isset($data[self::ENTRY_BATCHSIZE])) {
             $this->setBatchSize($data[self::ENTRY_BATCHSIZE]);
         }
-        
+
         if (isset($data[self::ENTRY_TTL])) {
             $this->setTtl($data[self::ENTRY_TTL]);
         }
-        
+
         if (isset($data[self::ENTRY_MAX_RUNTIME])) {
             $this->setMaxRuntime($data[self::ENTRY_MAX_RUNTIME]);
         }
@@ -312,11 +314,11 @@ class Statement
         if (isset($data[self::FULL_COUNT])) {
             $this->_fullCount = (bool) $data[Cursor::FULL_COUNT];
         }
-        
+
         if (isset($data[Cursor::ENTRY_SANITIZE])) {
             $this->_sanitize = (bool) $data[Cursor::ENTRY_SANITIZE];
         }
-        
+
         if (isset($data[self::ENTRY_RETRIES])) {
             $this->_retries = (int) $data[self::ENTRY_RETRIES];
         }
@@ -328,19 +330,19 @@ class Statement
         if (isset($data[Cursor::ENTRY_CACHE])) {
             $this->_cache = (bool) $data[Cursor::ENTRY_CACHE];
         }
-        
+
         if (isset($data[self::ENTRY_FAIL_ON_WARNING])) {
             $this->_failOnWarning = (bool) $data[self::ENTRY_FAIL_ON_WARNING];
         }
-        
+
         if (isset($data[self::ENTRY_PROFILE])) {
             $this->_profile = (bool) $data[self::ENTRY_PROFILE];
         }
-        
+
         if (isset($data[self::ENTRY_MEMORY_LIMIT])) {
             $this->_memoryLimit = (int) $data[self::ENTRY_MEMORY_LIMIT];
         }
-        
+
         if (isset($data[self::ENTRY_FILL_BLOCK_CACHE])) {
             $this->_fillBlockCache = (bool) $data[self::ENTRY_FILL_BLOCK_CACHE];
         }
@@ -569,7 +571,7 @@ class Statement
     {
         $this->_fullCount = (bool) $value;
     }
-    
+
     /**
      * Get the full count option value of the statement
      *
@@ -579,7 +581,7 @@ class Statement
     {
         return $this->_fullCount;
     }
-    
+
     /**
      * Set the ttl option for the statement
      *
@@ -601,7 +603,7 @@ class Statement
     {
         return $this->_ttl;
     }
-    
+
     /**
      * Set the max runtime option for the statement
      *
@@ -623,7 +625,7 @@ class Statement
     {
         return $this->_maxRuntime;
     }
-    
+
     /**
      * Set the streaming option for the statement
      *
@@ -635,7 +637,7 @@ class Statement
     {
         $this->_stream = (bool) $value;
     }
-    
+
     /**
      * Get the streaming option value of the statement
      *
@@ -667,7 +669,7 @@ class Statement
     {
         return $this->_cache;
     }
-     
+
     /**
      * Set whether or not the cache should abort when it encounters a warning
      *
@@ -679,7 +681,7 @@ class Statement
     {
         $this->_failOnWarning = (bool) $value;
     }
-    
+
     /**
      * Get the configured value for fail-on-warning
      *
@@ -689,7 +691,7 @@ class Statement
     {
         return $this->_failOnWarning;
     }
-    
+
     /**
      * Set whether or not query profiling should be enabled
      *
@@ -701,7 +703,7 @@ class Statement
     {
         $this->_profile = (bool) $value;
     }
-    
+
     /**
      * Get the configured value for profiling
      *
@@ -711,7 +713,7 @@ class Statement
     {
         return $this->_profile;
     }
-    
+
     /**
      * Set the approximate memory limit threshold to be used by the query on the server-side
      * (a value of 0 or less will mean the memory is not limited)
@@ -724,7 +726,7 @@ class Statement
     {
         $this->_memoryLimit = (int) $value;
     }
-    
+
     /**
      * Get the configured memory limit for the statement
      *
@@ -734,8 +736,8 @@ class Statement
     {
         return $this->_memoryLimit;
     }
-    
-    
+
+
     /**
      * Set whether or not the query should populate the block cache while reading data
      *
@@ -747,7 +749,7 @@ class Statement
     {
         $this->_fillBlockCache = (bool) $value;
     }
-    
+
     /**
      * Get the configured value for block cache filling
      *
@@ -810,31 +812,31 @@ class Statement
                 self::ENTRY_PROFILE => $this->_profile
             ]
         ];
-        
+
         if ($this->_stream !== null) {
             $data['options'][self::ENTRY_STREAM] = $this->_stream;
         }
-        
+
         if ($this->_maxRuntime !== null) {
             $data['options'][self::ENTRY_MAX_RUNTIME] = $this->_maxRuntime;
         }
-        
+
         if ($this->_fillBlockCache !== null) {
             $data['options'][self::ENTRY_FILL_BLOCK_CACHE] = $this->_fillBlockCache;
         }
-        
+
         if ($this->_ttl !== null) {
             $data[self::ENTRY_TTL] = $this->_ttl;
         }
-        
+
         if ($this->_cache !== null) {
             $data[Cursor::ENTRY_CACHE] = $this->_cache;
         }
-        
+
         if ($this->_memoryLimit > 0) {
             $data[self::ENTRY_MEMORY_LIMIT] = $this->_memoryLimit;
         }
-        
+
         if ($this->_bindVars->getCount() > 0) {
             $data[self::ENTRY_BINDVARS] = $this->_bindVars->getAll();
         }

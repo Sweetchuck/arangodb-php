@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: collection handler
  *
@@ -116,7 +118,7 @@ class CollectionHandler extends Handler
      * fields
      */
     const OPTION_FIELDS = 'fields';
-    
+
     /**
      * fieldValueTypes (zkd index only)
      */
@@ -161,7 +163,7 @@ class CollectionHandler extends Handler
      * minLength option
      */
     const OPTION_MIN_LENGTH = 'minLength';
-    
+
     /**
      * zkd index option
      */
@@ -176,17 +178,17 @@ class CollectionHandler extends Handler
      * persistent index option
      */
     const OPTION_PERSISTENT_INDEX = 'persistent';
-    
+
     /**
      * ttl index option
      */
     const OPTION_TTL_INDEX = 'ttl';
-    
+
     /**
      * expireAfter option
      */
     const OPTION_EXPIRE_AFTER = 'expireAfter';
-    
+
     /**
      * inBackground option
      */
@@ -216,12 +218,12 @@ class CollectionHandler extends Handler
      * revision option
      */
     const OPTION_REVISION = 'revision';
-    
+
     /**
      * responsible shard option
      */
     const OPTION_RESPONSIBLE_SHARD = 'responsibleShard';
-    
+
     /**
      * shards option
      */
@@ -306,15 +308,15 @@ class CollectionHandler extends Handler
         if ($collection->getNumberOfShards() !== null) {
             $params[Collection::ENTRY_NUMBER_OF_SHARDS] = $collection->getNumberOfShards();
         }
-        
+
         if ($collection->getReplicationFactor() !== null) {
             $params[Collection::ENTRY_REPLICATION_FACTOR] = $collection->getReplicationFactor();
         }
-        
+
         if ($collection->getWriteConcern() !== null) {
             $params[Collection::ENTRY_WRITE_CONCERN] = $collection->getWriteConcern();
         }
-        
+
         if ($collection->getShardingStrategy() !== null) {
             $params[Collection::ENTRY_SHARDING_STRATEGY] = $collection->getShardingStrategy();
         }
@@ -322,7 +324,7 @@ class CollectionHandler extends Handler
         if (is_array($collection->getShardKeys())) {
             $params[Collection::ENTRY_SHARD_KEYS] = $collection->getShardKeys();
         }
-        
+
         if ($collection->getSmartJoinAttribute() !== null) {
             $params[Collection::ENTRY_SMART_JOIN_ATTRIBUTE] = $collection->getSmartJoinAttribute();
         }
@@ -928,8 +930,8 @@ class CollectionHandler extends Handler
 
         return $this->createIndex($collection, $indexOptions);
     }
-    
-    
+
+
     /**
      * Create a zkd index
      *
@@ -1029,7 +1031,7 @@ class CollectionHandler extends Handler
 
         return $this->createIndex($collection, $indexOptions);
     }
-    
+
     /**
      * Create a TTL index
      *
@@ -1050,7 +1052,7 @@ class CollectionHandler extends Handler
             self::OPTION_FIELDS       => $fields,
             self::OPTION_EXPIRE_AFTER => (double) $expireAfter
         ];
-    
+
         if ($inBackground) {
             $indexOptions[self::OPTION_IN_BACKGROUND] = (bool) $inBackground;
         }
@@ -1136,8 +1138,8 @@ class CollectionHandler extends Handler
 
         return $response->getJson();
     }
-    
-    
+
+
     /**
      * Creates an index on a collection on the server
      *
@@ -1239,8 +1241,8 @@ class CollectionHandler extends Handler
 
         return true;
     }
-    
-    
+
+
     /**
      * Get the responsible shard for a document
      *
@@ -1267,8 +1269,8 @@ class CollectionHandler extends Handler
 
         return $data['shardId'];
     }
-    
-    
+
+
     /**
      * Get the shards of a collection
      *
@@ -1279,7 +1281,7 @@ class CollectionHandler extends Handler
      * @return array - array with shard ids
      * @since 3.5
      */
-    public function getShards($collection) 
+    public function getShards($collection)
     {
         $collection = $this->makeCollection($collection);
         $url        = UrlHelper::buildUrl(Urls::URL_COLLECTION, [$collection, self::OPTION_SHARDS]);
@@ -1358,11 +1360,11 @@ class CollectionHandler extends Handler
                 self::OPTION_SKIP  => null,
             ]
         );
-        
+
         $body[self::OPTION_STREAM] = true;
 
         $response = $this->getConnection()->put(Urls::URL_ALL, $this->json_encode_wrapper($body));
-        
+
         if ($batchPart = $response->getBatchPart()) {
             return $batchPart;
         }
@@ -1517,11 +1519,11 @@ class CollectionHandler extends Handler
         ];
 
         $response = $this->getConnection()->put(Urls::URL_FIRST_EXAMPLE, $this->json_encode_wrapper($data));
-        
+
         if ($batchPart = $response->getBatchPart()) {
             return $batchPart;
         }
-        
+
         $data     = $response->getJson();
 
         $options['_isNew'] = false;
@@ -1825,7 +1827,7 @@ class CollectionHandler extends Handler
         );
 
         $response = $this->getConnection()->put(Urls::URL_REMOVE_BY_KEYS, $this->json_encode_wrapper($body));
-        
+
         if ($batchPart = $response->getBatchPart()) {
             return $batchPart;
         }

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: StreamingTransactionTest.php
@@ -63,9 +66,9 @@ class StreamingTransactionTest extends
         $this->collection2 = new Collection();
         $this->collection2->setName('ArangoDB_PHP_TestSuite_TestCollection_02' . '_' . static::$testsTimestamp);
         $this->collectionHandler->create($this->collection2);
-        
+
         $adminHandler = new AdminHandler($this->connection);
-        
+
         $this->transactionHandler = new StreamingTransactionHandler($this->connection);
     }
 
@@ -75,7 +78,7 @@ class StreamingTransactionTest extends
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $status = $this->transactionHandler->getStatus($trx);
@@ -83,16 +86,16 @@ class StreamingTransactionTest extends
         static::assertEquals($trx->getId(), $status['id']);
         static::assertEquals('running', $status['status']);
 
-        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning()); 
+        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning());
         static::assertTrue(in_array($trx->getId(), $running));
     }
-    
+
     public function testCreateAndAbortTransaction()
     {
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         static::assertTrue($this->transactionHandler->abort($trx));
@@ -101,16 +104,16 @@ class StreamingTransactionTest extends
         static::assertEquals($trx->getId(), $status['id']);
         static::assertEquals('aborted', $status['status']);
 
-        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning()); 
+        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning());
         static::assertFalse(in_array($trx->getId(), $running));
     }
-    
+
     public function testCreateAndAbortTransactionById()
     {
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         static::assertTrue($this->transactionHandler->abort($trx->getId()));
@@ -119,16 +122,16 @@ class StreamingTransactionTest extends
         static::assertEquals($trx->getId(), $status['id']);
         static::assertEquals('aborted', $status['status']);
 
-        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning()); 
+        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning());
         static::assertFalse(in_array($trx->getId(), $running));
     }
-    
+
     public function testCreateAndCommitTransaction()
     {
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         static::assertTrue($this->transactionHandler->commit($trx));
@@ -137,16 +140,16 @@ class StreamingTransactionTest extends
         static::assertEquals($trx->getId(), $status['id']);
         static::assertEquals('committed', $status['status']);
 
-        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning()); 
+        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning());
         static::assertFalse(in_array($trx->getId(), $running));
     }
-    
+
     public function testCreateAndCommitTransactionById()
     {
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         static::assertTrue($this->transactionHandler->commit($trx->getId()));
@@ -155,16 +158,16 @@ class StreamingTransactionTest extends
         static::assertEquals($trx->getId(), $status['id']);
         static::assertEquals('committed', $status['status']);
 
-        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning()); 
+        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning());
         static::assertFalse(in_array($trx->getId(), $running));
     }
-    
+
     public function testCreateAndGetStatusTransaction()
     {
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $status = $this->transactionHandler->getStatus($trx);
@@ -172,16 +175,16 @@ class StreamingTransactionTest extends
         static::assertEquals($trx->getId(), $status['id']);
         static::assertEquals('running', $status['status']);
 
-        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning()); 
+        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning());
         static::assertTrue(in_array($trx->getId(), $running));
     }
-    
+
     public function testCreateAndGetStatusTransactionById()
     {
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $status = $this->transactionHandler->getStatus($trx->getId());
@@ -189,10 +192,10 @@ class StreamingTransactionTest extends
         static::assertEquals($trx->getId(), $status['id']);
         static::assertEquals('running', $status['status']);
 
-        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning()); 
+        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning());
         static::assertTrue(in_array($trx->getId(), $running));
     }
-    
+
     public function testGetStatusForNonExistingTransaction()
     {
         $found = false;
@@ -204,7 +207,7 @@ class StreamingTransactionTest extends
         }
         static::assertFalse($found);
     }
-    
+
     public function testCreateWithCollections()
     {
         $trx = new StreamingTransaction($this->connection, [
@@ -216,13 +219,13 @@ class StreamingTransactionTest extends
         $trx = $this->transactionHandler->create($trx);
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $collection1 = $trx->getCollection($this->collection1->getName());
         static::assertEquals($this->collection1->getName(), $collection1->getName());
         static::assertEquals('read', $collection1->getMode());
-        
+
         $collection2 = $trx->getCollection($this->collection2->getName());
         static::assertEquals($this->collection2->getName(), $collection2->getName());
         static::assertEquals('read', $collection2->getMode());
@@ -232,10 +235,10 @@ class StreamingTransactionTest extends
         static::assertEquals($trx->getId(), $status['id']);
         static::assertEquals('running', $status['status']);
 
-        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning()); 
+        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning());
         static::assertTrue(in_array($trx->getId(), $running));
     }
-    
+
     public function testCreateWithCollectionsAndModes()
     {
         $trx = new StreamingTransaction($this->connection, [
@@ -248,13 +251,13 @@ class StreamingTransactionTest extends
         $trx = $this->transactionHandler->create($trx);
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $collection1 = $trx->getCollection($this->collection1->getName());
         static::assertEquals($this->collection1->getName(), $collection1->getName());
         static::assertEquals('write', $collection1->getMode());
-        
+
         $collection2 = $trx->getCollection($this->collection2->getName());
         static::assertEquals($this->collection2->getName(), $collection2->getName());
         static::assertEquals('exclusive', $collection2->getMode());
@@ -264,10 +267,10 @@ class StreamingTransactionTest extends
         static::assertEquals($trx->getId(), $status['id']);
         static::assertEquals('running', $status['status']);
 
-        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning()); 
+        $running = array_map(function($trx) { return $trx['id']; }, $this->transactionHandler->getRunning());
         static::assertTrue(in_array($trx->getId(), $running));
     }
-    
+
     public function testGetCollection()
     {
         $trx = new StreamingTransaction($this->connection, [
@@ -278,11 +281,11 @@ class StreamingTransactionTest extends
 
         $trx = $this->transactionHandler->create($trx);
         $this->_shutdown[] = $trx;
-        
+
         $collection1 = $trx->getCollection($this->collection1->getName());
         static::assertEquals($this->collection1->getName(), $collection1->getName());
         static::assertEquals('read', $collection1->getMode());
-        
+
         $collection2 = $trx->getCollection($this->collection2->getName());
         static::assertEquals($this->collection2->getName(), $collection2->getName());
         static::assertEquals('read', $collection2->getMode());
@@ -295,7 +298,7 @@ class StreamingTransactionTest extends
         }
         static::assertFalse($found);
     }
-    
+
     public function testInsert()
     {
         $trx = new StreamingTransaction($this->connection, [
@@ -307,12 +310,12 @@ class StreamingTransactionTest extends
         $trx = $this->transactionHandler->create($trx);
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $trxCollection = $trx->getCollection($this->collection1->getName());
         static::assertEquals($this->collection1->getName(), $trxCollection->getName());
-        
+
         $documentHandler = new DocumentHandler($this->connection);
         $result = $documentHandler->save($trxCollection, [ '_key' => 'test', 'value' => 'test' ]);
         static::assertEquals('test', $result);
@@ -330,7 +333,7 @@ class StreamingTransactionTest extends
         // transactional lookup should find the document
         $doc = $documentHandler->getById($trxCollection, "test");
         static::assertEquals('test', $doc->getKey());
-        
+
         // now commit
         static::assertTrue($this->transactionHandler->commit($trx->getId()));
 
@@ -338,7 +341,7 @@ class StreamingTransactionTest extends
         $doc = $documentHandler->getById($this->collection1->getName(), "test");
         static::assertEquals('test', $doc->getKey());
     }
-    
+
     public function testRemove()
     {
         // insert a document before the transaction
@@ -355,7 +358,7 @@ class StreamingTransactionTest extends
         $trx = $this->transactionHandler->create($trx);
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $trxCollection = $trx->getCollection($this->collection1->getName());
@@ -378,11 +381,11 @@ class StreamingTransactionTest extends
             static::assertEquals(404, $e->getCode());
         }
         static::assertFalse($found);
-        
+
         // non-transactional lookup should still see it
         $doc = $documentHandler->getById($this->collection1->getName(), "test");
         static::assertEquals('test', $doc->getKey());
-        
+
         // now commit
         static::assertTrue($this->transactionHandler->commit($trx->getId()));
 
@@ -396,7 +399,7 @@ class StreamingTransactionTest extends
         }
         static::assertFalse($found);
     }
-    
+
     public function testUpdate()
     {
         // insert a document before the transaction
@@ -413,7 +416,7 @@ class StreamingTransactionTest extends
         $trx = $this->transactionHandler->create($trx);
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $trxCollection = $trx->getCollection($this->collection1->getName());
@@ -433,12 +436,12 @@ class StreamingTransactionTest extends
         $doc = $documentHandler->getById($trxCollection, "test");
         static::assertEquals('test', $doc->getKey());
         static::assertEquals('foobar', $doc->value);
-        
+
         // non-transactional lookup should still see the old document
         $doc = $documentHandler->getById($this->collection1->getName(), "test");
         static::assertEquals('test', $doc->getKey());
         static::assertEquals('test', $doc->value);
-        
+
         // now commit
         static::assertTrue($this->transactionHandler->commit($trx->getId()));
 
@@ -446,7 +449,7 @@ class StreamingTransactionTest extends
         static::assertEquals('test', $doc->getKey());
         static::assertEquals('foobar', $doc->value);
     }
-    
+
     public function testReplace()
     {
         // insert a document before the transaction
@@ -463,7 +466,7 @@ class StreamingTransactionTest extends
         $trx = $this->transactionHandler->create($trx);
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $trxCollection = $trx->getCollection($this->collection1->getName());
@@ -485,13 +488,13 @@ class StreamingTransactionTest extends
         static::assertEquals('test', $doc->getKey());
         static::assertEquals('hoho', $doc->hihi);
         static::assertObjectNotHasAttribute('value', $doc);
-        
+
         // non-transactional lookup should still see the old document
         $doc = $documentHandler->getById($this->collection1->getName(), "test");
         static::assertEquals('test', $doc->getKey());
         static::assertEquals('test', $doc->value);
         static::assertObjectNotHasAttribute('hihi', $doc);
-        
+
         // now commit
         static::assertTrue($this->transactionHandler->commit($trx->getId()));
 
@@ -500,7 +503,7 @@ class StreamingTransactionTest extends
         static::assertEquals('hoho', $doc->hihi);
         static::assertObjectNotHasAttribute('value', $doc);
     }
-    
+
     public function testTruncate()
     {
         $stmt = new Statement($this->connection, [
@@ -518,7 +521,7 @@ class StreamingTransactionTest extends
         $trx = $this->transactionHandler->create($trx);
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $trxCollection = $trx->getCollection($this->collection1->getName());
@@ -550,7 +553,7 @@ class StreamingTransactionTest extends
             self::assertEquals('test' . $i, $doc->getKey());
         }
     }
-    
+
     public function testQuery()
     {
         $trx = new StreamingTransaction($this->connection, [
@@ -562,7 +565,7 @@ class StreamingTransactionTest extends
         $trx = $this->transactionHandler->create($trx);
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue(is_string($trx->getId()));
 
         $trxCollection = $trx->getCollection($this->collection1->getName());
@@ -591,29 +594,29 @@ class StreamingTransactionTest extends
         // documents should not be visible outside of transaction
         $collectionHandler = new CollectionHandler($this->connection);
         static::assertEquals(0, $this->collectionHandler->count($this->collection1->getName()));
-        
+
         // documents should be visible outside of transaction
         static::assertEquals(10, $collectionHandler->count($trxCollection));
     }
-    
+
     public function testCommitAndthenCommitTransaction()
     {
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue($this->transactionHandler->commit($trx));
         $status = $this->transactionHandler->getStatus($trx);
 
         static::assertTrue($this->transactionHandler->commit($trx));
     }
-    
+
     public function testCommitAndthenAbortTransaction()
     {
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue($this->transactionHandler->commit($trx));
         $status = $this->transactionHandler->getStatus($trx);
 
@@ -626,25 +629,25 @@ class StreamingTransactionTest extends
 
         static::assertFalse($success);
     }
-    
+
     public function testAbortAndthenAbortTransaction()
     {
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue($this->transactionHandler->abort($trx));
         $status = $this->transactionHandler->getStatus($trx);
 
         static::assertTrue($this->transactionHandler->abort($trx));
     }
-    
+
     public function testAbortAndthenCommitTransaction()
     {
         $trx = $this->transactionHandler->create();
         $this->_shutdown[] = $trx;
         static::assertInstanceOf(StreamingTransaction::class, $trx);
-        
+
         static::assertTrue($this->transactionHandler->abort($trx));
         $status = $this->transactionHandler->getStatus($trx);
 
@@ -657,7 +660,7 @@ class StreamingTransactionTest extends
 
         static::assertFalse($success);
     }
-    
+
     public function tearDown(): void
     {
         foreach ($this->_shutdown as $trx) {

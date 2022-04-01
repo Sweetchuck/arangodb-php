@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: DocumentExtendedTest.php
@@ -280,7 +283,7 @@ class DocumentExtendedTest extends
         $response = $documentHandler->remove($resultingDocument);
         static::assertTrue($response, 'Delete should return true!');
     }
-    
+
     /**
      * test for updating a document using update()
      */
@@ -347,8 +350,8 @@ class DocumentExtendedTest extends
         $response = $documentHandler->remove($resultingDocument);
         static::assertTrue($response, 'Delete should return true!');
     }
-    
-    
+
+
     /**
      * test for updating a document using returnOld/returnNew
      */
@@ -373,10 +376,10 @@ class DocumentExtendedTest extends
         static::assertEquals(2, $result['new']['value']);
         static::assertNotEquals($result['old']['_rev'], $result['new']['_rev']);
     }
-    
-    
+
+
     /**
-     * test for silently updating a document 
+     * test for silently updating a document
      */
     public function testUpdateDocumentSilent()
     {
@@ -392,15 +395,15 @@ class DocumentExtendedTest extends
         $patchDocument->set('value', 2);
         $result = $documentHandler->update($patchDocument, ['silent' => true]);
         static::assertNull($result);
-        
-        
+
+
         $resultingDocument = $documentHandler->get($this->collection->getName(), 'test');
         static::assertEquals(2, $resultingDocument->value);
     }
-    
-    
+
+
     /**
-     * test for silently updating a document 
+     * test for silently updating a document
      */
     public function testUpdateDocumentSilentWithError()
     {
@@ -483,10 +486,10 @@ class DocumentExtendedTest extends
         static::assertEquals(2, $result['new']['value']);
         static::assertNotEquals($result['old']['_rev'], $result['new']['_rev']);
     }
-    
-    
+
+
     /**
-     * test for silently replacing a document 
+     * test for silently replacing a document
      */
     public function testReplaceDocumentSilent()
     {
@@ -502,15 +505,15 @@ class DocumentExtendedTest extends
         $patchDocument->set('value', 2);
         $result = $documentHandler->replace($patchDocument, ['silent' => true]);
         static::assertNull($result);
-        
-        
+
+
         $resultingDocument = $documentHandler->get($this->collection->getName(), 'test');
         static::assertEquals(2, $resultingDocument->value);
     }
-    
-    
+
+
     /**
-     * test for silently replacing a document 
+     * test for silently replacing a document
      */
     public function testReplaceDocumentSilentWithError()
     {
@@ -614,7 +617,7 @@ class DocumentExtendedTest extends
             'deleteById() should return true! (because policy  is "last write wins")'
         );
     }
-    
+
     /**
      * test for removing a document using returnOld
      */

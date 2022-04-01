@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: result set cursor
  *
@@ -107,7 +109,7 @@ class Cursor implements \Iterator
      * whether or not the query result was served from the AQL query result cache
      */
     private $_cached;
-    
+
     /**
      * precalculated number of documents in the cursor, as returned by the server
      *
@@ -196,7 +198,7 @@ class Cursor implements \Iterator
         if (isset($data[self::ENTRY_ID])) {
             $this->_id = $data[self::ENTRY_ID];
         }
-        
+
         if (isset($data[Statement::ENTRY_COUNT])) {
             $this->_count = $data[Statement::ENTRY_COUNT];
         }
@@ -838,7 +840,7 @@ class Cursor implements \Iterator
     {
         return $this->getStatValue('filtered');
     }
-    
+
     /**
      * Return the peak memory usage of the query
      *
@@ -848,8 +850,8 @@ class Cursor implements \Iterator
     {
         return $this->getStatValue('peakMemoryUsage');
     }
-    
-    
+
+
     /**
      * Return the execution time of the query
      *

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: batchpart
  *
@@ -321,7 +323,7 @@ class BatchPart
                     'ignored' => $json['ignored']
                 ];
                 break;
-                
+
             default:
                 throw new ClientException('Could not determine response data type.');
                 break;

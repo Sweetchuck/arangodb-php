@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: Base URLs
  *
@@ -37,12 +39,12 @@ abstract class Urls
      * URL base part for all graph-related REST calls
      */
     const URL_GRAPH = '/_api/gharial';
-    
+
     /**
      * URL base part for all view-related REST calls
      */
     const URL_VIEW = '/_api/view';
-    
+
     /**
      * URL base part for all analyzer-related REST calls
      */
@@ -167,12 +169,12 @@ abstract class Urls
      * URL for transactions
      */
     const URL_TRANSACTION = '/_api/transaction';
-    
+
     /**
      * URL for storage engine
      */
     const URL_ENGINE = '/_api/engine';
-    
+
     /**
      * URL for storage engine stats
      */
@@ -197,12 +199,12 @@ abstract class Urls
      * URL for admin log (deprecated)
      */
     const URL_ADMIN_LOG = '/_admin/log';
-    
+
     /**
      * URL for admin log entries
      */
     const URL_ADMIN_LOG_ENTRIES = '/_admin/log/entries';
-    
+
     /**
      * URL for admin log levels
      */
@@ -212,7 +214,7 @@ abstract class Urls
      * base URL part for admin routing reload (deprecated)
      */
     const URL_ADMIN_ROUTING_RELOAD = '/_admin/routing/reload';
-    
+
     /**
      * base URL part for admin statistics
      */

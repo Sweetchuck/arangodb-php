@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: admin document handler
  *
@@ -27,9 +29,9 @@ class AdminHandler extends Handler
      * details for server version
      */
     const OPTION_DETAILS = 'details';
-    
+
     /**
-     * Get the server's storage engine 
+     * Get the server's storage engine
      *
      * This will throw if the engine data cannot be retrieved
      *
@@ -38,12 +40,12 @@ class AdminHandler extends Handler
      * @return mixed - an object returning the engine information
      * @since 3.2
      */
-    public function getEngine() 
+    public function getEngine()
     {
         $response = $this->getConnection()->get(Urls::URL_ENGINE);
         return $response->getJson();
     }
-    
+
     /**
      * Get the server's storage engine statistics
      *
@@ -54,7 +56,7 @@ class AdminHandler extends Handler
      * @return mixed - an object returning the engine statistics
      * @since 3.8
      */
-    public function getEngineStats() 
+    public function getEngineStats()
     {
         $response = $this->getConnection()->get(Urls::URL_ENGINE_STATS);
         return $response->getJson();
@@ -127,8 +129,8 @@ class AdminHandler extends Handler
 
         return $data['time'];
     }
-    
-    
+
+
     /**
      * Get the server's current log levels
      *
@@ -146,8 +148,8 @@ class AdminHandler extends Handler
 
         return $response->getJson();
     }
-    
-    
+
+
     /**
      * Set the server's current log levels
      *
@@ -167,8 +169,8 @@ class AdminHandler extends Handler
 
         return $response->getJson();
     }
-    
-    
+
+
     /**
      * Get the server log entries
      *
@@ -265,8 +267,8 @@ class AdminHandler extends Handler
 
         return true;
     }
-    
-    
+
+
     /**
      * Get the server metrics
      * Returns the server metrics, as a structured array
@@ -317,7 +319,7 @@ class AdminHandler extends Handler
                     // sum, count, buckets
                     $metric = substr($metric, 0, -1 - strlen($sub[1]));
                 }
-                
+
                 if (!isset($metrics[$metric])) {
                     $metrics[$metric] = [];
                 }
@@ -332,7 +334,7 @@ class AdminHandler extends Handler
                             $key = trim($parts[0]);
                             $value = trim($parts[1], " \"");
                             if (!isset($metrics[$metric]["labels"])) {
-                                $metrics[$metric]["labels"] = []; 
+                                $metrics[$metric]["labels"] = [];
                             }
                             if ($key != "le") {
                                 $metrics[$metric]["labels"][$key] = $value;
@@ -342,10 +344,10 @@ class AdminHandler extends Handler
                         }
                     }
                 }
-                
+
                 // cast to number
                 $value = $matches[3];
-                
+
                 if ($sub == null) {
                     // counter
                     $metrics[$metric]["value"] = $value;

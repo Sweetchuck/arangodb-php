@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: Analyzer class
  *
@@ -28,27 +30,27 @@ class Analyzer
      * @var string - analyzer name
      */
     protected $_name;
-    
+
     /**
      * Analyzer name index
      */
     const ENTRY_NAME = 'name';
-    
+
     /**
      * Analyzer type index
      */
     const ENTRY_TYPE = 'type';
-    
+
     /**
      * Analyzer properties index
      */
     const ENTRY_PROPERTIES = 'properties';
-    
+
     /**
      * Analyzer features index
      */
     const ENTRY_FEATURES = 'features';
-    
+
     /**
      * Constructs an analyzer
      *
@@ -74,31 +76,31 @@ class Analyzer
      *
      * @return string - analyzer name
      */
-    public function getName() 
+    public function getName()
     {
         return $this->_name;
     }
-    
+
     /**
      * Return the analyzer type
      *
      * @return string - analyzer type
      */
-    public function getType() 
+    public function getType()
     {
         return $this->_type;
     }
-    
+
     /**
      * Return the analyzer properties
      *
      * @return array - analyzer properties
      */
-    public function getProperties() 
+    public function getProperties()
     {
         return $this->_properties;
     }
-    
+
     /**
      * Return the analyzer features
      *
@@ -108,13 +110,13 @@ class Analyzer
     {
         return $this->_features;
     }
-    
+
     /**
      * Return the analyzer as an array
      *
      * @return array - analyzer data as an array
      */
-    public function getAll() 
+    public function getAll()
     {
         return [
             self::ENTRY_NAME       => $this->getName(),

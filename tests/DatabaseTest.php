@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: Database.php
@@ -46,7 +49,7 @@ class DatabaseTest extends
     }
 
 
-    public function testCreateDatabaseWithUnicodeName() 
+    public function testCreateDatabaseWithUnicodeName()
     {
         if (!class_exists("\Normalizer", false)) {
             $this->markTestSkipped("unable to find Normalizer class. maybe php-intl is not installed?");
@@ -67,13 +70,13 @@ class DatabaseTest extends
             }
             throw $exception;
         }
-        
+
         $response = Database::listDatabases($this->connection);
         static::assertArrayHasKey($database, array_flip($response['result']));
     }
-    
-    
-    public function testCreateDatabaseWithUnicodeNameNormalization() 
+
+
+    public function testCreateDatabaseWithUnicodeNameNormalization()
     {
         if (!class_exists("\Normalizer", false)) {
             $this->markTestSkipped("unable to find Normalizer class. maybe php-intl is not installed?");
@@ -105,10 +108,10 @@ class DatabaseTest extends
                 throw $exception;
             }
 
-            try { 
+            try {
                 $response = Database::listDatabases($this->connection);
                 static::assertArrayHasKey($database, array_flip($response['result']));
-                
+
                 Database::delete($this->connection, $database);
             } catch (\Exception $ex) {
                 // always clean up
@@ -136,7 +139,7 @@ class DatabaseTest extends
         static::assertEquals(
             false,
             $response['error'],
-            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, 1)
+            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, true)
         );
 
         $response = Database::delete($this->connection, $database);
@@ -144,7 +147,7 @@ class DatabaseTest extends
         static::assertEquals(
             false,
             $response['error'],
-            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, 1)
+            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, true)
         );
 
         $response = Database::listDatabases($this->connection);
@@ -164,7 +167,7 @@ class DatabaseTest extends
         static::assertEquals(
             false,
             $response['error'],
-            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, 1)
+            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, true)
         );
 
 
@@ -182,7 +185,7 @@ class DatabaseTest extends
         static::assertEquals(
             false,
             $response['error'],
-            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, 1)
+            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, true)
         );
     }
 
@@ -200,7 +203,7 @@ class DatabaseTest extends
         static::assertEquals(
             false,
             $response['error'],
-            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, 1)
+            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, true)
         );
 
         $this->connection->setDatabase($database);
@@ -224,11 +227,11 @@ class DatabaseTest extends
         $response = Database::delete($this->connection, $database);
 
         static::assertEquals(
-            false, $response['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($response, 1)
+            false, $response['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($response, true)
         );
     }
-    
-    
+
+
     /**
      * Test create database with options
      */
@@ -249,7 +252,7 @@ class DatabaseTest extends
             // don't bother us... just give us the $e
         }
 
-        $options = [ 
+        $options = [
           Collection::ENTRY_REPLICATION_FACTOR => 2,
           Collection::ENTRY_WRITE_CONCERN => 2
         ];
@@ -259,11 +262,11 @@ class DatabaseTest extends
         static::assertEquals(
             false,
             $response['error'],
-            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, 1)
+            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, true)
         );
-        
+
         $this->connection->setDatabase($database);
-        
+
         $response = Database::getInfo($this->connection);
         $result = $response['result'];
 
@@ -272,11 +275,11 @@ class DatabaseTest extends
         static::assertEquals("", $result['sharding']);
         static::assertEquals(2, $result['replicationFactor']);
         static::assertEquals(2, $result['writeConcern']);
-        
+
         $this->connection->setDatabase('_system');
         Database::delete($this->connection, $database);
     }
-    
+
     /**
      * Test create database with options
      */
@@ -302,7 +305,7 @@ class DatabaseTest extends
             // don't bother us... just give us the $e
         }
 
-        $options = [ 
+        $options = [
           Collection::ENTRY_REPLICATION_FACTOR => 2,
           Collection::ENTRY_WRITE_CONCERN => 1,
           Collection::ENTRY_SHARDING => "single"
@@ -313,11 +316,11 @@ class DatabaseTest extends
         static::assertEquals(
             false,
             $response['error'],
-            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, 1)
+            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, true)
         );
-        
+
         $this->connection->setDatabase($database);
-        
+
         $response = Database::getInfo($this->connection);
         $result = $response['result'];
 
@@ -326,7 +329,7 @@ class DatabaseTest extends
         static::assertEquals("single", $result['sharding']);
         static::assertEquals(2, $result['replicationFactor']);
         static::assertEquals(1, $result['writeConcern']);
-        
+
         $this->connection->setDatabase('_system');
         Database::delete($this->connection, $database);
     }
@@ -371,7 +374,7 @@ class DatabaseTest extends
             $e = null;
             Database::delete($this->connection, $database);
         } catch (\Exception $e) {
-            // don't bother us... 
+            // don't bother us...
         }
 
         $response = Database::create($this->connection, $database);
@@ -379,7 +382,7 @@ class DatabaseTest extends
         static::assertEquals(
             false,
             $response['error'],
-            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, 1)
+            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, true)
         );
 
 
@@ -417,7 +420,7 @@ class DatabaseTest extends
         static::assertEquals(
             false,
             $response['error'],
-            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, 1)
+            'result[\'error\'] Did not return false, instead returned: ' . print_r($response, true)
         );
     }
 
@@ -427,7 +430,7 @@ class DatabaseTest extends
 
         // clean up
         $databases = [
-            'ArangoTestSuiteDatabaseTest01' . '_' . static::$testsTimestamp, 
+            'ArangoTestSuiteDatabaseTest01' . '_' . static::$testsTimestamp,
             'ArangoTestSuiteDatabaseTest02' . '_' . static::$testsTimestamp,
             'tröt tröt tröt_' . static::$testsTimestamp,
         ];

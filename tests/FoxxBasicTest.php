@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: FoxxBasicTest.php
@@ -25,7 +28,7 @@ class FoxxBasicTest extends
     {
         $this->connection  = getConnection();
         $this->foxxHandler = new FoxxHandler($this->connection);
-        
+
         try {
             // ignore errors
             $this->foxxHandler->removeFoxxApp('/hello_world');

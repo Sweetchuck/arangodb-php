@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: transaction base
  *
@@ -56,7 +58,7 @@ class TransactionBase
      * WRITE index
      */
     const ENTRY_WRITE = 'write';
-    
+
     /**
      * EXCLUSIVE index
      */
@@ -72,7 +74,7 @@ class TransactionBase
     public function __construct(Connection $connection)
     {
         $this->_connection = $connection;
-        
+
         $this->attributes[self::ENTRY_COLLECTIONS] = [
             self::ENTRY_READ => [],
             self::ENTRY_WRITE => [],
@@ -197,8 +199,8 @@ class TransactionBase
     {
         return $this->attributes[self::ENTRY_COLLECTIONS][self::ENTRY_READ];
     }
-    
-    
+
+
     /**
      * Convenience function to directly set write-collections without having to access
      * them from the collections attribute.
@@ -222,7 +224,7 @@ class TransactionBase
         return $this->attributes[self::ENTRY_COLLECTIONS][self::ENTRY_WRITE];
     }
 
-    
+
     /**
      * Convenience function to directly set exclusive-collections without having to access
      * them from the collections attribute.

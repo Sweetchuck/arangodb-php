@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: mixin for $_documentClass functionality
  *
@@ -22,7 +24,7 @@ trait DocumentClassable
      * @var string Document class to use
      */
     protected $_documentClass = '\ArangoDBClient\Document';
-    
+
     /**
      * @var string Edge class to use
      */
@@ -39,7 +41,7 @@ trait DocumentClassable
         $this->_documentClass = $class;
         return $this;
     }
-    
+
     /**
      * Sets the edge class to use
      *

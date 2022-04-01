@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: AqlUserFunction.php
@@ -87,11 +90,11 @@ class AqlUserFunctionTest extends
         $userFunction = new AqlUserFunction($this->connection, $array);
 
         $result = $userFunction->register();
-        
+
         static::assertTrue($result['isNewlyCreated']);
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
         $list = $this->filter($userFunction->getRegisteredUserFunctions());
 
@@ -104,7 +107,7 @@ class AqlUserFunctionTest extends
         $result = $userFunction->unregister();
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
     }
 
@@ -123,7 +126,7 @@ class AqlUserFunctionTest extends
         static::assertTrue($result['isNewlyCreated']);
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
         $list = $this->filter($userFunction->getRegisteredUserFunctions());
 
@@ -136,7 +139,7 @@ class AqlUserFunctionTest extends
         $result = $userFunction->unregister($name);
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
     }
 
@@ -195,7 +198,7 @@ class AqlUserFunctionTest extends
         static::assertTrue($result['isNewlyCreated']);
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
         $list = $this->filter($userFunction->getRegisteredUserFunctions());
         static::assertCount(1, $list, 'List returned did not return expected 1 attribute');
@@ -207,7 +210,7 @@ class AqlUserFunctionTest extends
         $result = $userFunction->unregister();
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
     }
 
@@ -238,7 +241,7 @@ class AqlUserFunctionTest extends
         $result = $userFunction->register();
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
         $list = $this->filter($userFunction->getRegisteredUserFunctions());
         static::assertCount(1, $list, 'List returned did not return expected 1 attribute');
@@ -250,7 +253,7 @@ class AqlUserFunctionTest extends
         $result = $userFunction->unregister();
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
     }
 
@@ -275,14 +278,14 @@ class AqlUserFunctionTest extends
         static::assertTrue($result['isNewlyCreated']);
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
 
         $result = $userFunction->register();
         static::assertFalse($result['isNewlyCreated']);
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
 
         $list = $this->filter($userFunction->getRegisteredUserFunctions());
@@ -295,7 +298,7 @@ class AqlUserFunctionTest extends
         $result = $userFunction->unregister();
 
         static::assertEquals(
-            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, 1)
+            false, $result['error'], 'result[\'error\'] Did not return false, instead returned: ' . print_r($result, true)
         );
 
         $e = null;

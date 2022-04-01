@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: QueryCacheTest.php
@@ -103,7 +106,7 @@ class QueryCacheTest extends
             static::assertTrue($cursor->getCached()); // should be in cache again
         }
     }
-    
+
     /**
      * Test getting entries of query cache
      */

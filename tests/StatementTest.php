@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client testsuite
  * File: StatementTest.php
@@ -119,7 +122,7 @@ class StatementTest extends
         $warnings = $cursor->getWarnings();
         static::assertEquals(1562, $warnings[0]['code']);
     }
-    
+
     /**
      * Test fail if a warning occurs during querying
      */
@@ -137,7 +140,7 @@ class StatementTest extends
             static::assertEquals(1562, $e->getServerCode());
         }
     }
-    
+
     /**
      * Test fail with memory limit hit
      */
@@ -155,8 +158,8 @@ class StatementTest extends
             static::assertEquals(32, $e->getServerCode());
         }
     }
-    
-    
+
+
     /**
      * Test statistics returned by query
      */
@@ -177,7 +180,7 @@ class StatementTest extends
         static::assertTrue($cursor->getPeakMemoryUsage() > 0);
         static::assertEquals($extra['stats']['peakMemoryUsage'], $cursor->getPeakMemoryUsage());
     }
-    
+
     /**
      * Test block cache settings
      */
@@ -192,8 +195,8 @@ class StatementTest extends
         $statement->setFillBlockCache(false);
         static::assertFalse($statement->getFillBlockCache());
     }
-    
-    
+
+
     /**
      * Test block cache query
      */
@@ -203,15 +206,15 @@ class StatementTest extends
 
         $statement = new Statement($connection, ['query' => 'RETURN 1', 'fillBlockCache' => true]);
         static::assertTrue($statement->getFillBlockCache());
-        
+
         // cannot really test the population of the block cache from here, as the value is only
         // exposed via a server-global API and may be influenced by any other ongoing operation.
         $cursor = $statement->execute();
         $extra = $cursor->getExtra();
         static::assertEquals([], $extra['warnings']);
     }
-    
-    
+
+
     /**
      * Test block cache query
      */
@@ -228,7 +231,7 @@ class StatementTest extends
         $extra = $cursor->getExtra();
         static::assertEquals([], $extra['warnings']);
     }
-    
+
     /**
      * Test statistics returned by query
      */
@@ -505,7 +508,7 @@ class StatementTest extends
         static::assertEquals(2, $cursor->getCount(), 'The number of results in the cursor should be 2');
         static::assertEquals(3, $cursor->getFullCount(), 'The fullCount should be 3');
     }
-    
+
     public function testTtl()
     {
         $connection = $this->connection;
@@ -538,7 +541,7 @@ class StatementTest extends
 
         // let the cursor time out
         sleep(8);
-        
+
         $excepted = false;
         try {
             $all = $cursor->getAll();
@@ -549,13 +552,13 @@ class StatementTest extends
 
         static::assertTrue($excepted);
     }
-    
+
     public function testMemoryLimit()
     {
         $connection = $this->connection;
 
         $statement = new Statement(
-            $connection, [ 
+            $connection, [
                 'query' => 'RETURN NOOPT(FOR i IN 1..100000 RETURN CONCAT("testisiteisiitit", i))',
                 '_flat' => true
             ]
@@ -565,7 +568,7 @@ class StatementTest extends
         $cursor = $statement->execute();
 
         $statement = new Statement(
-            $connection, [ 
+            $connection, [
                 'query' => 'RETURN NOOPT(FOR i IN 1..100000 RETURN CONCAT("testisiteisiitit", i))',
                 'memoryLimit' => 32768,
                 '_flat' => true
@@ -585,7 +588,7 @@ class StatementTest extends
 
         static::assertTrue($excepted);
     }
-    
+
     public function testMaxRuntime()
     {
         $connection = $this->connection;
@@ -598,7 +601,7 @@ class StatementTest extends
         $cursor = $statement->execute();
 
         $statement = new Statement(
-            $connection, [ 
+            $connection, [
                 'query' => 'FOR i IN 1..10 RETURN SLEEP(1)',
                 'maxRuntime' => 2
             ]
@@ -616,13 +619,13 @@ class StatementTest extends
 
         static::assertTrue($excepted);
     }
-    
+
     public function testProfiling()
     {
         $connection = $this->connection;
 
         $statement = new Statement(
-            $connection, [ 
+            $connection, [
                 'query' => 'FOR i IN 1..10000 RETURN CONCAT("testisiteisiitit", i)',
                 '_flat' => true
             ]
@@ -630,7 +633,7 @@ class StatementTest extends
         static::assertFalse($statement->getProfiling());
 
         $statement = new Statement(
-            $connection, [ 
+            $connection, [
                 'query' => 'FOR i IN 1..10000 RETURN CONCAT("testisiteisiitit", i)',
                 'profile' => true,
                 '_flat' => true
@@ -645,7 +648,7 @@ class StatementTest extends
         static::assertTrue(is_array($result['profile']));
         static::assertArrayHasKey('executing', $result['profile']);
     }
-    
+
     public function testStatementStreaming()
     {
         $connection = $this->connection;

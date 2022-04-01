@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: streaming transaction handler
  *
@@ -33,7 +35,7 @@ class StreamingTransactionHandler extends Handler
     }
 
     /**
-     * Creates a streaming transaction from scratch (no collections) or from an 
+     * Creates a streaming transaction from scratch (no collections) or from an
      * existing transaction object (necessary when collections need to be passed
      * into the transaction or when an existing transaction is resumed)
      *
@@ -41,17 +43,17 @@ class StreamingTransactionHandler extends Handler
      *
      * @param StreamingTransaction $trx - existing transaction
      */
-    public function create(StreamingTransaction $trx = null) 
+    public function create(StreamingTransaction $trx = null)
     {
         if ($trx === null) {
             $trx = new StreamingTransaction($this->getConnection());
         }
-        
+
         $response = $this->getConnection()->post(
             Urls::URL_TRANSACTION . '/begin',
             $this->getConnection()->json_encode_wrapper($trx->attributes)
         );
-        
+
         $jsonResponse = $response->getJson();
         $id           = $jsonResponse['result']['id'];
         $trx->setId($id);
@@ -66,7 +68,7 @@ class StreamingTransactionHandler extends Handler
     public function closePendingTransactions()
     {
         // automatically abort all unintentionally kept-open transactions, so we don't
-        // leak server resources by not closing transactions 
+        // leak server resources by not closing transactions
         foreach ($this->_pendingTransactions as $id => $done) {
             try {
                 $this->abort($id);
@@ -99,7 +101,7 @@ class StreamingTransactionHandler extends Handler
      *
      * @return array - returns an array with attributes 'id' and 'status'
      */
-    public function getStatus($trx) 
+    public function getStatus($trx)
     {
         if ($trx instanceof StreamingTransaction) {
             $id = $trx->getId();
@@ -117,7 +119,7 @@ class StreamingTransactionHandler extends Handler
 
         return $jsonResponse['result'];
     }
-    
+
     /**
      * Commits a transaction
      *
@@ -127,7 +129,7 @@ class StreamingTransactionHandler extends Handler
      *
      * @return bool - true if commit succeeds, throws an exception otherwise
      */
-    public function commit($trx) 
+    public function commit($trx)
     {
         if ($trx instanceof StreamingTransaction) {
             $id = $trx->getId();
@@ -150,7 +152,7 @@ class StreamingTransactionHandler extends Handler
      *
      * @return bool - true if abort succeeds, throws an exception otherwise
      */
-    public function abort($trx) 
+    public function abort($trx)
     {
         if ($trx instanceof StreamingTransaction) {
             $id = $trx->getId();
@@ -163,7 +165,7 @@ class StreamingTransactionHandler extends Handler
 
         return true;
     }
-    
+
     /**
      * Return all currently running transactions
      *
@@ -171,14 +173,14 @@ class StreamingTransactionHandler extends Handler
      *
      * @return array - array of currently running transactions, each transaction is an array with attributes 'id' and 'status'
      */
-    public function getRunning() 
+    public function getRunning()
     {
         $response = $this->getConnection()->get(Urls::URL_TRANSACTION);
-        
+
         $jsonResponse = $response->getJson();
         return $jsonResponse['transactions'];
     }
-    
+
 }
 
 class_alias(CollectionHandler::class, '\triagens\ArangoDb\StreamingTransactionHandler');

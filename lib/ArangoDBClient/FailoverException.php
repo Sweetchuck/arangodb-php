@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 /**
  * ArangoDB PHP client: failover exception
  *
@@ -26,7 +28,7 @@ class FailoverException extends Exception
      * @param string
      */
     private $_leader;
-    
+
     /**
      * Return a string representation of the exception
      *
@@ -36,7 +38,7 @@ class FailoverException extends Exception
     {
         return __CLASS__ . ': ' . $this->getLeader();
     }
-    
+
     /**
      * Set the new leader endpoint
      *
