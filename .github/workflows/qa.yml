@@ -1,0 +1,83 @@
+name: 'QA'
+
+'on':
+    push:
+        branches:
+            - '3.x-refactor/*'
+    pull_request:
+        branches:
+            - '3.x-refactor/*'
+
+jobs:
+    run:
+        strategy:
+            matrix:
+                operating-system:
+                    - 'ubuntu-latest'
+#                    - 'windows-latest'
+#                    - 'macos-latest'
+                php-version:
+                    - '7.4'
+#                    - '8.0'
+#                    - '8.1'
+                arangodb-image:
+#                    - 'arangodb/arangodb:3.7.17'
+#                    - 'arangodb/arangodb:3.8.6'
+                    - 'arangodb/arangodb-preview:3.9.0-nightly'
+        runs-on: '${{ matrix.operating-system }}'
+        services:
+            arangodb:
+                image: '${{ matrix.arangodb-image }}'
+                ports:
+                    - '8529:8529'
+                env:
+                    ARANGO_ROOT_PASSWORD: 'test'
+        env:
+            COMPOSER_NO_INTERACTION: '1'
+            COMPOSER_MEMORY_LIMIT: '-1'
+
+            ARANGO_ROOT_PASSWORD: 'test'
+        steps:
+            -
+                name: 'Setup PHP'
+                uses: 'shivammathur/setup-php@v2'
+                with:
+                    php-version: '${{ matrix.php-version }}'
+                    extensions: 'intl, json, mbstring'
+                    ini-values: 'post_max_size=256M, max_execution_time=180'
+                    coverage: 'pcov'
+            -
+                run: |
+                    php -v
+            -
+                run: |
+                    php -m
+            -
+                uses: 'actions/checkout@v3'
+            -
+                run: |
+                    composer install --no-progress
+            -
+                name: 'Wait for ArangoDB to be ready for connections'
+                run: |
+                    timeout \
+                        30 \
+                        $SHELL -c \
+                        -- \
+                        "while ! curl \
+                            --fail \
+                            --silent \
+                            --show-error \
+                            --basic \
+                            --user 'root:${ARANGO_ROOT_PASSWORD}' \
+                            --header 'Accept: application/json' \
+                            'http://127.0.0.1:8529/_api/version';
+                        do
+                            sleep 1;
+                            echo Waiting for ArangoDB on http://127.0.0.1:8529;
+                        done;"
+            -
+                run: |
+                    ./vendor/bin/phpunit \
+                        --colors='always' \
+                        --configuration='./tests/phpunit-connection-close.xml'
