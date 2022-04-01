@@ -19,7 +19,7 @@ jobs:
                 php-version:
                     - '7.4'
                     - '8.0'
-#                    - '8.1'
+                    - '8.1'
                 arangodb-image:
 #                    - 'arangodb/arangodb:3.7.17'
 #                    - 'arangodb/arangodb:3.8.6'
