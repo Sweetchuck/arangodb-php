@@ -10,22 +10,30 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Collection;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\Document;
+use ArangoDBClient\DocumentHandler;
+use ArangoDBClient\Edge;
+use ArangoDBClient\EdgeHandler;
+use ArangoDBClient\Exception;
+use ArangoDBClient\ServerException;
 
 /**
  * Class EdgeExtendedTest
  *
- * @property Connection        $connection
- * @property Collection        $collection
- * @property Collection        $edgeCollection
- * @property CollectionHandler $collectionHandler
- * @property DocumentHandler   $documentHandler
- * @property EdgeHandler       $edgeHandler
+ * @property \ArangoDBClient\Connection        $connection
+ * @property \ArangoDBClient\Collection        $collection
+ * @property \ArangoDBClient\Collection        $edgeCollection
+ * @property \ArangoDBClient\CollectionHandler $collectionHandler
+ * @property \ArangoDBClient\DocumentHandler   $documentHandler
+ * @property \ArangoDBClient\EdgeHandler       $edgeHandler
  *
  * @package ArangoDBClient
  */
-class EdgeExtendedTest extends
-    \PHPUnit_Framework_TestCase
+class EdgeExtendedTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -38,7 +46,7 @@ class EdgeExtendedTest extends
 
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        $this->connection        = $this->createConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
         $this->collection        = new Collection();
         $this->collection->setName('ArangoDB_PHP_TestSuite_TestEdgeCollection_01' . '_' . static::$testsTimestamp);

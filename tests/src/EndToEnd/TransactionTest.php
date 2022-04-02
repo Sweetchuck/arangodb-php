@@ -10,21 +10,28 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\AdminHandler;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\Exception;
+use ArangoDBClient\ServerException;
+use ArangoDBClient\Transaction;
+use triagens\ArangoDb\Collection;
 
 /**
  * Class TransactionTest
  *
  * Basic Tests for the Transaction API implementation
  *
- * @property Connection        $connection
- * @property CollectionHandler $collectionHandler
- * @property Collection        $collection1
- * @property Collection        $collection2
+ * @property \ArangoDBClient\Connection        $connection
+ * @property \ArangoDBClient\CollectionHandler $collectionHandler
+ * @property \ArangoDBClient\Collection        $collection1
+ * @property \ArangoDBClient\Collection        $collection2
+ *
  * @package ArangoDBClient
  */
-class TransactionTest extends
-    \PHPUnit_Framework_TestCase
+class TransactionTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -37,7 +44,8 @@ class TransactionTest extends
 
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        parent::setUp();
+        $this->connection        = $this->createConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
 
         // clean up first
@@ -347,7 +355,7 @@ class TransactionTest extends
      */
     public function testCreateAndExecuteTransactionWithTransactionErrorUniqueConstraintOnSave()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;

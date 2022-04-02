@@ -10,23 +10,25 @@ declare(strict_types = 1);
  * @author    Tom Regner <thomas.regner@fb-research.de>
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
 
+use ArangoDBClient\ClientException;
+use ArangoDBClient\FoxxHandler;
 
 /**
  * Class FoxxBasicTest
  *
- * @property Connection  $connection
- * @property FoxxHandler $foxxHandler
+ * @property \ArangoDBClient\Connection  $connection
+ * @property \ArangoDBClient\FoxxHandler $foxxHandler
  *
  * @package   ArangoDBClient
  */
-class FoxxBasicTest extends
-    \PHPUnit_Framework_TestCase
+class FoxxBasicTest extends TestBase
 {
     public function setUp(): void
     {
-        $this->connection  = getConnection();
+        parent::setUp();
+        $this->connection  = $this->createConnection();
         $this->foxxHandler = new FoxxHandler($this->connection);
 
         try {
@@ -44,7 +46,7 @@ class FoxxBasicTest extends
     public function testUploadAndInstallFoxxApp()
     {
         $foxxHandler = $this->foxxHandler;
-        $zip         = __DIR__ . '/files_for_tests/demo-hello-foxx-master.zip';
+        $zip         = "{$this->fixturesDir}/demo-hello-foxx-master.zip";
         $response    = $foxxHandler->installFoxxZip($zip, '/hello_world');
         static::assertEquals(200, (int) $response['code'], 'Status not 200');
         static::assertEquals('/hello_world', $response['mount'], 'Wrong mountpoint');
@@ -57,7 +59,7 @@ class FoxxBasicTest extends
     {
         $this->expectException(\ArangoDBClient\ClientException::class);
         $foxxHandler = $this->foxxHandler;
-        $zip         = __DIR__ . '/files_for_tests/move_along.zip';
+        $zip         = "{$this->fixturesDir}/move_along.zip";
         $foxxHandler->installFoxxZip($zip, '/move_along');
     }
 

@@ -10,17 +10,31 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Batch;
+use ArangoDBClient\BatchPart;
+use ArangoDBClient\ClientException;
+use ArangoDBClient\Collection;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\Cursor;
+use ArangoDBClient\Document;
+use ArangoDBClient\DocumentHandler;
+use ArangoDBClient\Edge;
+use ArangoDBClient\EdgeHandler;
+use ArangoDBClient\Exception;
+use ArangoDBClient\HttpResponse;
+use ArangoDBClient\ServerException;
+use ArangoDBClient\Statement;
 
 /**
- * @property Connection        connection
- * @property Collection        collection
- * @property CollectionHandler collectionHandler
- * @property DocumentHandler   documentHandler
- * @property Collection        edgeCollection
+ * @property \ArangoDBClient\Connection        connection
+ * @property \ArangoDBClient\Collection        collection
+ * @property \ArangoDBClient\CollectionHandler collectionHandler
+ * @property \ArangoDBClient\DocumentHandler   documentHandler
+ * @property \ArangoDBClient\Collection        edgeCollection
  */
-class BatchTest extends
-    \PHPUnit_Framework_TestCase
+class BatchTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -33,7 +47,8 @@ class BatchTest extends
 
     public function setUp(): void
     {
-        $this->connection = getConnection();
+        parent::setUp();
+        $this->connection = $this->createConnection();
 
         $this->documentHandler   = new DocumentHandler($this->connection);
         $this->collectionHandler = new CollectionHandler($this->connection);

@@ -10,18 +10,22 @@ declare(strict_types = 1);
  * @author  Jan Steemann
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\ClientException;
+use ArangoDBClient\ConnectionOptions;
+use ArangoDBClient\QueryHandler;
+use ArangoDBClient\Statement;
 
 /**
  * Class QueryTest
  *
- * @property Connection   $connection
- * @property QueryHandler $queryHandler
+ * @property \ArangoDBClient\Connection   $connection
+ * @property \ArangoDBClient\QueryHandler $queryHandler
  *
  * @package ArangoDBClient
  */
-class QueryTest extends
-    \PHPUnit_Framework_TestCase
+class QueryTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -34,7 +38,7 @@ class QueryTest extends
 
     public function setUp(): void
     {
-        $this->connection   = getConnection();
+        $this->connection   = $this->createConnection();
         $this->queryHandler = new QueryHandler($this->connection);
 
         $this->queryHandler->clearSlow();

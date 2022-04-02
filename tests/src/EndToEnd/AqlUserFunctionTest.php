@@ -10,20 +10,23 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\AqlUserFunction;
+use ArangoDBClient\ClientException;
+use ArangoDBClient\Exception;
 
 /**
  * Class AqlUserFunctionTest
  * Basic Tests for the Graph API implementation
  *
- * @property Connection        $connection
+ * @property \ArangoDBClient\Connection        $connection
  *
- * @property CollectionHandler collectionHandler
+ * @property \ArangoDBClient\CollectionHandler collectionHandler
  *
  * @package ArangoDBClient
  */
-class AqlUserFunctionTest extends
-    \PHPUnit_Framework_TestCase
+class AqlUserFunctionTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -35,7 +38,8 @@ class AqlUserFunctionTest extends
 
     public function setUp(): void
     {
-        $this->connection = getConnection();
+        parent::setUp();
+        $this->connection = $this->createConnection();
 
         $this->cleanup();
     }

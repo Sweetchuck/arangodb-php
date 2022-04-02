@@ -77,7 +77,14 @@ jobs:
                             echo Waiting for ArangoDB on http://127.0.0.1:8529;
                         done;"
             -
+                name: 'Run all PHPUnit tests with connection="Close"'
+                env:
+                    ARANGODB_CONNECTION_Connection: 'Close'
                 run: |
-                    ./vendor/bin/phpunit \
-                        --colors='always' \
-                        --configuration='./tests/phpunit-connection-close.xml'
+                    ./vendor/bin/phpunit
+            -
+                name: 'Run all PHPUnit tests with connection="Keep-Alive"'
+                env:
+                    ARANGODB_CONNECTION_Connection: 'Keep-Alive'
+                run: |
+                    ./vendor/bin/phpunit

@@ -10,7 +10,14 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Collection;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\Document;
+use ArangoDBClient\DocumentHandler;
+use ArangoDBClient\ServerException;
+use ArangoDBClient\Statement;
 
 function filtered(array $values)
 {
@@ -25,15 +32,12 @@ function filtered(array $values)
 /**
  * Class StatementTest
  *
- * @property Connection        $connection
- * @property Collection        $collection
- * @property CollectionHandler $collectionHandler
- * @property DocumentHandler   $documentHandler
+ * @property \ArangoDBClient\Connection        $connection
+ * @property \ArangoDBClient\Collection        $collection
  *
  * @package ArangoDBClient
  */
-class StatementTest extends
-    \PHPUnit_Framework_TestCase
+class StatementTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -46,7 +50,7 @@ class StatementTest extends
 
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        $this->connection        = $this->createConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
 
         // clean up first

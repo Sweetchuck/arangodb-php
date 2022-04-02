@@ -10,18 +10,24 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Batch;
+use ArangoDBClient\Collection;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\Document;
+use ArangoDBClient\DocumentHandler;
+use ArangoDBClient\Statement;
 
 /**
  * Class DatabaseTest
  * Basic Tests for the Database API implementation
  *
- * @property Connection $connection
+ * @property \ArangoDBClient\Connection $connection
  *
  * @package ArangoDBClient
  */
-class CustomDocumentClassTest extends
-    \PHPUnit_Framework_TestCase
+class CustomDocumentClassTest extends TestBase
 {
 
     protected static $testsTimestamp;
@@ -38,7 +44,8 @@ class CustomDocumentClassTest extends
 
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        parent::setUp();
+        $this->connection        = $this->createConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
 
         try {

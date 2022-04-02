@@ -10,18 +10,22 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Collection;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\Edge;
+use ArangoDBClient\EdgeHandler;
 
 /**
  * Class DatabaseTest
  * Basic Tests for the Database API implementation
  *
- * @property Connection $connection
+ * @property \ArangoDBClient\Connection $connection
  *
  * @package ArangoDBClient
  */
-class CustomEdgeClassTest extends
-    \PHPUnit_Framework_TestCase
+class CustomEdgeClassTest extends TestBase
 {
 
     protected static $testsTimestamp;
@@ -38,7 +42,7 @@ class CustomEdgeClassTest extends
 
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        $this->connection        = $this->createConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
 
         try {

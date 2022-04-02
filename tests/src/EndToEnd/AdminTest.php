@@ -10,18 +10,20 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\AdminHandler;
 
 /**
- * @property Connection   connection
- * @property AdminHandler adminHandler
+ * @property \ArangoDBClient\Connection   connection
+ * @property \ArangoDBClient\AdminHandler adminHandler
  */
-class AdminTest extends
-    \PHPUnit_Framework_TestCase
+class AdminTest extends TestBase
 {
     public function setUp(): void
     {
-        $this->connection   = getConnection();
+        parent::setUp();
+        $this->connection   = $this->createConnection();
         $this->adminHandler = new AdminHandler($this->connection);
     }
 
@@ -45,7 +47,7 @@ class AdminTest extends
         $result = $this->adminHandler->getEngineStats();
         static::assertTrue(is_array($result));
 
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             foreach ($result as $server => $entry) {
                 static::assertTrue(isset($entry["cache.limit"]));
                 static::assertTrue(isset($entry["cache.allocated"]));

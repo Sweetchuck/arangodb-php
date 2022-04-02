@@ -10,20 +10,28 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\AdminHandler;
+use ArangoDBClient\Collection;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\Document;
+use ArangoDBClient\DocumentHandler;
+use ArangoDBClient\Exception;
+use ArangoDBClient\ServerException;
+use ArangoDBClient\Statement;
 
 /**
  * Class CollectionExtendedTest
  *
- * @property Connection        $connection
- * @property Collection        $collection
- * @property CollectionHandler $collectionHandler
- * @property DocumentHandler   $documentHandler
+ * @property \ArangoDBClient\Connection        $connection
+ * @property \ArangoDBClient\Collection        $collection
+ * @property \ArangoDBClient\CollectionHandler $collectionHandler
+ * @property \ArangoDBClient\DocumentHandler   $documentHandler
  *
  * @package ArangoDBClient
  */
-class CollectionExtendedTest extends
-    \PHPUnit_Framework_TestCase
+class CollectionExtendedTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -39,7 +47,8 @@ class CollectionExtendedTest extends
      */
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        parent::setUp();
+        $this->connection        = $this->createConnection();
         $this->collection        = new Collection();
         $this->collectionHandler = new CollectionHandler($this->connection);
         $this->documentHandler   = new DocumentHandler($this->connection);
@@ -235,7 +244,7 @@ class CollectionExtendedTest extends
      */
     public function testGetChecksum()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;
@@ -342,7 +351,7 @@ class CollectionExtendedTest extends
      */
     public function testCreateRenameAndDeleteCollection()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;
@@ -1216,7 +1225,7 @@ class CollectionExtendedTest extends
      */
     public function testImportFromFileUsingHeadersAndValues()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;
@@ -1225,7 +1234,7 @@ class CollectionExtendedTest extends
         $collectionHandler = $this->collectionHandler;
         $result            = $collectionHandler->importFromFile(
             'ArangoDB_PHP_TestSuite_ImportCollection_01' . '_' . static::$testsTimestamp,
-            __DIR__ . '/files_for_tests/import_file_header_values.txt',
+            "{$this->fixturesDir}/import_file_header_values.txt",
             $options = ['createCollection' => true]
         );
 
@@ -1270,7 +1279,7 @@ class CollectionExtendedTest extends
      */
     public function testImportFromFileUsingDocumentsLineByLine()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;
@@ -1279,7 +1288,7 @@ class CollectionExtendedTest extends
         $collectionHandler = $this->collectionHandler;
         $result            = $collectionHandler->importFromFile(
             'ArangoDB_PHP_TestSuite_ImportCollection_01' . '_' . static::$testsTimestamp,
-            __DIR__ . '/files_for_tests/import_file_line_by_line.txt',
+            "{$this->fixturesDir}/import_file_line_by_line.txt",
             $options = ['createCollection' => true, 'type' => 'documents']
         );
         static::assertTrue($result['error'] === false && $result['created'] === 2);
@@ -1323,7 +1332,7 @@ class CollectionExtendedTest extends
      */
     public function testImportFromFileUsingResultSet()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;
@@ -1332,7 +1341,7 @@ class CollectionExtendedTest extends
         $collectionHandler = $this->collectionHandler;
         $result            = $collectionHandler->importFromFile(
             'ArangoDB_PHP_TestSuite_ImportCollection_01' . '_' . static::$testsTimestamp,
-            __DIR__ . '/files_for_tests/import_file_resultset.txt',
+            "{$this->fixturesDir}/import_file_resultset.txt",
             $options = ['createCollection' => true, 'type' => 'array']
         );
         static::assertTrue($result['error'] === false && $result['created'] === 2);
@@ -1380,7 +1389,7 @@ class CollectionExtendedTest extends
      */
     public function testImportFromArrayOfDocuments()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;
@@ -1455,7 +1464,7 @@ class CollectionExtendedTest extends
      */
     public function testImportFromStringWithValuesAndHeaders()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;
@@ -1514,7 +1523,7 @@ class CollectionExtendedTest extends
      */
     public function testImportFromStringUsingDocumentsLineByLine()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;
@@ -1572,7 +1581,7 @@ class CollectionExtendedTest extends
      */
     public function testImportFromStringUsingDocumentsUsingResultset()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;

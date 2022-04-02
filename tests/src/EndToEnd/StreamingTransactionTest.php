@@ -10,21 +10,31 @@ declare(strict_types = 1);
  * @author  Jan Steemann
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\AdminHandler;
+use ArangoDBClient\Collection;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\DocumentHandler;
+use ArangoDBClient\Exception;
+use ArangoDBClient\Statement;
+use ArangoDBClient\StreamingTransaction;
+use ArangoDBClient\StreamingTransactionHandler;
+use ArangoDBClient\TransactionBase;
 
 /**
  * Class StreamingTransactionTest
  *
  * Basic Tests for the streaming transaction API implementation
  *
- * @property Connection        $connection
- * @property CollectionHandler $collectionHandler
- * @property Collection        $collection1
- * @property Collection        $collection2
+ * @property \ArangoDBClient\Connection        $connection
+ * @property \ArangoDBClient\CollectionHandler $collectionHandler
+ * @property \ArangoDBClient\Collection        $collection1
+ * @property \ArangoDBClient\Collection        $collection2
+ *
  * @package ArangoDBClient
  */
-class StreamingTransactionTest extends
-    \PHPUnit_Framework_TestCase
+class StreamingTransactionTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -39,10 +49,11 @@ class StreamingTransactionTest extends
 
     public function setUp(): void
     {
+        parent::setUp();
         // transactions to shut down later
         $this->_shutdown         = [];
 
-        $this->connection        = getConnection();
+        $this->connection        = $this->createConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
 
         // clean up first

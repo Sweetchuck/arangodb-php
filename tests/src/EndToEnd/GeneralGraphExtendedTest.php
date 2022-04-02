@@ -10,19 +10,26 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Edge;
+use ArangoDBClient\EdgeDefinition;
+use ArangoDBClient\Exception;
+use ArangoDBClient\Graph;
+use ArangoDBClient\GraphHandler;
+use ArangoDBClient\Vertex;
 
 /**
  * Class GraphExtendedTest
  * Extended Tests for the Graph API implementation
  *
- * @property GraphHandler graphHandler
- * @property Connection   connection
+ * @property \ArangoDBClient\GraphHandler graphHandler
+ * @property \ArangoDBClient\Connection   connection
  * @property string       graphName
+ *
  * @package ArangoDBClient
  */
-class GeneralGraphExtendedTest extends
-    \PHPUnit_Framework_TestCase
+class GeneralGraphExtendedTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -34,7 +41,7 @@ class GeneralGraphExtendedTest extends
 
     public function setUp(): void
     {
-        $this->connection = getConnection();
+        $this->connection = $this->createConnection();
         $v                = time();
         $this->graphName  = 'graph' . $v . '_' . static::$testsTimestamp;
         $this->v1         = 'v1' . $v;

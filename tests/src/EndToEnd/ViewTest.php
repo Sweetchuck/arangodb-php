@@ -10,18 +10,21 @@ declare(strict_types = 1);
  * @author  Jan Steemann
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Exception;
+use ArangoDBClient\View;
+use ArangoDBClient\ViewHandler;
 
 /**
  * Class ViewTest
  * Basic Tests for the View API implementation
  *
- * @property Connection        $connection
+ * @property \ArangoDBClient\Connection        $connection
  *
  * @package ArangoDBClient
  */
-class ViewTest extends
-    \PHPUnit_Framework_TestCase
+class ViewTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -34,7 +37,8 @@ class ViewTest extends
 
     public function setUp(): void
     {
-        $this->connection  = getConnection();
+        parent::setUp();
+        $this->connection  = $this->createConnection();
         $this->viewHandler = new ViewHandler($this->connection);
     }
 
@@ -149,7 +153,7 @@ class ViewTest extends
      */
     public function testRenameView()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;
@@ -165,7 +169,7 @@ class ViewTest extends
      */
     public function testRenameNonExistingView()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in a single server");
             return;

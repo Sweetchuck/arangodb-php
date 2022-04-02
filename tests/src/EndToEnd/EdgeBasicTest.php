@@ -10,21 +10,29 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Batch;
+use ArangoDBClient\Collection;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\Document;
+use ArangoDBClient\DocumentHandler;
+use ArangoDBClient\Edge;
+use ArangoDBClient\EdgeHandler;
+use ArangoDBClient\Statement;
 
 /**
  * Class EdgeBasicTest
  *
- * @property Connection        $connection
- * @property Collection        $collection
- * @property Collection        $edgeCollection
- * @property CollectionHandler $collectionHandler
- * @property DocumentHandler   $documentHandler
+ * @property \ArangoDBClient\Connection        $connection
+ * @property \ArangoDBClient\Collection        $collection
+ * @property \ArangoDBClient\Collection        $edgeCollection
+ * @property \ArangoDBClient\CollectionHandler $collectionHandler
+ * @property \ArangoDBClient\DocumentHandler   $documentHandler
  *
  * @package ArangoDBClient
  */
-class EdgeBasicTest extends
-    \PHPUnit_Framework_TestCase
+class EdgeBasicTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -37,7 +45,8 @@ class EdgeBasicTest extends
 
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        parent::setUp();
+        $this->connection        = $this->createConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
 
         try {

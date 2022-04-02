@@ -10,18 +10,21 @@ declare(strict_types = 1);
  * @author  Jan Steemann
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Analyzer;
+use ArangoDBClient\AnalyzerHandler;
+use ArangoDBClient\Exception;
 
 /**
  * Class AnalyzerTest
  * Basic Tests for the analyzer API implementation
  *
- * @property Connection        $connection
+ * @property \ArangoDBClient\Connection        $connection
  *
  * @package ArangoDBClient
  */
-class AnalyzerTest extends
-    \PHPUnit_Framework_TestCase
+class AnalyzerTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -34,7 +37,8 @@ class AnalyzerTest extends
 
     public function setUp(): void
     {
-        $this->connection  = getConnection();
+        parent::setUp();
+        $this->connection  = $this->createConnection();
         $this->analyzerHandler = new AnalyzerHandler($this->connection);
     }
 

@@ -10,21 +10,31 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\AdminHandler;
+use ArangoDBClient\ClientException;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\Connection;
+use ArangoDBClient\ConnectionOptions;
+use ArangoDBClient\Exception;
+use ArangoDBClient\HttpHelper;
+use ArangoDBClient\ServerException;
+use ArangoDBClient\Statement;
+use ArangoDBClient\TraceRequest;
+use ArangoDBClient\TraceResponse;
 
 /**
  * Class ConnectionTest
  *
- * @property Connection        $connection
- * @property Collection        $collection
- * @property Collection        $edgeCollection
- * @property CollectionHandler $collectionHandler
- * @property DocumentHandler   $documentHandler
+ * @property \ArangoDBClient\Collection        $collection
+ * @property \ArangoDBClient\Collection        $edgeCollection
+ * @property \ArangoDBClient\CollectionHandler $collectionHandler
+ * @property \ArangoDBClient\DocumentHandler   $documentHandler
  *
  * @package ArangoDBClient
  */
-class ConnectionTest extends
-    \PHPUnit_Framework_TestCase
+class ConnectionTest extends TestBase
 {
 
     protected static $testsTimestamp;
@@ -38,7 +48,8 @@ class ConnectionTest extends
 
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        parent::setUp();
+        $this->connection        = $this->createConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
 
         try {
@@ -53,7 +64,7 @@ class ConnectionTest extends
      */
     public function testInitializeConnection()
     {
-        $connection = getConnection();
+        $connection = $this->createConnection();
         static::assertInstanceOf(Connection::class, $connection);
     }
 
@@ -83,7 +94,7 @@ class ConnectionTest extends
      */
     public function testTest()
     {
-        $connection = getConnection();
+        $connection = $this->createConnection();
         $ep = $connection->getOption(ConnectionOptions::OPTION_ENDPOINT)[0];
         static::assertEquals($ep, $connection->getCurrentEndpoint());
 
@@ -151,7 +162,7 @@ class ConnectionTest extends
      */
     public function testGetStatus()
     {
-        $connection = getConnection();
+        $connection = $this->createConnection();
         $response   = $connection->get('/_admin/statistics');
         static::assertEquals(200, $response->getHttpCode(), 'Did not return http code 200');
     }
@@ -161,7 +172,7 @@ class ConnectionTest extends
      */
     public function testGetOptions()
     {
-        $connection = getConnection();
+        $connection = $this->createConnection();
 
         $old = $connection->getOption(ConnectionOptions::OPTION_TIMEOUT);
         $connection->setOption(ConnectionOptions::OPTION_TIMEOUT, 12);
@@ -170,7 +181,7 @@ class ConnectionTest extends
         static::assertEquals(12, $value);
 
         $value = $connection->getOption(ConnectionOptions::OPTION_CONNECTION);
-        static::assertEquals(getenv('ArangoDB-PHP-Connection'), $value);
+        static::assertEquals(getenv('ARANGODB_CONNECTION_Connection'), $value);
 
         $value = $connection->getOption(ConnectionOptions::OPTION_RECONNECT);
         static::assertFalse($value);
@@ -190,7 +201,7 @@ class ConnectionTest extends
      */
     public function testSetOptions()
     {
-        $connection = getConnection();
+        $connection = $this->createConnection();
 
         // timeout
         $connection->setOption(ConnectionOptions::OPTION_TIMEOUT, 10);
@@ -217,7 +228,7 @@ class ConnectionTest extends
      */
     public function testTimeoutOptions()
     {
-        $connection = getConnection();
+        $connection = $this->createConnection();
 
         $oldTimeout = $connection->getOption(ConnectionOptions::OPTION_TIMEOUT);
         $oldConnectTimeout = $connection->getOption(ConnectionOptions::OPTION_CONNECT_TIMEOUT);
@@ -290,7 +301,7 @@ class ConnectionTest extends
     public function testSetEndpointOption()
     {
         $this->expectException(\ArangoDBClient\ClientException::class);
-        $connection = getConnection();
+        $connection = $this->createConnection();
 
         // will fail!
         $connection->setOption(ConnectionOptions::OPTION_ENDPOINT, 'tcp://127.0.0.1:8529');
@@ -302,7 +313,7 @@ class ConnectionTest extends
     public function testSetAllowSelfSignedOption()
     {
         $this->expectException(\ArangoDBClient\ClientException::class);
-        $connection = getConnection();
+        $connection = $this->createConnection();
 
         // will fail!
         $connection->setOption(ConnectionOptions::OPTION_ALLOW_SELF_SIGNED, true);
@@ -314,7 +325,7 @@ class ConnectionTest extends
     public function testSetVerifyCert()
     {
         $this->expectException(\ArangoDBClient\ClientException::class);
-        $connection = getConnection();
+        $connection = $this->createConnection();
 
         // will fail!
         $connection->setOption(ConnectionOptions::OPTION_VERIFY_CERT, true);
@@ -326,7 +337,7 @@ class ConnectionTest extends
     public function testSetCiphers()
     {
         $this->expectException(\ArangoDBClient\ClientException::class);
-        $connection = getConnection();
+        $connection = $this->createConnection();
 
         // will fail!
         $connection->setOption(ConnectionOptions::OPTION_CIPHERS, 'ALL');
@@ -338,7 +349,7 @@ class ConnectionTest extends
     public function testSetHostOption()
     {
         $this->expectException(\ArangoDBClient\ClientException::class);
-        $connection = getConnection();
+        $connection = $this->createConnection();
 
         // will fail!
         $connection->setOption(ConnectionOptions::OPTION_HOST, '127.0.0.1');
@@ -350,7 +361,7 @@ class ConnectionTest extends
     public function testSetPortOption()
     {
         $this->expectException(\ArangoDBClient\ClientException::class);
-        $connection = getConnection();
+        $connection = $this->createConnection();
 
         // will fail!
         $connection->setOption(ConnectionOptions::OPTION_PORT, '127.0.0.1');
@@ -361,7 +372,7 @@ class ConnectionTest extends
      */
     public function testGetSetDatabase()
     {
-        $connection = getConnection();
+        $connection = $this->createConnection();
 
         $value = $connection->getOption(ConnectionOptions::OPTION_DATABASE);
         static::assertEquals('_system', $value);
@@ -394,7 +405,7 @@ class ConnectionTest extends
     public function testSetTimeoutException()
     {
         $this->expectException(\ArangoDBClient\ClientException::class);
-        $connection = getConnection();
+        $connection = $this->createConnection();
         $connection->setOption(ConnectionOptions::OPTION_TIMEOUT, 3);
         $query = 'RETURN SLEEP(6)';
 
@@ -414,7 +425,7 @@ class ConnectionTest extends
      */
     public function testSetTimeout()
     {
-        $connection = getConnection();
+        $connection = $this->createConnection();
         $connection->setOption(ConnectionOptions::OPTION_TIMEOUT, 5);
         $query = 'RETURN SLEEP(1)';
 
@@ -430,7 +441,7 @@ class ConnectionTest extends
      */
     public function testSetConnectTimeout()
     {
-        $connection = getConnection();
+        $connection = $this->createConnection();
         $connection->setOption(ConnectionOptions::OPTION_CONNECT_TIMEOUT, 5);
         $query = 'RETURN SLEEP(1)';
 
@@ -447,7 +458,7 @@ class ConnectionTest extends
     public function testSetRequestTimeoutException()
     {
         $this->expectException(\ArangoDBClient\ClientException::class);
-        $connection = getConnection();
+        $connection = $this->createConnection();
         $connection->setOption(ConnectionOptions::OPTION_CONNECT_TIMEOUT, 3);
         $connection->setOption(ConnectionOptions::OPTION_REQUEST_TIMEOUT, 2);
         $query = 'RETURN SLEEP(3)';
@@ -468,7 +479,7 @@ class ConnectionTest extends
      */
     public function testSetRequestTimeout()
     {
-        $connection = getConnection();
+        $connection = $this->createConnection();
         $connection->setOption(ConnectionOptions::OPTION_CONNECT_TIMEOUT, 5);
         $connection->setOption(ConnectionOptions::OPTION_REQUEST_TIMEOUT, 5);
         $query = 'RETURN SLEEP(1)';
@@ -493,7 +504,7 @@ class ConnectionTest extends
             }
         };
 
-        $options                                       = getConnectionOptions();
+        $options                                       = $this->getConnectionOptions();
         $options[ConnectionOptions::OPTION_CONNECTION] = 'Close';
         $options[ConnectionOptions::OPTION_TRACE]      = $tracer;
 
@@ -518,7 +529,7 @@ class ConnectionTest extends
             }
         };
 
-        $options                                       = getConnectionOptions();
+        $options                                       = $this->getConnectionOptions();
         $options[ConnectionOptions::OPTION_CONNECTION] = 'Keep-Alive';
         $options[ConnectionOptions::OPTION_TRACE]      = $tracer;
 
@@ -535,7 +546,7 @@ class ConnectionTest extends
      */
     public function testAuthentication()
     {
-        if (!useAuthentication()) {
+        if (!$this->useAuthentication()) {
             $this->markTestSkipped("test is only meaningful with authentication enabled");
         }
 
@@ -547,7 +558,7 @@ class ConnectionTest extends
             }
         };
 
-        $options                                        = getConnectionOptions();
+        $options                                        = $this->getConnectionOptions();
         $options[ConnectionOptions::OPTION_AUTH_USER]   = 'theQuickBrownFox';
         $options[ConnectionOptions::OPTION_AUTH_PASSWD] = 'jumped-over-it';
         $options[ConnectionOptions::OPTION_TRACE]       = $tracer;
@@ -581,7 +592,7 @@ class ConnectionTest extends
             static::assertEquals('string', gettype($data), 'Basic tracer data is not a string!.');
         };
 
-        $options                                  = getConnectionOptions();
+        $options                                  = $this->getConnectionOptions();
         $options[ConnectionOptions::OPTION_TRACE] = $basicTracer;
 
         $connection        = new Connection($options);
@@ -646,7 +657,7 @@ class ConnectionTest extends
             }
         };
 
-        $options                                           = getConnectionOptions();
+        $options                                           = $this->getConnectionOptions();
         $options[ConnectionOptions::OPTION_TRACE]          = $enhancedTracer;
         $options[ConnectionOptions::OPTION_ENHANCED_TRACE] = true;
 

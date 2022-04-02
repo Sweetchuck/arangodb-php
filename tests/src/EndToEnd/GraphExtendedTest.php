@@ -10,19 +10,29 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Edge;
+use ArangoDBClient\EdgeDefinition;
+use ArangoDBClient\EdgeHandler;
+use ArangoDBClient\Exception;
+use ArangoDBClient\Graph;
+use ArangoDBClient\GraphHandler;
+use ArangoDBClient\ServerException;
+use ArangoDBClient\Vertex;
+use ArangoDBClient\VertexHandler;
 
 /**
  * Class GraphExtendedTest
  * Extended Tests for the Graph API implementation
  *
- * @property Connection        $connection
- * @property Graph             $graph
- * @property Collection        $edgeCollection
- * @property CollectionHandler $collectionHandler
- * @property GraphHandler      $graphHandler
- * @property DocumentHandler   $documentHandler
- * @property EdgeHandler       $edgeHandler
+ * @property \ArangoDBClient\Connection        $connection
+ * @property \ArangoDBClient\Graph             $graph
+ * @property \ArangoDBClient\Collection        $edgeCollection
+ * @property \ArangoDBClient\CollectionHandler $collectionHandler
+ * @property \ArangoDBClient\GraphHandler      $graphHandler
+ * @property \ArangoDBClient\DocumentHandler   $documentHandler
+ * @property \ArangoDBClient\EdgeHandler       $edgeHandler
  * @property string            vertex1Name
  * @property string            vertex2Name
  * @property string            vertex3Name
@@ -50,8 +60,7 @@ namespace ArangoDBClient;
  *
  * @package ArangoDBClient
  */
-class GraphExtendedTest extends
-    \PHPUnit_Framework_TestCase
+class GraphExtendedTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -120,7 +129,7 @@ class GraphExtendedTest extends
         $ed1 = EdgeDefinition::createUndirectedRelation($this->edgeCollectionName, [$this->vertexCollectionName]);
 
         $this->graphName  = 'Graph1' . '_' . static::$testsTimestamp;
-        $this->connection = getConnection();
+        $this->connection = $this->createConnection();
         $this->graph      = new Graph();
         $this->graph->set('_key', $this->graphName);
         $this->graph->addEdgeDefinition($ed1);

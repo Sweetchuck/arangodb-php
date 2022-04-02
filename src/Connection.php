@@ -157,7 +157,7 @@ class Connection
             $name === ConnectionOptions::OPTION_REQUEST_TIMEOUT) {
             // set the timeout option: patch the stream of an existing connection
             if (is_resource($this->_handle)) {
-                stream_set_timeout($this->_handle, $value);
+                stream_set_timeout($this->_handle, (int) $value);
             }
         } else if ($name === ConnectionOptions::OPTION_CONNECTION) {
             // set keep-alive flag

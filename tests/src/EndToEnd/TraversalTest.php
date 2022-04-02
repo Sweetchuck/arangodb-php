@@ -10,7 +10,15 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Edge;
+use ArangoDBClient\EdgeDefinition;
+use ArangoDBClient\Exception;
+use ArangoDBClient\Graph;
+use ArangoDBClient\GraphHandler;
+use ArangoDBClient\Traversal;
+use ArangoDBClient\Vertex;
 
 /**
  * Class TraversalTest
@@ -18,13 +26,13 @@ namespace ArangoDBClient;
  *
  * These tests are modeled after: http://www.arangodb.com/manuals/1.4/HttpTraversals.html
  *
- * @property Connection        $connection
- * @property Graph             $graph
- * @property Collection        $edgeCollection
- * @property CollectionHandler $collectionHandler
- * @property GraphHandler      $graphHandler
- * @property DocumentHandler   $documentHandler
- * @property EdgeHandler       $edgeHandler
+ * @property \ArangoDBClient\Connection        $connection
+ * @property \ArangoDBClient\Graph             $graph
+ * @property \ArangoDBClient\Collection        $edgeCollection
+ * @property \ArangoDBClient\CollectionHandler $collectionHandler
+ * @property \ArangoDBClient\GraphHandler      $graphHandler
+ * @property \ArangoDBClient\DocumentHandler   $documentHandler
+ * @property \ArangoDBClient\EdgeHandler       $edgeHandler
  * @property string            vertex1Name
  * @property string            vertex2Name
  * @property string            vertex3Name
@@ -56,8 +64,7 @@ namespace ArangoDBClient;
  *
  * @package ArangoDBClient
  */
-class TraversalTest extends
-    \PHPUnit_Framework_TestCase
+class TraversalTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -70,6 +77,7 @@ class TraversalTest extends
 
     public function setUp(): void
     {
+        parent::setUp();
         $this->vertex1Name = 'vertex_alice';
         $this->vertex2Name = 'vertex_bob';
         $this->vertex3Name = 'vertex_charlie';
@@ -124,7 +132,7 @@ class TraversalTest extends
 
 
         $this->graphName  = 'Graph1' . '_' . static::$testsTimestamp;
-        $this->connection = getConnection();
+        $this->connection = $this->createConnection();
         $this->graph      = new Graph();
         $this->graph->set('_key', $this->graphName);
 

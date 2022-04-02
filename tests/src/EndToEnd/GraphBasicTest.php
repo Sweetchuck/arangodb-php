@@ -10,24 +10,31 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\ClientException;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\EdgeDefinition;
+use ArangoDBClient\Exception;
+use ArangoDBClient\Graph;
+use ArangoDBClient\GraphHandler;
+use ArangoDBClient\SmartGraph;
 
 /**
  * Class GraphBasicTest
  * Basic Tests for the Graph API implementation
  *
- * @property Connection        $connection
- * @property Graph             $graph
- * @property Collection        $edgeCollection
- * @property CollectionHandler $collectionHandler
- * @property GraphHandler      $graphHandler
- * @property DocumentHandler   $documentHandler
- * @property EdgeHandler       $edgeHandler
+ * @property \ArangoDBClient\Connection        $connection
+ * @property \ArangoDBClient\Graph             $graph
+ * @property \ArangoDBClient\Collection        $edgeCollection
+ * @property \ArangoDBClient\CollectionHandler $collectionHandler
+ * @property \ArangoDBClient\GraphHandler      $graphHandler
+ * @property \ArangoDBClient\DocumentHandler   $documentHandler
+ * @property \ArangoDBClient\EdgeHandler       $edgeHandler
  *
  * @package ArangoDBClient
  */
-class GraphBasicTest extends
-    \PHPUnit_Framework_TestCase
+class GraphBasicTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -40,7 +47,7 @@ class GraphBasicTest extends
 
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        $this->connection        = $this->createConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
     }
 
@@ -88,13 +95,13 @@ class GraphBasicTest extends
 
     public function testCreateAndDeleteSmartRegularGraph()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
 
-        if (!isEnterprise($this->connection)) {
+        if (!$this->isEnterprise()) {
             // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
@@ -127,13 +134,13 @@ class GraphBasicTest extends
 
     public function testCreateAndDeleteDisjointSmartGraph()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
 
-        if (!isEnterprise($this->connection)) {
+        if (!$this->isEnterprise()) {
             // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
@@ -166,13 +173,13 @@ class GraphBasicTest extends
 
     public function testCreateAndDeleteHybridSmartGraph()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
 
-        if (!isEnterprise($this->connection)) {
+        if (!$this->isEnterprise()) {
             // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
@@ -206,13 +213,13 @@ class GraphBasicTest extends
 
     public function testCreateAndDeleteSatelliteGraph()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
 
-        if (!isEnterprise($this->connection)) {
+        if (!$this->isEnterprise()) {
             // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
@@ -247,13 +254,13 @@ class GraphBasicTest extends
 
     public function testCreateAndDeleteGraphWithClusterOptions()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
 
-        if (!isEnterprise($this->connection)) {
+        if (!$this->isEnterprise()) {
             // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;

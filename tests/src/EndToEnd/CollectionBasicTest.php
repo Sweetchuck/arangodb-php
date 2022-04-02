@@ -10,15 +10,22 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\AdminHandler;
+use ArangoDBClient\Collection;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\DocumentHandler;
+use ArangoDBClient\Exception;
+use ArangoDBClient\Statement;
+use ArangoDBClient\Document;
 
 /**
- * @property Connection        connection
- * @property Collection        collection
- * @property CollectionHandler collectionHandler
+ * @property \ArangoDBClient\Connection        connection
+ * @property \ArangoDBClient\Collection        collection
+ * @property \ArangoDBClient\CollectionHandler collectionHandler
  */
-class CollectionBasicTest extends
-    \PHPUnit_Framework_TestCase
+class CollectionBasicTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -31,7 +38,8 @@ class CollectionBasicTest extends
 
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        parent::setUp();
+        $this->connection        = $this->createConnection();
         $this->collectionHandler = new CollectionHandler($this->connection);
         try {
             $this->collectionHandler->drop('ArangoDB_PHP_TestSuite_IndexTestCollection' . '_' . static::$testsTimestamp);
@@ -187,7 +195,7 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithKeyOptionsAndVerifyProperties()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in single server");
             return;
@@ -244,7 +252,7 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithKeyOptionsCluster()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -281,7 +289,7 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithDistributeShardsLike()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -317,7 +325,7 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithNumberOfShardsCluster()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -352,7 +360,7 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithReplicationFactor1()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -389,7 +397,7 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithReplicationFactor2()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -425,13 +433,13 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithReplicationFactorSatellite()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
 
-        if (!isEnterprise($this->connection)) {
+        if (!$this->isEnterprise()) {
           // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
@@ -467,7 +475,7 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithShardingStrategyCommunityCompat()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -502,7 +510,7 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithShardingStrategyHash()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -537,7 +545,7 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithoutShardingStrategy()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -571,7 +579,7 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithShardKeysCluster()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -614,13 +622,13 @@ class CollectionBasicTest extends
      */
     public function testCreateCollectionWithSmartJoinAttribute()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
 
-        if (!isEnterprise($this->connection)) {
+        if (!$this->isEnterprise()) {
           // don't execute this test in community version
             $this->markTestSkipped("test is only meaningful in enterprise version");
             return;
@@ -1357,7 +1365,7 @@ class CollectionBasicTest extends
      */
     public function testCollectionCountDetailed()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -1417,7 +1425,7 @@ class CollectionBasicTest extends
      */
     public function testGetShards()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -1453,7 +1461,7 @@ class CollectionBasicTest extends
      */
     public function testGetResponsibleShard()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // don't execute this test in a non-cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;

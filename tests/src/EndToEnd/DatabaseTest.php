@@ -10,18 +10,22 @@ declare(strict_types = 1);
  * @author  Frank Mayer
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Collection;
+use ArangoDBClient\Database;
+use ArangoDBClient\Exception;
+use ArangoDBClient\ServerException;
 
 /**
  * Class DatabaseTest
  * Basic Tests for the Database API implementation
  *
- * @property Connection $connection
+ * @property \ArangoDBClient\Connection $connection
  *
  * @package ArangoDBClient
  */
-class DatabaseTest extends
-    \PHPUnit_Framework_TestCase
+class DatabaseTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -34,7 +38,8 @@ class DatabaseTest extends
 
     public function setUp(): void
     {
-        $this->connection = getConnection();
+        parent::setUp();
+        $this->connection = $this->createConnection();
         $this->connection->setDatabase('_system');
 
         // remove existing databases to make test repeatable
@@ -237,7 +242,7 @@ class DatabaseTest extends
      */
     public function testCreateDatabaseWithOptions()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // only execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
@@ -285,12 +290,12 @@ class DatabaseTest extends
      */
     public function testCreateDatabaseWithMoreOptions()
     {
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             // only execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in cluster");
             return;
         }
-        if (!isEnterprise($this->connection)) {
+        if (!$this->isEnterprise()) {
           // only execute this test in enterprise edition
             $this->markTestSkipped("test is only meaningful in enterprise edition");
             return;

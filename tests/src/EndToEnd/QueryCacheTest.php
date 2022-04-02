@@ -10,18 +10,23 @@ declare(strict_types = 1);
  * @author  Jan Steemann
  */
 
-namespace ArangoDBClient;
+namespace ArangoDBClient\Tests\EndToEnd;
+
+use ArangoDBClient\Collection;
+use ArangoDBClient\CollectionHandler;
+use ArangoDBClient\QueryCacheHandler;
+use ArangoDBClient\Statement;
 
 /**
  * Class QueryCacheTest
  *
- * @property Connection   $connection
- * @property QueryHandler $queryHandler
+ * @property \ArangoDBClient\Connection   $connection
+ * @property \ArangoDBClient\Collection   $collection
+ * @property \ArangoDBClient\QueryHandler $queryHandler
  *
  * @package ArangoDBClient
  */
-class QueryCacheTest extends
-    \PHPUnit_Framework_TestCase
+class QueryCacheTest extends TestBase
 {
     protected static $testsTimestamp;
 
@@ -34,7 +39,7 @@ class QueryCacheTest extends
 
     public function setUp(): void
     {
-        $this->connection        = getConnection();
+        $this->connection        = $this->createConnection();
         $this->cacheHandler      = new QueryCacheHandler($this->connection);
         $this->collectionHandler = new CollectionHandler($this->connection);
 
@@ -81,7 +86,7 @@ class QueryCacheTest extends
         $cursor = $statement->execute();
 
         static::assertEquals([1998, 1999, 2000], $cursor->getAll());
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             static::assertTrue($cursor->getCached()); // should be in cache now
         }
 
@@ -102,7 +107,7 @@ class QueryCacheTest extends
         $cursor = $statement->execute();
 
         static::assertEquals([1998, 1999, 2000], $cursor->getAll());
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             static::assertTrue($cursor->getCached()); // should be in cache again
         }
     }
@@ -112,7 +117,7 @@ class QueryCacheTest extends
      */
     public function testGetEntries()
     {
-        if (isCluster($this->connection)) {
+        if ($this->isCluster()) {
             // don't execute this test in a cluster
             $this->markTestSkipped("test is only meaningful in single server");
             return;
@@ -127,7 +132,7 @@ class QueryCacheTest extends
         $statement->setQuery($query);
         $statement->execute();
 
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             $entries = $this->cacheHandler->getEntries();
 
             static::assertTrue(sizeof($entries) > 0);
@@ -169,7 +174,7 @@ class QueryCacheTest extends
         $cursor = $statement->execute();
 
         static::assertEquals([1998, 1999, 2000], $cursor->getAll());
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             static::assertTrue($cursor->getCached()); // should be in cache now
         }
     }
@@ -196,7 +201,7 @@ class QueryCacheTest extends
         $cursor = $statement->execute();
 
         static::assertEquals([1998, 1999, 2000], $cursor->getAll());
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             static::assertTrue($cursor->getCached()); // should be in cache now
         }
 
@@ -265,7 +270,7 @@ class QueryCacheTest extends
         $cursor = $statement->execute();
 
         static::assertEquals([1998, 1999, 2000], $cursor->getAll());
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             static::assertTrue($cursor->getCached()); // now the query should be in the cache, because we set the cache attribute for the query
         }
     }
@@ -306,7 +311,7 @@ class QueryCacheTest extends
         $cursor = $statement->execute();
 
         static::assertEquals([1998, 1999, 2000], $cursor->getAll());
-        if (!isCluster($this->connection)) {
+        if (!$this->isCluster()) {
             static::assertTrue($cursor->getCached()); // we said we want to use the cache
         }
     }

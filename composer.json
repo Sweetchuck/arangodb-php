@@ -50,7 +50,11 @@
             "ArangoDBClient\\": "src/"
         }
     },
-    "autoload-dev": {},
+    "autoload-dev": {
+        "psr-4": {
+            "ArangoDBClient\\Tests\\": "./tests/src/"
+        }
+    },
     "extra": {},
     "scripts": {},
     "scripts-descriptions": {}
