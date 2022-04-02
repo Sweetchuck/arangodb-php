@@ -46,8 +46,8 @@
         "phpunit/phpunit": "^9.5"
     },
     "autoload": {
-        "psr-0": {
-            "ArangoDBClient": "lib/"
+        "psr-4": {
+            "ArangoDBClient\\": "src/"
         }
     },
     "autoload-dev": {},

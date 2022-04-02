@@ -12,7 +12,6 @@ declare(strict_types = 1);
 
 namespace ArangoDBClient;
 
-require __DIR__ . '/../autoload.php';
 require __DIR__ . '/bootstrap.php';
 
 if (class_exists(\PHPUnit\Framework\TestCase::class)) {
