@@ -33,6 +33,7 @@ class CustomDocumentClassTest extends TestBase
     protected static $testsTimestamp;
 
     protected $collection;
+
     protected $collectionHandler;
 
     public function __construct($name = null, array $data = [], $dataName = '')
@@ -76,26 +77,54 @@ class CustomDocumentClassTest extends TestBase
 
         $documentHandler->setDocumentClass(CustomDocumentClass1::class);
         $resultingDocument1 = $documentHandler->get($collection->getName(), $documentId);
-        static::assertInstanceOf(CustomDocumentClass1::class, $resultingDocument1, 'Retrieved document isn\'t made with provided CustomDocumentClass1!');
+        static::assertInstanceOf(
+            CustomDocumentClass1::class,
+            $resultingDocument1,
+            'Retrieved document isn\'t made with provided CustomDocumentClass1!',
+        );
 
         $documentHandler->setDocumentClass(CustomDocumentClass2::class);
         $resultingDocument2 = $documentHandler->get($collection->getName(), $documentId);
-        static::assertInstanceOf(CustomDocumentClass2::class, $resultingDocument2, 'Retrieved document isn\'t made with provided CustomDocumentClass2!');
+        static::assertInstanceOf(
+            CustomDocumentClass2::class,
+            $resultingDocument2,
+            'Retrieved document isn\'t made with provided CustomDocumentClass2!',
+        );
 
         $documentHandler->setDocumentClass(Document::class);
         $resultingDocument = $documentHandler->get($collection->getName(), $documentId);
         static::assertInstanceOf(Document::class, $resultingDocument, 'Retrieved document isn\'t made with provided Document!');
-        static::assertNotInstanceOf(CustomDocumentClass1::class, $resultingDocument, 'Retrieved document is made with CustomDocumentClass1!');
-        static::assertNotInstanceOf(CustomDocumentClass2::class, $resultingDocument, 'Retrieved document is made with CustomDocumentClass2!');
+        static::assertNotInstanceOf(
+            CustomDocumentClass1::class,
+            $resultingDocument,
+            'Retrieved document is made with CustomDocumentClass1!',
+        );
+        static::assertNotInstanceOf(
+            CustomDocumentClass2::class,
+            $resultingDocument,
+            'Retrieved document is made with CustomDocumentClass2!',
+        );
 
         $resultingAttribute = $resultingDocument->someAttribute;
-        static::assertSame('someValue', $resultingAttribute, 'Resulting Attribute should be "someValue". It\'s :' . $resultingAttribute);
+        static::assertSame(
+            'someValue',
+            $resultingAttribute,
+            'Resulting Attribute should be "someValue". It\'s :' . $resultingAttribute,
+        );
 
         $resultingAttribute1 = $resultingDocument1->someAttribute;
-        static::assertSame('someValue', $resultingAttribute1, 'Resulting Attribute should be "someValue". It\'s :' . $resultingAttribute);
+        static::assertSame(
+            'someValue',
+            $resultingAttribute1,
+            'Resulting Attribute should be "someValue". It\'s :' . $resultingAttribute,
+        );
 
         $resultingAttribute2 = $resultingDocument2->someAttribute;
-        static::assertSame('someValue', $resultingAttribute2, 'Resulting Attribute should be "someValue". It\'s :' . $resultingAttribute);
+        static::assertSame(
+            'someValue',
+            $resultingAttribute2,
+            'Resulting Attribute should be "someValue". It\'s :' . $resultingAttribute,
+        );
 
         $documentHandler->remove($document);
     }
@@ -115,12 +144,13 @@ class CustomDocumentClassTest extends TestBase
         $documentHandler->save($collection->getName(), $document);
 
         $statement = new Statement(
-            $connection, [
+            $connection,
+            [
                 'query'     => '',
                 'count'     => true,
                 'batchSize' => 1000,
                 '_sanitize' => true,
-            ]
+            ],
         );
         $statement->setDocumentClass(CustomDocumentClass1::class);
         $statement->setQuery(sprintf('FOR a IN `%s` RETURN a', $collection->getName()));
@@ -128,8 +158,16 @@ class CustomDocumentClassTest extends TestBase
 
         $result = $cursor->current();
 
-        static::assertInstanceOf(CustomDocumentClass1::class, $result, 'Retrieved document isn\'t made with provided CustomDocumentClass1!');
-        static::assertSame('anotherValue', $result->someAttribute, 'Expected value anotherValue, found :' . $result->someAttribute);
+        static::assertInstanceOf(
+            CustomDocumentClass1::class,
+            $result,
+            'Retrieved document isn\'t made with provided CustomDocumentClass1!',
+        );
+        static::assertSame(
+            'anotherValue',
+            $result->someAttribute,
+            'Expected value anotherValue, found :' . $result->someAttribute,
+        );
 
         $documentHandler->remove($document);
     }
@@ -158,14 +196,22 @@ class CustomDocumentClassTest extends TestBase
         $batch->process();
         $result = $batch->getPart(0)->getProcessedResponse();
 
-        static::assertInstanceOf(CustomDocumentClass1::class, $result, 'Retrieved document isn\'t made with provided CustomDocumentClass1!');
+        static::assertInstanceOf(
+            CustomDocumentClass1::class,
+            $result,
+            'Retrieved document isn\'t made with provided CustomDocumentClass1!',
+        );
         static::assertSame('someValue', $result->someAttribute, 'Expected value someValue, found :' . $result->someAttribute);
 
         $batchPart = $batch->getPart(1);
         $batchPart->setDocumentClass(CustomDocumentClass2::class);
         $result = $batchPart->getProcessedResponse();
 
-        static::assertInstanceOf(CustomDocumentClass2::class, $result, 'Retrieved document isn\'t made with provided CustomDocumentClass2!');
+        static::assertInstanceOf(
+            CustomDocumentClass2::class,
+            $result,
+            'Retrieved document isn\'t made with provided CustomDocumentClass2!',
+        );
         static::assertSame('someValue2', $result->someAttribute, 'Expected value someValue2, found :' . $result->someAttribute);
 
         $documentHandler->remove($document1);
@@ -183,8 +229,6 @@ class CustomDocumentClassTest extends TestBase
 
         unset($this->documentHandler, $this->document, $this->collectionHandler, $this->collection, $this->connection);
     }
-
-
 }
 
 /**

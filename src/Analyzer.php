@@ -29,7 +29,7 @@ class Analyzer
      *
      * @var string - analyzer name
      */
-    protected $_name;
+    protected $name;
 
     /**
      * Analyzer name index
@@ -65,7 +65,7 @@ class Analyzer
      */
     public function __construct($name, $type, array $properties = [], array $features = [])
     {
-        $this->_name = $name;
+        $this->name = $name;
         $this->_type = $type;
         $this->_properties = $properties;
         $this->_features = $features;
@@ -78,7 +78,7 @@ class Analyzer
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**

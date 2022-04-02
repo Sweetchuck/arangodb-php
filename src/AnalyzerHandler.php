@@ -23,16 +23,21 @@ namespace ArangoDBClient;
 class AnalyzerHandler extends Handler
 {
     /**
-     * Create an analyzer
+     * Create an analyzer.
      *
-     * This will create an analyzer using the given analyzer object and return an array of the created analyzer object's attributes.<br><br>
+     * This will create an analyzer using the given analyzer object and return
+     * an array of the created analyzer object's attributes.
+     *
+     *
+     * @param Analyzer $analyzer
+     *   The analyzer object which holds the information of the analyzer to be
+     *   created.
+     *
+     * @return array
      *
      * @throws Exception
      *
-     * @param Analyzer $analyzer - The analyzer object which holds the information of the analyzer to be created
-     *
-     * @return array
-     * @since   3.6
+     * @since 3.6
      */
     public function create(Analyzer $analyzer)
     {
@@ -55,15 +60,19 @@ class AnalyzerHandler extends Handler
     }
 
     /**
-     * Get an analyzer
+     * Get an analyzer.
      *
-     * This will get an analyzer.<br><br>
+     * This will get an analyzer.
      *
-     * @param string $analyzer - The name of the analyzer
+     * @param string $analyzer
+     *   The name of the analyzer.
      *
-     * @return Analyzer|false
+     * @return Analyzer
+     *
      * @throws \ArangoDBClient\ClientException
-     * @since   3.6
+     * @throws \ArangoDBClient\Exception
+     *
+     * @since 3.6
      */
     public function get($analyzer)
     {
@@ -83,11 +92,13 @@ class AnalyzerHandler extends Handler
     }
 
     /**
-     * Get all analyzers<br><br>
+     * Get all analyzers.
      *
-     * @throws Exception
+     * @return array
+     *   Returns an array of available analyzers.
      *
-     * @return array - Returns an array of available analyzers
+     * @throws \ArangoDBClient\Exception
+     *
      * @since 3.6
      */
     public function getAll()
@@ -99,13 +110,16 @@ class AnalyzerHandler extends Handler
     }
 
     /**
-     * Get an analyzer's properties<br><br>
+     * Get an analyzer's properties.
+     *
+     * @param string|\ArangoDBClient\Analyzer $analyzer
+     *   Analyzer name as a string or instance of Analyzer.
+     *
+     * @return array
+     *   Returns an array of attributes.
      *
      * @throws Exception
      *
-     * @param mixed $analyzer - analyzer name as a string or instance of Analyzer
-     *
-     * @return array - Returns an array of attributes. Will throw if there is an error
      * @since 3.6
      */
     public function properties($analyzer)
@@ -121,13 +135,15 @@ class AnalyzerHandler extends Handler
     }
 
     /**
-     * Drop an analyzer<br><br>
+     * Drop an analyzer.
      *
-     * @throws Exception
+     * @param string|\ArangoDBClient\Analyzer $analyzer
+     *   Analyzer name as a string or instance of Analyzer.
      *
-     * @param mixed $analyzer- analyzer name as a string or instance of Analyzer
+     * @return true
      *
-     * @return bool - always true, will throw if there is an error
+     * @throws \ArangoDBClient\Exception
+     *
      * @since 3.6
      */
     public function drop($analyzer)
@@ -141,5 +157,4 @@ class AnalyzerHandler extends Handler
 
         return true;
     }
-
 }
