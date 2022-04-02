@@ -379,5 +379,3 @@ class AqlUserFunction
         }
     }
 }
-
-class_alias(AqlUserFunction::class, '\triagens\ArangoDb\AqlUserFunction');

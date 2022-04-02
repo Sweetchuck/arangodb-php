@@ -126,5 +126,3 @@ class Analyzer
         ];
     }
 }
-
-class_alias(Analyzer::class, '\triagens\ArangoDb\Analyzer');

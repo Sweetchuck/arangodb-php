@@ -469,5 +469,3 @@ class Graph extends Document
     }
 
 }
-
-class_alias(Graph::class, '\triagens\ArangoDb\Graph');

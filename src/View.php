@@ -125,5 +125,3 @@ class View
         ];
     }
 }
-
-class_alias(View::class, '\triagens\ArangoDb\View');

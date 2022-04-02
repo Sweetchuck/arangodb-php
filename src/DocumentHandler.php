@@ -950,5 +950,3 @@ class DocumentHandler extends Handler
     }
 
 }
-
-class_alias(DocumentHandler::class, '\triagens\ArangoDb\DocumentHandler');

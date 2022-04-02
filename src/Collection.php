@@ -932,5 +932,3 @@ class Collection
         return $this->_smartJoinAttribute;
     }
 }
-
-class_alias(Collection::class, '\triagens\ArangoDb\Collection');

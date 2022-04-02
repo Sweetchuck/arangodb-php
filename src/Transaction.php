@@ -296,5 +296,3 @@ class Transaction extends TransactionBase
         }
     }
 }
-
-class_alias(Transaction::class, '\triagens\ArangoDb\Transaction');

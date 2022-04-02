@@ -190,5 +190,3 @@ abstract class Handler
         }
     }
 }
-
-class_alias(Handler::class, '\triagens\ArangoDb\Handler');

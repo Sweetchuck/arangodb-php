@@ -275,5 +275,3 @@ abstract class Urls
      */
     const URL_FOXX_UNINSTALL = '/_admin/foxx/uninstall';
 }
-
-class_alias(Urls::class, '\triagens\ArangoDb\Urls');

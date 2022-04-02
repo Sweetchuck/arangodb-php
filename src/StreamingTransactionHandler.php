@@ -182,5 +182,3 @@ class StreamingTransactionHandler extends Handler
     }
 
 }
-
-class_alias(CollectionHandler::class, '\triagens\ArangoDb\StreamingTransactionHandler');

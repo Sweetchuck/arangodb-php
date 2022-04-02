@@ -882,5 +882,3 @@ class Cursor implements \Iterator
         return $this->_id;
     }
 }
-
-class_alias(Cursor::class, '\triagens\ArangoDb\Cursor');

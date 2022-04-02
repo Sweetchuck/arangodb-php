@@ -246,5 +246,3 @@ class HttpResponse
     }
 
 }
-
-class_alias(HttpResponse::class, '\triagens\ArangoDb\HttpResponse');

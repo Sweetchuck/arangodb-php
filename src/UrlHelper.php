@@ -107,5 +107,3 @@ abstract class UrlHelper
         return $value ? 'true' : 'false';
     }
 }
-
-class_alias(UrlHelper::class, '\triagens\ArangoDb\UrlHelper');

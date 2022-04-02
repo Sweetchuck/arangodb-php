@@ -395,5 +395,3 @@ class TransactionBase
         }
     }
 }
-
-class_alias(TransactionBase::class, '\triagens\ArangoDb\TransactionBase');

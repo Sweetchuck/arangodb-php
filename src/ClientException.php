@@ -36,5 +36,3 @@ class ClientException extends Exception
         return __CLASS__ . ': ' . $this->getMessage();
     }
 }
-
-class_alias(ClientException::class, '\triagens\ArangoDb\ClientException');

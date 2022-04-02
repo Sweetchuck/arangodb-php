@@ -181,5 +181,3 @@ class Edge extends Document
     }
 
 }
-
-class_alias(Edge::class, '\triagens\ArangoDb\Edge');

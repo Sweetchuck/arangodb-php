@@ -34,5 +34,3 @@ class ConnectException extends Exception
         return __CLASS__ . ': ' . $this->getMessage();
     }
 }
-
-class_alias(ConnectException::class, '\triagens\ArangoDb\ConnectException');

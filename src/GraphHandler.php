@@ -1446,5 +1446,3 @@ class GraphHandler extends Handler
         return $this;
     }
 }
-
-class_alias(GraphHandler::class, '\triagens\ArangoDb\GraphHandler');

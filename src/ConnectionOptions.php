@@ -705,5 +705,3 @@ class ConnectionOptions implements \ArrayAccess
         return $this->_cache;
     }
 }
-
-class_alias(ConnectionOptions::class, '\triagens\ArangoDb\ConnectionOptions');

@@ -24,5 +24,3 @@ class Vertex extends Document
 {
 
 }
-
-class_alias(Vertex::class, '\triagens\ArangoDb\Vertex');

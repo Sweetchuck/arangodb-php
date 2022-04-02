@@ -26,5 +26,3 @@ class User extends Document
 {
 
 }
-
-class_alias(User::class, '\triagens\ArangoDb\User');

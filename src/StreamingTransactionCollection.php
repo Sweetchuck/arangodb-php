@@ -100,5 +100,3 @@ class StreamingTransactionCollection extends Collection
        return $this->_trx->getId();
     }
 }
-
-class_alias(Transaction::class, '\triagens\ArangoDb\StreamingTransactionCollection');

@@ -283,5 +283,3 @@ class Traversal
         return $this->_action;
     }
 }
-
-class_alias(Traversal::class, '\triagens\ArangoDb\Traversal');

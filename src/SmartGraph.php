@@ -45,5 +45,3 @@ class SmartGraph extends Graph
         $this->_isSmart = true;
     }
 }
-
-class_alias(SmartGraph::class, '\triagens\ArangoDb\SmartGraph');

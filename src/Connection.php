@@ -1000,5 +1000,3 @@ class Connection
         $this->_options[ConnectionOptions::OPTION_NOTIFY_CALLBACK]($message);
     }
 }
-
-class_alias(Connection::class, '\triagens\ArangoDb\Connection');

@@ -344,5 +344,3 @@ class BatchPart
     }
 
 }
-
-class_alias(BatchPart::class, '\triagens\ArangoDb\BatchPart');

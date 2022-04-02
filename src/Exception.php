@@ -60,5 +60,3 @@ class Exception extends \Exception
 
     private static $enableLogging = false;
 }
-
-class_alias(Exception::class, '\triagens\ArangoDb\Exception');

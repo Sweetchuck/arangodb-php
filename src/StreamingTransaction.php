@@ -156,5 +156,3 @@ class StreamingTransaction extends TransactionBase
     }
 
 }
-
-class_alias(Transaction::class, '\triagens\ArangoDb\StreamingTransaction');

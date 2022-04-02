@@ -185,5 +185,3 @@ class TraceResponse
         return $this->_timeTaken;
     }
 }
-
-class_alias(TraceResponse::class, '\triagens\ArangoDb\TraceResponse');

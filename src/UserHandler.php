@@ -366,5 +366,3 @@ class UserHandler extends Handler
     }
 
 }
-
-class_alias(UserHandler::class, '\triagens\ArangoDb\UserHandler');

@@ -566,5 +566,3 @@ class Batch
     }
 
 }
-
-class_alias(Batch::class, '\triagens\ArangoDb\Batch');

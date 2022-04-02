@@ -99,5 +99,3 @@ class BindVars
         return $this->_values[$name];
     }
 }
-
-class_alias(BindVars::class, '\triagens\ArangoDb\BindVars');

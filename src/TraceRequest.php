@@ -123,5 +123,3 @@ class TraceRequest
         return $this->_type;
     }
 }
-
-class_alias(TraceRequest::class, '\triagens\ArangoDb\TraceRequest');

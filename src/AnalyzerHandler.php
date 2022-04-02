@@ -143,5 +143,3 @@ class AnalyzerHandler extends Handler
     }
 
 }
-
-class_alias(AnalyzerHandler::class, '\triagens\ArangoDb\AnalyzerHandler');

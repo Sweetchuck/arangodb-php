@@ -55,5 +55,3 @@ class ValueValidator
         throw new ClientException('Invalid bind parameter value');
     }
 }
-
-class_alias(ValueValidator::class, '\triagens\ArangoDb\ValueValidator');

@@ -119,5 +119,3 @@ class ServerException extends Exception
         return null;
     }
 }
-
-class_alias(ServerException::class, '\triagens\ArangoDb\ServerException');

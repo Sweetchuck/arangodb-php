@@ -118,5 +118,3 @@ class QueryCacheHandler extends Handler
         return $response->getJson();
     }
 }
-
-class_alias(QueryCacheHandler::class, '\triagens\ArangoDb\QueryCacheHandler');

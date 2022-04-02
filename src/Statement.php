@@ -885,5 +885,3 @@ class Statement
         return $this;
     }
 }
-
-class_alias(Statement::class, '\triagens\ArangoDb\Statement');

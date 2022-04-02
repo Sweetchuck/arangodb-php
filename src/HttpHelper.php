@@ -342,5 +342,3 @@ class HttpHelper
         return [$httpCode, $result, $processed];
     }
 }
-
-class_alias(HttpHelper::class, '\triagens\ArangoDb\HttpHelper');

@@ -41,5 +41,3 @@ class VertexHandler extends DocumentHandler
         return $_documentClass::createFromArray($data, $options);
     }
 }
-
-class_alias(VertexHandler::class, '\triagens\ArangoDb\VertexHandler');

@@ -436,5 +436,3 @@ class AdminHandler extends Handler
         return $response->getJson();
     }
 }
-
-class_alias(AdminHandler::class, '\triagens\ArangoDb\AdminHandler');

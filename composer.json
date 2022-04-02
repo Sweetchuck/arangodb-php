@@ -45,10 +45,16 @@
     "require-dev": {
         "phpunit/phpunit": "^9.5"
     },
+    "provide": {
+        "triagens/arangodb": "^3.0"
+    },
     "autoload": {
         "psr-4": {
             "ArangoDBClient\\": "src/"
-        }
+        },
+        "files": [
+            "src-deprecated/triagens.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

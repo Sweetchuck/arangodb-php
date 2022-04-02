@@ -229,5 +229,3 @@ class Endpoint
     }
 
 }
-
-class_alias(Endpoint::class, '\triagens\ArangoDb\Endpoint');

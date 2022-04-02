@@ -215,5 +215,3 @@ class Database
         return $name;
     }
 }
-
-class_alias(Database::class, '\triagens\ArangoDb\Database');

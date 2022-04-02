@@ -75,5 +75,3 @@ class QueryHandler extends Handler
     }
 
 }
-
-class_alias(QueryHandler::class, '\triagens\ArangoDb\QueryHandler');

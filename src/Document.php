@@ -794,5 +794,3 @@ class Document implements \JsonSerializable
         return $this->getAll($options);
     }
 }
-
-class_alias(Document::class, '\triagens\ArangoDb\Document');

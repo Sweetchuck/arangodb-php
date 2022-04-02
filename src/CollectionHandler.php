@@ -2095,5 +2095,3 @@ class CollectionHandler extends Handler
         }
     }
 }
-
-class_alias(CollectionHandler::class, '\triagens\ArangoDb\CollectionHandler');

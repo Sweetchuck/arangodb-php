@@ -275,5 +275,3 @@ class EdgeHandler extends DocumentHandler
         parent::lazyCreateCollection($collection, $options);
     }
 }
-
-class_alias(EdgeHandler::class, '\triagens\ArangoDb\EdgeHandler');

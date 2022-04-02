@@ -171,5 +171,3 @@ class ViewHandler extends Handler
         return true;
     }
 }
-
-class_alias(ViewHandler::class, '\triagens\ArangoDb\ViewHandler');

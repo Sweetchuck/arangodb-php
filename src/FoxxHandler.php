@@ -87,5 +87,3 @@ class FoxxHandler extends Handler
         }
     }
 }
-
-class_alias(FoxxHandler::class, '\triagens\ArangoDb\FoxxHandler');
